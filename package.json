@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
 
-    "dev all": "concurrently 'vite' 'cd back-end && npm start'",
-    "dev front": "vite",
-    "dev back": "cd back-end && npm start",
+    "dev_all": "concurrently 'vite' 'cd back-end && npm start'",
+    "dev_front": "vite",
+    "dev_back": "cd back-end && npm start",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest"
