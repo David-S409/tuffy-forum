@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently 'vite' 'cd back-end && npm start'",
+    "dev front": "vite",
+    "dev back": "cd back-end && npm start",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "start": "cd back-end "
   },
   "dependencies": {
-    "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "@vitejs/plugin-react": "^2.0.1",
+    "concurrently": "^7.6.0",
     "eslint": "^8.23.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
