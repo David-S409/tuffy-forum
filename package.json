@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently 'vite' 'cd back-end && npm start'",
+
+    "dev all": "concurrently 'vite' 'cd back-end && npm start'",
     "dev front": "vite",
     "dev back": "cd back-end && npm start",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "start": "cd back-end "
+    "test": "vitest"
   },
   "dependencies": {
     "cross-env": "^7.0.3",

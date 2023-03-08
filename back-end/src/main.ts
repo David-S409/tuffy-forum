@@ -29,6 +29,24 @@ app.get('/api/user', async (req: Request, res: Response) => {
   }
 });
 
+app.get('/api/put', async (req: Request, res: Response) => {
+  try {
+    const allUsers = await prisma.user.update({
+      where: { id: 1 },
+      data: { name: 'david' },
+    });
+    return res.json({
+      success: true,
+      data: allUsers,
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error,
+    });
+  }
+});
+
 // start the Express server
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
