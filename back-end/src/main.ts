@@ -1,12 +1,25 @@
 import express, { Application, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import cookieSession from 'cookie-session';
+import session from 'express-session';
+import cors from 'cors';
+
+import passport from 'passport';
+import api from './api';
+
+import './auth/passportGoogleSSO';
 
 const app: Application = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(session({ secret: 'tuffy', saveUninitialized: true, resave: true }));
+app.use('/api/v1', api);
 
+app.use(passport.initialize());
+app.use(passport.session());
 const port = 8080; // default port to listen
 
 // define a route handler for the default home page
@@ -14,9 +27,9 @@ app.get('/', (req, res) => {
   res.send('Hello world!');
 });
 
-app.get('/api/user', async (req: Request, res: Response) => {
+app.get('/user', async (req: Request, res: Response) => {
   try {
-    const allUsers = await prisma.user.findMany();
+    const allUsers = await prisma.users.findMany();
     return res.json({
       success: true,
       data: allUsers,
@@ -29,11 +42,11 @@ app.get('/api/user', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/put', async (req: Request, res: Response) => {
+app.get('/put', async (req: Request, res: Response) => {
   try {
-    const allUsers = await prisma.user.update({
+    const allUsers = await prisma.users.update({
       where: { id: 1 },
-      data: { name: 'david' },
+      data: { firstName: 'david' },
     });
     return res.json({
       success: true,
