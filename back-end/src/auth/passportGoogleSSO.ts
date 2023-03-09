@@ -1,4 +1,4 @@
-import { PrismaClient, Users } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
 
@@ -14,7 +14,7 @@ passport.use(
       passReqToCallback: true,
     },
     async (req, accessToken, refreshToken, profile, cb) => {
-      const user = await primsa.users
+      const user = await primsa.user
         .upsert({
           where: {
             googleID: profile.id,
@@ -46,8 +46,8 @@ passport.serializeUser((user, cb) => {
   cb(null, user);
 });
 
-passport.deserializeUser(async (u: Users, cb) => {
-  const user = await primsa.users
+passport.deserializeUser(async (u: User, cb) => {
+  const user = await primsa.user
     .findUnique({
       where: {
         googleID: u.googleID,

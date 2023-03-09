@@ -2,8 +2,8 @@ import express from 'express';
 import passport from 'passport';
 
 const router = express.Router();
-const successRedirectUrl = 'http://localhost:8080/login/success';
-const failureRedirectUrl = 'http://localhost:8080/login/fail';
+const successRedirectUrl = 'http://localhost:5173/login/success';
+const failureRedirectUrl = 'http://localhost:5173/login/fail';
 
 router.get(
   '/login/google',
