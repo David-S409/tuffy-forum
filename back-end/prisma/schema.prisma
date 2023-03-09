@@ -11,8 +11,11 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  name      String
-  email     String   @unique
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  firstName  String
+  lastName   String
+  email      String   @unique
+  googleID   String   @unique
+  profileImg String?
 }
