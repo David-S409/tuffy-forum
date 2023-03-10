@@ -1,12 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface Courses {
-    id: number;
-    name: string;
-}
 interface CourseListProps {
-  courses: Courses[];
+  courses: { id: number; name: string }[];
 }
 
 const CourseList: React.FC<CourseListProps> = ({ courses }) => {
