@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
     <div>
         <Navigation />
         <h1>Home Page</h1>
-        {isAuth && <NewCourseForm />}
+        <NewCourseForm />
         <CourseList courses={[{ id: 1, name: "Course 1"}]} />
     </div>
     );
