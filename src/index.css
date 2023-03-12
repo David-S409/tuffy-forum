@@ -1,6 +1,6 @@
 /* Body background and text*/
 body{
-    background-color: #f8f7f3;
+    background-color: #dcd5b6;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     color: #ff7900;
@@ -10,11 +10,25 @@ body{
 
 /* Navigation bar */
 nav{
-    background-color: #ff7900;
+    background-color: #8c603a;
     color: #00244e;
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+nav li {
+    margin: 10px;
 }
 
 nav a {

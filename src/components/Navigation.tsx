@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Navigation: React.FC = () => {
+const Navigation = () => {
   return (
     <nav>
       <ul>
-        <li>
+        <h2>
           <Link to="/">Home</Link>
-        </li>
-        <li>
+        </h2>
+        <h2>
           <Link to="/login">Login</Link>
-        </li>
+        </h2>
       </ul>
     </nav>
   );
