@@ -8,40 +8,6 @@ body{
     padding: 10px;
 }
 
-/* Navigation bar */
-nav{
-    background-color: #8c603a;
-    color: #00244e;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
-}
-
-nav ul {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-nav li {
-    margin: 10px;
-}
-
-nav a {
-    color: #00244e;
-    text-decoration: none;
-    margin: 10px;
-}
-
-nav a:hover {
-    color: #f8f7f3;
-    text-decoration: wavy;
-}
-
 /* Buttons */
 button {
     background-color: #ff7900;

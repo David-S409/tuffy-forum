@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import LoginPage from './login/LoginPage';
-import Navigation from '../components/Navigation';
 
 
 function Home() {
@@ -8,7 +7,6 @@ function Home() {
 
   return (
     <>
-      <Navigation />
       {user ? (
         <h1> TUFFY FORUM {user.id} </h1>
       ) : (
