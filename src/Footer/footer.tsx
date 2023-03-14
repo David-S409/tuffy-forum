@@ -2,12 +2,15 @@ import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const useStyles = makeStyles()((theme) => {
     return {
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
+    padding: theme.spacing(4),
   },
   link: {
     margin: theme.spacing(1, 1.5),
@@ -49,17 +52,19 @@ export default function Footer() {
         {new Date().getFullYear()}
         {' Tuffy Forum'}
       </Typography>
-      <footer>
-        <Link component="button" variant="body2" onClick={() => {}}>
-            Home
-        </Link>
-        <Link component="button" variant="body2" onClick={() => {}}>
-            Login
-        </Link>
-        <Link component="button" variant="body2" onClick={() => {}}>
-            Contact Us
-        </Link>
-      </footer>
+      <BottomNavigation>
+        <ButtonGroup variant="contained" color="primary" aria-label="text primary button group">
+            <Button href='/'>
+                Home
+             </Button>
+            <Button href='/login'>
+                Login
+             </Button>
+            <Button href='/'>
+                Contact Us
+             </Button>
+        </ButtonGroup>
+      </BottomNavigation>
     </footer>
   );
 }

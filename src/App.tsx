@@ -5,7 +5,7 @@ import Home from './pages/HomePage';
 import NotFound from './pages/NotFoundPage';
 import LoginPage from './pages/login/LoginPage';
 import LoginSuccess from './pages/login/LoginSuccess';
-import { Navbar } from './components/Style/Navbar';
+import { Navbar } from './components/Navigation/Navbar';
 import CourseList from './components/CourseList';
 import { NewQuestionForm } from './components/Question/NewQuestionForm';
 

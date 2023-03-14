@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import "./styles.css";
+import Avatar from '@mui/material/Avatar';
 
 export function Navbar () {
     return (
@@ -31,11 +32,14 @@ export function Navbar () {
               About
             </NavLink>
           </li>
-          <li className="nav-item">
+           <li className="nav-item">
             <NavLink to="/profile" className="nav-profile-link">
               Profile
             </NavLink>
-          </li>
+          </li> 
+          {/* <li className="nav-item">
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          </li> */}
         </nav>
       </div>
     </>

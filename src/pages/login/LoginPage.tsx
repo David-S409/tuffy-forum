@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setIsAuth, setUser } from '../../appSlice';
+import Button from '@mui/material/Button';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -42,9 +43,9 @@ export default function LoginPage() {
   };
   return (
     <div>
-      <button type="button" onClick={googleSSO}>
+      <Button type="button" onClick={googleSSO}>
         Login
-      </button>
+      </Button>
     </div>
   );
 }
