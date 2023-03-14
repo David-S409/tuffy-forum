@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addQuestion } from "./questions";
+import Button from "@mui/material/Button";
 
 export function NewQuestionForm() {
 
@@ -39,7 +40,7 @@ export function NewQuestionForm() {
         </label>
       </p>
       <p>
-        <button type="submit">Submit</button>
+        <Button type="submit">Submit</Button>
       </p>
     </form>
   );
