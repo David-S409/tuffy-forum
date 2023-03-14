@@ -28,6 +28,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.9.0",
     "ts-node": "^10.9.1",
+    "tss-react": "^4.7.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {
