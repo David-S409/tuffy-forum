@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import "./styles.css";
-import Avatar from '@mui/material/Avatar';
+import PrimarySearchAppBar from './styles';
 
 export function Navbar () {
     return (
@@ -23,9 +23,8 @@ export function Navbar () {
               Courses
             </NavLink>
           </li>
-          {/* <li className="nav-item search-bar">
-            <input type="text" placeholder="Search" />
-            </li>
+          {/* <li> 
+            <PrimarySearchAppBar />
           </li> */}
           <li className="nav-item">
             <NavLink to="/help" className="nav-about-link">
