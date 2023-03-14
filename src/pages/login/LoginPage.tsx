@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import { setIsAuth, setUser } from '../../appSlice';
 
 export default function LoginPage() {
@@ -42,9 +43,9 @@ export default function LoginPage() {
   };
   return (
     <div>
-      <button type="button" onClick={googleSSO}>
+      <Button variant="contained" type="button" onClick={googleSSO}>
         Login
-      </button>
+      </Button>
     </div>
   );
 }
