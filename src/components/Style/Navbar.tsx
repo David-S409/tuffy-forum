@@ -13,7 +13,7 @@ export function Navbar () {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/questions" className="nav-link">
+            <NavLink to="/question" className="nav-link">
               Post
             </NavLink>
           </li>
@@ -22,6 +22,10 @@ export function Navbar () {
               Courses
             </NavLink>
           </li>
+          {/* <li className="nav-item search-bar">
+            <input type="text" placeholder="Search" />
+            </li>
+          </li> */}
           <li className="nav-item">
             <NavLink to="/help" className="nav-about-link">
               About

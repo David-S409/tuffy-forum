@@ -7,6 +7,7 @@ import LoginPage from './pages/login/LoginPage';
 import LoginSuccess from './pages/login/LoginSuccess';
 import { Navbar } from './components/Style/Navbar';
 import CourseList from './components/CourseList';
+import { NewQuestionForm } from './components/Question/NewQuestionForm';
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
       <Route path="/courses" element={<CourseList courses={[]} />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/login/success" element={<LoginSuccess />} />
+      <Route path="/question" element={<NewQuestionForm />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
