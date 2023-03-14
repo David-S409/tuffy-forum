@@ -2,7 +2,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { store } from './store';
 import Home from './pages/HomePage';
-import NotFound from './pages/NotFoundPage';
+import NotFound from './pages/NotFound/NotFoundPage';
 import LoginPage from './pages/login/LoginPage';
 import LoginSuccess from './pages/login/LoginSuccess';
 import { Navbar } from './components/Navigation/Navbar';
