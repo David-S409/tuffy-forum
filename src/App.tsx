@@ -17,7 +17,7 @@ export function App() {
       <Route path="/courses" element={<CourseList courses={[]} />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/login/success" element={<LoginSuccess />} />
-      <Route path="/question" element={<NewQuestionForm />} />
+      <Route path="/post" element={<NewQuestionForm />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
