@@ -10,7 +10,14 @@ const useStyles = makeStyles()((theme) => {
     return {
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    
+
   },
   link: {
     margin: theme.spacing(1, 1.5),
