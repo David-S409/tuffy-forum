@@ -6,7 +6,7 @@ import NotFound from './pages/NotFound/NotFoundPage';
 import LoginPage from './pages/login/LoginPage';
 import LoginSuccess from './pages/login/LoginSuccess';
 import { Navbar } from './components/Navigation/Navbar';
-import CourseList from './components/CourseList';
+import CourseList from './pages/Course/CourseList';
 import { NewQuestionForm } from './pages/Question/NewQuestionForm';
 import Footer from './Footer/footer';
 

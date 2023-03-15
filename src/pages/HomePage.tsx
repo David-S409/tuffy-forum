@@ -25,7 +25,6 @@ const useStyles = makeStyles()((theme) => {
     justifyContent: 'center',
   },
   };
-
 });
 
 function Home() {
