@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addCourse } from "./courses";
 import { makeStyles } from "tss-react/mui";
-import {
-  Paper,
-  TextField,
-  Button,
-  Typography
-} from "@mui/material";
+import { Paper } from "@mui/material";
+import { TextField } from "@mui/material";
+import { Button } from "@mui/material";
+import { Typography} from "@mui/material";
 
 const useStyles = makeStyles()((theme) => {
   return {
