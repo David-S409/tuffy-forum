@@ -1,9 +1,9 @@
 import axios from 'axios';
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setIsAuth, setUser } from '../../appSlice';
 import Button from '@mui/material/Button';
+import LoginIcon from '@mui/icons-material/Login';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -43,9 +43,17 @@ export default function LoginPage() {
   };
   return (
     <div>
-      <Button type="button" onClick={googleSSO}>
+      <Button 
+      startIcon={<LoginIcon />}
+      variant="contained"
+      onClick={googleSSO} 
+      size='large' 
+      fullWidth color='success'
+      focusRipple
+      >
         Login
       </Button>
     </div>
   );
 }
+

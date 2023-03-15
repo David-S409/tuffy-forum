@@ -9,7 +9,7 @@ function NotFound() {
   return (
     <>
     
-      <Box alignItems='center' sx={{ padding: 50, width: 'auto', height: 'auto'}}>
+      <Box alignItems='center' sx={{ padding: 25, width: 'auto', height: 'auto'}}>
       <Container maxWidth="xl">
         <Typography variant="h4" align="center" gutterBottom paragraph>
           404 Not Found

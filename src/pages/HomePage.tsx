@@ -9,11 +9,13 @@ import Footer from '../Footer/footer';
 const useStyles = makeStyles()((theme) => {
   return {
   root: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(25),
+    paddingBottom: theme.spacing(0),
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: 'auto',
   },
   content: {
     flexGrow: 1,
@@ -21,11 +23,6 @@ const useStyles = makeStyles()((theme) => {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  footer: {
-    marginTop: 'auto',
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6, 0),
   },
   };
 
