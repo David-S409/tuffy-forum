@@ -5,9 +5,9 @@ interface CourseListProps {
   courses: { id: number; name: string }[];
 }
 
-const CourseList: React.FC<CourseListProps> = ({ courses }) => {
+function CourseList({ courses }: CourseListProps) {
   return (
-    <div>
+    <div className="main">
       <h2>Course List</h2>
       <ul>
         {courses.map((course) => (

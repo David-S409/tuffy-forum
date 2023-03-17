@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
-import LoginPage from './login/LoginPage';
+import LoginPage from '../login/LoginPage';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Footer from '../Footer/footer';
+import QuestionList from './QuestionList';
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -29,18 +29,18 @@ const useStyles = makeStyles()((theme) => {
 
 function Home() {
   const { classes } = useStyles();
-  // const user = useSelector((state: any) => state.app.user);
+  //const user = useSelector((state: any) => state.app.user);
+  const questions = useSelector((state: any) => /*state.app.questions*/[]);
 
   return (
     <div className={classes.root}>
       <Container maxWidth="lg" className={classes.content}>
         <Typography variant="h4" align="center" gutterBottom>
-          Tuffy Forum
+          WELCOME TO THE TUFFY FORUM
         </Typography>
-        {/* add your question list component here */}
+        <QuestionList questions={questions} />
         <LoginPage />
       </Container>
-      <Footer />
     </div>
   );
 }

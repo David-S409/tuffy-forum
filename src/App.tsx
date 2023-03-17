@@ -1,14 +1,14 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { store } from './store';
-import Home from './pages/HomePage';
+import Home from './pages/HomePage/HomePage';
 import NotFound from './pages/NotFound/NotFoundPage';
 import LoginPage from './pages/login/LoginPage';
 import LoginSuccess from './pages/login/LoginSuccess';
-import { Navbar } from './Navigation/Navbar';
+import Navbar from './components/Navigation/Navbar';
 import CourseList from './pages/Course/CourseList';
 import { NewQuestionForm } from './pages/Question/NewQuestionForm';
-import Footer from './Footer/footer';
+import Footer from './components/Footer/footer';
 
 export function App() {
   return (
@@ -27,8 +27,8 @@ export function WrappedApp() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-      <Navbar />
-        <App />
+        <Navbar />
+          <App />
         <Footer />
       </BrowserRouter>
     </Provider>

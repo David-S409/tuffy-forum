@@ -31,7 +31,7 @@ const useStyles = makeStyles()((theme) => {
 export default function NewCourseForm() {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   function saveCourse() {
     dispatch(addCourse({ name }));
@@ -53,7 +53,7 @@ export default function NewCourseForm() {
             onChange={(e) => setName(e.target.value)}
           />
           <Button
-            className={classes.theme.button}
+            className={classes.button}
             variant="contained"
             color="primary"
             onClick={saveCourse}
