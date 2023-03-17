@@ -5,6 +5,7 @@ import LoginPage from '../login/LoginPage';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import QuestionList from './QuestionList';
+import NewCourseForm from '../Course/CoursesPage';
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -25,12 +26,14 @@ const useStyles = makeStyles()((theme) => {
     justifyContent: 'center',
   },
   };
-});
+}); 
 
 function Home() {
   const { classes } = useStyles();
   //const user = useSelector((state: any) => state.app.user);
   const questions = useSelector((state: any) => /*state.app.questions*/[]);
+
+
 
   return (
     <div className={classes.root}>
