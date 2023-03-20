@@ -13,6 +13,7 @@ const useStyles = makeStyles()(() => {
   root: {
     paddingTop: 'auto',
     paddingBottom: 'auto',
+    marginTop: '125px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
