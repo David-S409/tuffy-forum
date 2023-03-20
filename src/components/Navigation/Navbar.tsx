@@ -13,6 +13,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import ListAlt from '@mui/icons-material/ListAlt';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import * as React from 'react';
+import { Typography } from '@mui/joy';
 
 
 
@@ -22,9 +23,8 @@ const useStyles = makeStyles()(() => {
     headerContainer: {
       display: 'flex',
       justifyContent: 'space-around',
-      position: '-webkit-sticky',
+      position: 'relative',
       backgroundImage: 'linear-gradient(to right, #00b09b, #96c93d)',
-      top: 0,
     },
     headerLeft: {
       display: 'flex',
@@ -104,6 +104,9 @@ export default function Navbar() {
             height='100px'
             />
           </Link>
+          <Typography>
+            TUUFFY FORUM
+          </Typography>
           <Tabs value={value} onChange={handleChange} aria-label='icon-tabs'>
             <Tab label="Home" href="/" icon={<HomeIcon />} />
             <Tab label="Post" href="/post" icon={<PostAddIcon />} />

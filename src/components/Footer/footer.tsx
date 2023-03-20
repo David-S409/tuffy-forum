@@ -10,17 +10,11 @@ const useStyles = makeStyles()((theme) => {
     return {
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3),
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    
-
+    padding: theme.spacing(2),
+    position: 'relative',
   },
   link: {
-    margin: theme.spacing(1, 1.5),
+    margin: theme.spacing(1.5, 1),
   },
 };
 });
@@ -59,7 +53,7 @@ export default function Footer() {
         {new Date().getFullYear()}
         {' Tuffy Forum'}
       </Typography>
-      <BottomNavigation>
+      <BottomNavigation sx={{paddingTop: 2}}>
         <ButtonGroup variant="contained" color="primary" aria-label="text primary button group">
             <Button href='/'>
                 Home

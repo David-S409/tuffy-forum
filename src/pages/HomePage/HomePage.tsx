@@ -6,12 +6,13 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import QuestionList from './QuestionList';
 import NewCourseForm from '../Course/CoursesPage';
+import Grid from '@mui/material/Grid';
 
-const useStyles = makeStyles()((theme) => {
+const useStyles = makeStyles()(() => {
   return {
   root: {
-    paddingTop: theme.spacing(25),
-    paddingBottom: theme.spacing(0),
+    paddingTop: 'auto',
+    paddingBottom: 'auto',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -30,21 +31,36 @@ const useStyles = makeStyles()((theme) => {
 
 function Home() {
   const { classes } = useStyles();
-  //const user = useSelector((state: any) => state.app.user);
-  const questions = useSelector((state: any) => /*state.app.questions*/[]);
-
-
+  const user = useSelector((state: any) => state.app.user);
 
   return (
-    <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.content}>
-        <Typography variant="h4" align="center" gutterBottom>
-          WELCOME TO THE TUFFY FORUM
-        </Typography>
-        <QuestionList questions={questions} />
-        <LoginPage />
-      </Container>
-    </div>
+    <Grid container spacing={3} direction={'column'}>
+      <Grid item xs={12}>
+        <Container maxWidth="md" className={classes.root}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Welcome to the Q&A site for students and teachers
+          </Typography>
+          <Typography variant="h6" component="h2" gutterBottom>
+            Ask questions and get answers from other students and teachers
+          </Typography>
+        </Container>
+      </Grid>
+      <Grid item xs={12}>
+        <Container maxWidth="md" className={classes.content}>
+          <QuestionList />
+        </Container>
+      </Grid>
+      <Grid item xs={12}>
+        <Container maxWidth="md" className={classes.content}>
+          <LoginPage />
+        </Container>
+      </Grid>
+      <Grid item xs={12}>
+        <Container maxWidth="md" className={classes.content}>
+          <>  </>
+        </Container>
+        </Grid>
+    </Grid>
   );
 }
 
