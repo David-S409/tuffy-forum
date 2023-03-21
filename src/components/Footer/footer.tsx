@@ -10,8 +10,8 @@ const useStyles = makeStyles()((theme) => {
     return {
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(0),
-    position: 'relative',
+    padding: theme.spacing(2),
+    position: 'fixed',
     bottom: 0,
     left: 0,
     width: '100%',
