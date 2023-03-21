@@ -106,16 +106,15 @@ export default function Navbar() {
   };
 
   return (
-    <div className={classes.background}>
+    <><div className={classes.background}>
       <div className={classes.headerContainer}>
-        <Box sx={{ display: 'flex' , justifyContent: 'center' }} className={classes.headerLeft}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }} className={classes.headerLeft}>
           <Link href="/" underline="none" color="inherit">
-            <img 
-            src = "http://blog.fullerton.edu/wp-content/uploads/2020/03/Tuffy-e1585180435275-150x150.png"
-            alt='Tuffy'
-            width='100px'
-            height='100px'
-            />
+            <img
+              src="http://blog.fullerton.edu/wp-content/uploads/2020/03/Tuffy-e1585180435275-150x150.png"
+              alt='Tuffy'
+              width='100px'
+              height='100px' />
           </Link>
           <Typography>
             TUFFY FORUM
@@ -124,17 +123,16 @@ export default function Navbar() {
             <Tab label="Home" href="/" icon={<HomeIcon />} />
             <Tab label="Post" href="/post" icon={<PostAddIcon />} />
             <Tab label="Courses" href="/courses" icon={<ListAlt />} />
-            </Tabs>
+          </Tabs>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }} className={classes.headerMiddle}>
-          <Box  className={classes.headerSearchContainer}>
+          <Box className={classes.headerSearchContainer}>
             <SearchIcon className={classes.headerSearchIcon} />
             <TextField
               className={classes.headerSearchInput}
               placeholder="Search..."
               variant="standard"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+              inputProps={{ 'aria-label': 'search' }} />
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }} className={classes.headerRight}>
@@ -144,12 +142,12 @@ export default function Navbar() {
             <InboxIcon className={classes.headerInboxIcon} />
             <HelpIcon className={classes.headerHelpIcon} />
             <Avatar
-              style={{ 
-                cursor: 'auto' }}
-            />
+              style={{
+                cursor: 'auto'
+              }} />
           </Box>
         </Box>
       </div>
-    </div>
+    </div><div className="spacer"></div></>
   );
 }

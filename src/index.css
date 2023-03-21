@@ -55,8 +55,5 @@ input[type="submit"]:hover {
 }*/
 
 .spacer {
-    content: "";
-    clear: both;
-    display: table;
-    padding: 100px;
+    padding: 75px;
 }
