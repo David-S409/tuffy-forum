@@ -89,84 +89,6 @@ const useStyles = makeStyles()(() => {
   };
 });
 
-// export default function Navbar() {
-//   const { classes } = useStyles();
-//   //const user = useSelector((state: any) => state.app.user);
-//   //const [value, setValue] = React.useState();
-//   const currentTab = () => {
-//     let path = window.location.pathname;
-//     if (path === '/') { return 0 }
-//     else if (path === '/post') { return 1 }
-//     else if (path === '/courses') { return 2 }
-//   }
-//   const [value, setValue] = React.useState(currentTab());
-
-
-//   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-//       setValue(newValue);
-//   };
-
-//   return (
-//     <div>
-//       <Box sx={{ borderBottom: 1, borderColor: 'green' }} className={classes.headerContainer}>
-//         <Box sx={{ display: 'flex' , justifyContent: 'center' }} className={classes.headerLeft}>
-//           <Link href="/" underline="none" color="inherit">
-//             <img 
-//             src = "http://blog.fullerton.edu/wp-content/uploads/2020/03/Tuffy-e1585180435275-150x150.png"
-//             alt='Tuffy'
-//             width='100px'
-//             height='100px'
-//             />
-//           </Link>
-//           <Typography>
-//             TUUFFY FORUM
-//           </Typography>
-//           <Tabs value={value} onChange={handleChange} aria-label='icon-tabs'>
-//             <Tab label="Home" href="/" icon={<HomeIcon />} />
-//             <Tab label="Post" href="/post" icon={<PostAddIcon />} />
-//             <Tab label="Courses" href="/courses" icon={<ListAlt />} />
-//             </Tabs>
-//         </Box>
-//         <Box sx={{ display: 'flex', justifyContent: 'center' }} className={classes.headerMiddle}>
-//           <Box  className={classes.headerSearchContainer}>
-//             <SearchIcon className={classes.headerSearchIcon} />
-//             <TextField
-//               className={classes.headerSearchInput}
-//               placeholder="Search..."
-//               variant="standard"
-//               inputProps={{ 'aria-label': 'search' }}
-//             />
-//           </Box>
-//         </Box>
-//         <Box sx={{ display: 'flex', justifyContent: 'center' }} className={classes.headerRight}>
-//           <Box sx={{ display: 'flex', justifyContent: 'center' }} className={classes.headerRightContainer}>
-//             {window.innerWidth < 768 && <SearchIcon className={classes.headerSearchIcon} />}
-
-//             <InboxIcon className={classes.headerInboxIcon} />
-//             <HelpIcon className={classes.headerHelpIcon} />
-//             <Avatar
-//               style={{ 
-//                 cursor: 'auto' }}
-//             />
-//             {/* <SvgIcon className={classes.headerMenuIcon}
-//               aria-hidden="true"
-//               focusable="false"
-//               width="24"
-//               height="24"
-//               viewBox="0 0 18 18"
-//               fill="rgba(0, 0, 0, 0.54)"
-//               style={{
-//                 cursor: 'pointer',
-//               }}
-//             >
-//               <path d="M3 9h12v2H3zm0-5h12v2H3zm0 10h12v2H3z"></path>
-//             </SvgIcon> */}
-//           </Box>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// }
 
 export default function Navbar() {
   const { classes } = useStyles();
@@ -196,7 +118,7 @@ export default function Navbar() {
             />
           </Link>
           <Typography>
-            TUUFFY FORUM
+            TUFFY FORUM
           </Typography>
           <Tabs value={value} onChange={handleChange} aria-label='icon-tabs'>
             <Tab label="Home" href="/" icon={<HomeIcon />} />

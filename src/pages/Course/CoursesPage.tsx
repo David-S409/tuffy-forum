@@ -65,6 +65,7 @@ const useStyles = makeStyles()(() => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    marginTop: '125px',
   },
   form: {
     display: 'flex',
