@@ -5,6 +5,8 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import { autoBatchEnhancer } from '@reduxjs/toolkit';
+import "../../index.css";
 
 const useStyles = makeStyles()((theme) => {
     return {
@@ -14,7 +16,7 @@ const useStyles = makeStyles()((theme) => {
     position: 'fixed',
     bottom: 0,
     left: 0,
-    width: '100%',
+    right: 0,
   },
   link: {
     margin: theme.spacing(1.5, 1),
@@ -26,6 +28,8 @@ export default function Footer() {
   const {classes } = useStyles();
 
   return (
+    <>
+    <div className="spacer"></div>
     <footer className={classes.footer}>
       <Typography variant="h6" align="center" gutterBottom>
         About Us
@@ -56,19 +60,19 @@ export default function Footer() {
         {new Date().getFullYear()}
         {' Tuffy Forum'}
       </Typography>
-      <BottomNavigation sx={{paddingTop: 2}}>
+      <BottomNavigation sx={{ paddingTop: 2 }}>
         <ButtonGroup variant="contained" color="primary" aria-label="text primary button group">
-            <Button href='/'>
-                Home
-             </Button>
-            <Button href='/login'>
-                Login
-             </Button>
-            <Button href='/'>
-                Contact Us
-             </Button>
+          <Button href='/'>
+            Home
+          </Button>
+          <Button href='/login'>
+            Login
+          </Button>
+          <Button href='/'>
+            Contact Us
+          </Button>
         </ButtonGroup>
       </BottomNavigation>
-    </footer>
+    </footer></>
   );
 }

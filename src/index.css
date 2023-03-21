@@ -53,3 +53,10 @@ input[type="submit"]:hover {
     background-color: #00244e;
     color: #ff7900;
 }*/
+
+.spacer {
+    content: "";
+    clear: both;
+    display: table;
+    padding: 100px;
+}
