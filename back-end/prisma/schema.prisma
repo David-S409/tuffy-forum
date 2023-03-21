@@ -17,7 +17,7 @@ model User {
   lastName    String
   email       String    @unique
   googleID    String    @unique
-  year        String
+  year        String?
   isExpert    Boolean   @default(false)
   isMod       Boolean   @default(false)
   profileImg  String?
