@@ -29,9 +29,11 @@ export function WrappedApp() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Navbar />
+        <div className="container">
+          <Navbar />
           <App />
-        <Footer />
+        </div> 
+        <Footer />       
       </BrowserRouter>
     </Provider>
   );

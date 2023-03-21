@@ -57,3 +57,9 @@ input[type="submit"]:hover {
 .spacer {
     padding: 75px;
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 79vh;
+}

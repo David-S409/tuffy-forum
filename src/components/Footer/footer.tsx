@@ -13,6 +13,9 @@ const useStyles = makeStyles()((theme) => {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2),
     position: 'relative',
+    left: -20,
+    width: '100.3%',   
+    bottom: -20,
   },
   link: {
     margin: theme.spacing(1.5, 1),
