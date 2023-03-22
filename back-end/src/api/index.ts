@@ -1,7 +1,7 @@
 import express from 'express';
 
 import loginWithGoogleApi from './loginGoogle';
-import userRoute from './user';
+import userRoute from './user/user';
 
 const router = express.Router();
 
