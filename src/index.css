@@ -1,0 +1,65 @@
+/* Body background and text*/
+body{
+    background-color: #dcd5b6;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #ff7900;
+    margin: 10px;
+    padding: 10px;
+}
+
+/* Buttons */
+button {
+    background-color: #ff7900;
+    color: #00244e;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #00244e;
+    color: #ff7900;
+}
+
+/* Forms 
+input[type="text"], input[type="email"], textarea {
+    display: block;
+    width: 100%;
+    background-color: #f5f5f5;
+    color: #00244e;
+    padding: auto;
+    margin: auto;
+    margin-bottom: auto;
+    border: auto dashed #f5f5f5;
+    border-radius: auto;
+}
+
+input[type="submit"] {
+    background-color: #ff7900;
+    color: #00244e;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #00244e;
+    color: #ff7900;
+}*/
+
+.spacer {
+    padding: 75px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 79vh;
+}
