@@ -4,7 +4,7 @@ const isUserAuth = (req: Request, res: Response, next: NextFunction) => {
   if (req.user) {
     next();
   } else {
-    res.status(401).send('Login first');
+    res.status(401).json({ error: 'Not logged in' });
   }
 };
 
