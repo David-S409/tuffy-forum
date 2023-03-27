@@ -1,12 +1,26 @@
 import axios from 'axios';
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setIsAuth, setUser } from '../../appSlice';
+import Button from '@mui/material/Button';
+import LoginIcon from '@mui/icons-material/Login';
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()(() => {
+  return {
+    root: {
+      backgroundColor: '#3f51b5',
+      padding: 'auto',
+    },
+  };
+});
+
+
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { classes } = useStyles();
   const fetchAuthUser = async () => {
     const response = await axios
       .get('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
@@ -42,9 +56,18 @@ export default function LoginPage() {
   };
   return (
     <div>
-      <button type="button" onClick={googleSSO}>
+      <Button 
+      startIcon={<LoginIcon />}
+      variant="contained"
+      onClick={googleSSO} 
+      size='large' 
+      fullWidth color='success'
+      focusRipple
+      className={classes.root}
+      >
         Login
-      </button>
+      </Button>
     </div>
   );
 }
+
