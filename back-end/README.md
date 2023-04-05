@@ -103,6 +103,7 @@ Description: Search questions using search terms
 
 Description: Post a Question **(Must be logged in)**.
 
+
 ```csharp
 #### Query Parameters
 
@@ -139,3 +140,4 @@ Description: Upvotes or downvotes a question given an id **(Must be logged in)**
   "votes": 2
 }
 ```
+
