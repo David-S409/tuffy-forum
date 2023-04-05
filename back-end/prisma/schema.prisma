@@ -43,6 +43,7 @@ model Question {
   header     String
   text       String
   postDate   DateTime @default(now())
+  votes      Int      @default(0)
   tags       Tag[]
   answers    Answer[]
 
