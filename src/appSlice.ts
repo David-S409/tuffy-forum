@@ -10,8 +10,9 @@ export interface UserState {
   id: number;
   firstName: string;
   lastName: string;
+  googleId: string;
   email: string;
-  img: string;
+  profileImg: string;
 }
 
 const initialState: IAppState = {

@@ -14,6 +14,16 @@ import ListAlt from '@mui/icons-material/ListAlt';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import * as React from 'react';
 import { Typography } from '@mui/joy';
+import { useEffect, useReducer, useState } from 'react';
+import axios from 'axios';
+import { setIsAuth, setUser } from '../../appSlice';
+import type { UserState } from '../../appSlice';
+import { useDispatch } from 'react-redux';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const useStyles = makeStyles()(() => {
   return {
@@ -86,11 +96,58 @@ const useStyles = makeStyles()(() => {
       left: 0,
       
     },
+    menuFont: {
+      display: 'flex',
+      alignItems: 'center',
+    },
   };
 });
 
-
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [users, setUsers] = useState<UserState>({
+    app: '',
+    id: 0,
+    firstName: '',
+    lastName: '',
+    googleId: '',
+    email: '',
+    profileImg: '',
+  });
+  const checkUser = localStorage.getItem('auth');
+  
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+  
+  const getLoginInfo = async () => {
+    axios.get<UserState>('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
+    .then(({data}) => {
+      setUsers(data);
+    })
+  };
+  
+  useEffect(() => {   
+    if (checkUser) {
+      getLoginInfo(); 
+    }
+  }, []);
+  
+  const logoutUser = async () => {
+    localStorage.removeItem('auth');
+    dispatch(setUser(null));
+    dispatch(setIsAuth(false));
+    navigate('/');
+    location.reload();
+  };
+  
   const { classes } = useStyles();
   const currentTab = () => {
     let path = window.location.pathname;
@@ -99,7 +156,7 @@ export default function Navbar() {
     else if (path === '/courses') { return 2 }
   }
   const [value, setValue] = React.useState(currentTab());
-
+    
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
@@ -141,10 +198,46 @@ export default function Navbar() {
 
             <InboxIcon className={classes.headerInboxIcon} />
             <HelpIcon className={classes.headerHelpIcon} />
-            <Avatar
-              style={{
-                cursor: 'auto'
-              }} />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              {checkUser ? (
+                <><Avatar
+                  style={{ cursor: 'pointer'}}
+                  sx={{boxShadow: 5}}
+                  src={users.profileImg}
+                  alt={users.googleId} 
+                  onClick={handleMenu}
+                  >
+                  </Avatar>
+                  <Menu
+                    sx={{mt: .5, ml: -.5}}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <Typography sx={{ml: 1, mr: 1, mb: 0.5, mt: -0.2, fontWeight: 'bold', fontFamily: 'monospace'}}
+                    color="neutral"
+                    variant="soft"
+                    > 
+                      {users.firstName} 
+                    </Typography>
+                    <MenuItem component={Link} href="/profile">Profile</MenuItem>
+                    <MenuItem onClick={logoutUser}>Logout</MenuItem>
+                  </Menu>
+                  </>
+                ) : ( 
+                  <Avatar
+                  style={{ cursor: 'auto' }} />
+                )}
+              </Box>
           </Box>
         </Box>
       </div>
