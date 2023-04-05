@@ -101,7 +101,8 @@ Description: Search questions using search terms
 
 ### `POST /question`
 
-Description: Post a Queston **(Must be logged in)**.
+Description: Post a Question **(Must be logged in)**.
+
 
 ```csharp
 #### Query Parameters
@@ -125,3 +126,18 @@ Description: Post a Queston **(Must be logged in)**.
   "postDate": "2023-03-27T22:48:25.624Z"
 }
 ```
+
+## Endpoint 5
+
+### `POST /(upvote | downvote)/question/:id`
+
+Description: Upvotes or downvotes a question given an id **(Must be logged in)**.
+
+#### Response Example
+
+```json
+{
+  "votes": 2
+}
+```
+

@@ -82,4 +82,29 @@ router.post('/question', isUserAuth, async (req, res) => {
   }
 });
 
+router.post('/upvote/question/:id', isUserAuth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedPost = await prisma.question.update({
+      where: { questionId: Number(id) },
+      data: { votes: { increment: 1 } },
+    });
+    res.json({ votes: updatedPost.votes });
+  } catch (error) {
+    res.status(500).json({ error: 'Error up voting Post' });
+  }
+});
+
+router.post('/downvote/question/:id', isUserAuth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedPost = await prisma.question.update({
+      where: { questionId: Number(id) },
+      data: { votes: { decrement: 1 } },
+    });
+    res.json({ votes: updatedPost.votes });
+  } catch (error) {
+    res.status(500).json({ error: 'Error down voting voting Post' });
+  }
+});
 export default router;
