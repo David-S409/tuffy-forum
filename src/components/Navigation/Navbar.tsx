@@ -22,7 +22,8 @@ import { useDispatch } from 'react-redux';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
-
+import { RootState } from '../../store';
+import { useSelector } from 'react-redux';
 
 
 const useStyles = makeStyles()(() => {
@@ -103,18 +104,13 @@ const useStyles = makeStyles()(() => {
   };
 });
 
+
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [users, setUsers] = useState<UserState>({
-    app: '',
-    id: 0,
-    firstName: '',
-    lastName: '',
-    googleId: '',
-    email: '',
-    profileImg: '',
-  });
+
+  const {user, isAuth} = useSelector((state: RootState) => state.app);
+  
   const checkUser = localStorage.getItem('auth');
   
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -128,12 +124,13 @@ export default function Navbar() {
   }
   
   const getLoginInfo = async () => {
-    axios.get<UserState>('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
-    .then(({data}) => {
-      setUsers(data);
+    axios.get('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
+    .then((response) => {
+      dispatch(setIsAuth(true));
+      dispatch(setUser(response.data));
     })
   };
-  
+
   useEffect(() => {   
     if (checkUser) {
       getLoginInfo(); 
@@ -199,12 +196,12 @@ export default function Navbar() {
             <InboxIcon className={classes.headerInboxIcon} />
             <HelpIcon className={classes.headerHelpIcon} />
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              {checkUser ? (
+              {isAuth ? (
                 <><Avatar
                   style={{ cursor: 'pointer'}}
                   sx={{boxShadow: 5}}
-                  src={users.profileImg}
-                  alt={users.googleId} 
+                  src={user?.profileImg}
+                  alt={user?.googleId} 
                   onClick={handleMenu}
                   >
                   </Avatar>
@@ -227,7 +224,7 @@ export default function Navbar() {
                     color="neutral"
                     variant="soft"
                     > 
-                      {users.firstName} 
+                      {user?.firstName} 
                     </Typography>
                     <MenuItem component={Link} href="/profile">Profile</MenuItem>
                     <MenuItem onClick={logoutUser}>Logout</MenuItem>

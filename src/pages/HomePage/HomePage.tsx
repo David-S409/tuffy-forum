@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import LoginPage from '../login/LoginPage';
 import QuestionList from './QuestionList';
 import NewCourseForm from '../Course/CoursesPage';
+import { RootState } from '../../store';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -32,7 +33,7 @@ const useStyles = makeStyles()(() => {
 function Home() {
   const { classes } = useStyles();
   const user = useSelector((state: any) => state.app.user);
-  const checkUser = localStorage.getItem('auth');
+  const { isAuth } = useSelector((state: RootState) => state.app)
 
   return (
     <Grid container spacing={3} direction="column">
@@ -53,7 +54,7 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-          {checkUser ? ( <a></a> ) : ( <LoginPage />) }
+          {isAuth ? ( <a></a> ) : ( <LoginPage />) }
         </Container>
       </Grid>
       <Grid item xs={12}>
@@ -66,7 +67,3 @@ function Home() {
 }
 
 export default Home;
-function useState(arg0: boolean): [any, any] {
-  throw new Error('Function not implemented.');
-}
-

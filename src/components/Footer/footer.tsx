@@ -8,6 +8,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { autoBatchEnhancer } from '@reduxjs/toolkit';
 import { setIsAuth, setUser } from '../../appSlice';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -27,7 +29,7 @@ const useStyles = makeStyles()((theme) => {
 
 export default function Footer() {
   const { classes } = useStyles();
-  const checkUser = localStorage.getItem('auth');
+  const { isAuth } = useSelector((state: RootState) => state.app);
   const dispatch = useDispatch();
   const logoutUser = async () => {
     localStorage.removeItem('auth');
@@ -80,7 +82,7 @@ export default function Footer() {
           aria-label="text primary button group"
         >
           <Button href="/">Home</Button>
-          {checkUser ? ( <Button onClick={logoutUser} href="/">Logout</Button> 
+          {isAuth ? ( <Button onClick={logoutUser} href="/">Logout</Button> 
           ) : ( <Button href="/login">Login</Button> )}
           <Button href="/">Contact Us</Button>
         </ButtonGroup>
