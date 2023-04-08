@@ -10,7 +10,7 @@ export interface UserState {
   id: number;
   firstName: string;
   lastName: string;
-  googleId: string;
+  googleID: string;
   email: string;
   profileImg: string;
 }

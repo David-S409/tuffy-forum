@@ -110,7 +110,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const {user, isAuth} = useSelector((state: RootState) => state.app);
-  
+  const profileUrl = `/profile/u/#${user?.id}`;
   const checkUser = localStorage.getItem('auth');
   
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -158,7 +158,7 @@ export default function Navbar() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
   };
-
+  
   return (
     <><div className={classes.background}>
       <div className={classes.headerContainer}>
@@ -200,8 +200,8 @@ export default function Navbar() {
                 <><Avatar
                   style={{ cursor: 'pointer'}}
                   sx={{boxShadow: 5}}
+                  alt={user?.googleID} 
                   src={user?.profileImg}
-                  alt={user?.googleId} 
                   onClick={handleMenu}
                   >
                   </Avatar>
@@ -226,7 +226,7 @@ export default function Navbar() {
                     > 
                       {user?.firstName} 
                     </Typography>
-                    <MenuItem component={Link} href="/profile">Profile</MenuItem>
+                    <MenuItem component={Link} href={profileUrl}>Profile</MenuItem>
                     <MenuItem onClick={logoutUser}>Logout</MenuItem>
                   </Menu>
                   </>
