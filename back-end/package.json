@@ -39,10 +39,7 @@
     "jsonwebtoken": "^9.0.0",
     "passport": "^0.5.3",
     "passport-google-oauth20": "^2.0.0",
-<<<<<<< HEAD
     "prisma": "^4.11.0",
-=======
->>>>>>> backend-test
     "react-router-dom": "^6.9.0",
     "zod": "^3.21.4"
   }

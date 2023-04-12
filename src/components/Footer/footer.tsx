@@ -6,13 +6,10 @@ import Button from '@mui/material/Button';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { autoBatchEnhancer } from '@reduxjs/toolkit';
-<<<<<<< HEAD
 import { setIsAuth, setUser } from '../../appSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-=======
->>>>>>> backend-test
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -32,7 +29,6 @@ const useStyles = makeStyles()((theme) => {
 
 export default function Footer() {
   const { classes } = useStyles();
-<<<<<<< HEAD
   const { isAuth } = useSelector((state: RootState) => state.app);
   const dispatch = useDispatch();
   const logoutUser = async () => {
@@ -41,8 +37,6 @@ export default function Footer() {
     dispatch(setIsAuth(false));
     location.reload();
   };
-=======
->>>>>>> backend-test
 
   return (
     <footer className={classes.footer}>
@@ -88,12 +82,8 @@ export default function Footer() {
           aria-label="text primary button group"
         >
           <Button href="/">Home</Button>
-<<<<<<< HEAD
           {isAuth ? ( <Button onClick={logoutUser} href="/">Logout</Button> 
           ) : ( <Button href="/login">Login</Button> )}
-=======
-          <Button href="/login">Login</Button>
->>>>>>> backend-test
           <Button href="/">Contact Us</Button>
         </ButtonGroup>
       </BottomNavigation>
