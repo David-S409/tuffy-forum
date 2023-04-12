@@ -9,7 +9,10 @@ import Navbar from './components/Navigation/Navbar';
 import { NewQuestionForm } from './pages/Question/NewQuestionForm';
 import Footer from './components/Footer/footer';
 import NewCourseForm from './pages/Course/CoursesPage';
+<<<<<<< HEAD
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+=======
+>>>>>>> backend-test
 
 export function App() {
   return (

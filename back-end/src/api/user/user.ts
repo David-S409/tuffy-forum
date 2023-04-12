@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import express from 'express';
-import isUserAuth from '../middleware/auth';
+import isUserAuth from '../../middleware/auth';
 
 const router = express.Router();
 

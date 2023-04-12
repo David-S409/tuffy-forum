@@ -7,7 +7,10 @@ import Grid from '@mui/material/Grid';
 import LoginPage from '../login/LoginPage';
 import QuestionList from './QuestionList';
 import NewCourseForm from '../Course/CoursesPage';
+<<<<<<< HEAD
 import { RootState } from '../../store';
+=======
+>>>>>>> backend-test
 
 const useStyles = makeStyles()(() => {
   return {
@@ -33,7 +36,10 @@ const useStyles = makeStyles()(() => {
 function Home() {
   const { classes } = useStyles();
   const user = useSelector((state: any) => state.app.user);
+<<<<<<< HEAD
   const { isAuth } = useSelector((state: RootState) => state.app)
+=======
+>>>>>>> backend-test
 
   return (
     <Grid container spacing={3} direction="column">
@@ -54,7 +60,11 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
+<<<<<<< HEAD
           {isAuth ? ( <a></a> ) : ( <LoginPage />) }
+=======
+          <LoginPage />
+>>>>>>> backend-test
         </Container>
       </Grid>
       <Grid item xs={12}>
