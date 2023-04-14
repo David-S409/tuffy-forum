@@ -10,6 +10,7 @@ import NewQuestionForm from './pages/Question/NewQuestionForm';
 import Footer from './components/Footer/footer';
 import NewCourseForm from './pages/Course/NewCourseForm';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import Forum from './pages/Forum/Forum';
 
 export function App() {
   return (
@@ -20,6 +21,7 @@ export function App() {
       <Route path="/profile/u/" element={<ProfilePage />} />
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/postquestion" element={<NewQuestionForm />} />
+      <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import LoginPage from '../login/LoginPage';
-import QuestionList from './QuestionList';
+import QuestionList from '../../components/Questions/QuestionList';
 import NewCourseForm from '../Course/NewCourseForm';
 import { RootState } from '../../store';
 
