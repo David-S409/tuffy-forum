@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import {
   List,
@@ -9,6 +10,7 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import { RootState } from '../../store';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -40,66 +42,34 @@ interface Question {
 
 function QuestionList() {
   const { classes } = useStyles();
-  const [questions, setQuestions] = useState<Question[]>([
-    {
-      id: 1,
-      title: 'How do I make a new course?',
-      body: "I want to make a new course, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const { isAuth } = useSelector((state: RootState) => state.app);
 
-    {
-      id: 2,
-      title: 'How do I make a new question?',
-      body: "I want to make a new question, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const response = await axios.get('/api/questions');
+      if (response.status === 200) {
+        setQuestions(response.data);
+      } else {
+        // Handle the error
+        console.log(response.data);
+      }
+    };
 
-    {
-      id: 3,
-      title: 'How do I make a new answer?',
-      body: "I want to make a new answer, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 4,
-      title: 'How do I make a new comment?',
-      body: "I want to make a new comment, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 5,
-      title: 'How do I make a new user?',
-      body: "I want to make a new user, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 6,
-      title: 'How do I make a new course?',
-      body: "I want to make a new course, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-  ]);
+    fetchQuestions();
+  }, []);
 
   const handleUpvote = async (question: Question) => {
+    if (!isAuth) {
+      alert('You must be logged in to vote.');
+      return;
+    }
     // Update the upvote count for the question
     const updatedQuestion = {
       ...question,
       upvotes: question.upvotes + 1,
     };
-    const response = await axios.put(
-      `/api/questions/${question.id}`,
-      updatedQuestion
-    );
+    const response = await axios.put(`/api/questions/${question.id}/upvote`);
     if (response.status === 200) {
       // Update the questions state with the updated question
       const updatedQuestions = questions.map((q) => {
@@ -116,15 +86,16 @@ function QuestionList() {
   };
 
   const handleDownvote = async (question: Question) => {
+    if (!isAuth) {
+      alert('You must be logged in to vote.');
+      return;
+    }
     // Update the downvote count for the question
     const updatedQuestion = {
       ...question,
       downvotes: question.downvotes + 1,
     };
-    const response = await axios.put(
-      `/api/questions/${question.id}`,
-      updatedQuestion
-    );
+    const response = await axios.put(`/api/questions/${question.id}/downvote`);
     if (response.status === 200) {
       // Update the questions state with the updated question
       const updatedQuestions = questions.map((q) => {
