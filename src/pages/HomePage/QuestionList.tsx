@@ -7,6 +7,8 @@ import {
   ListItemText,
   Typography,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
@@ -43,6 +45,8 @@ interface Question {
 function QuestionList() {
   const { classes } = useStyles();
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const { isAuth } = useSelector((state: RootState) => state.app);
 
   useEffect(() => {
@@ -52,7 +56,8 @@ function QuestionList() {
         setQuestions(response.data);
       } else {
         // Handle the error
-        console.log(response.data);
+        setAlertMessage(response.data);
+        setShowAlert(true);
       }
     };
 
@@ -61,7 +66,8 @@ function QuestionList() {
 
   const handleUpvote = async (question: Question) => {
     if (!isAuth) {
-      alert('You must be logged in to vote.');
+      setAlertMessage('You must be logged in to vote.');
+      setShowAlert(true);
       return;
     }
     // Update the upvote count for the question
@@ -81,13 +87,15 @@ function QuestionList() {
       setQuestions(updatedQuestions);
     } else {
       // Handle the error
-      console.log(response.data);
+      setAlertMessage(response.data);
+      setShowAlert(true);
     }
   };
 
   const handleDownvote = async (question: Question) => {
     if (!isAuth) {
-      alert('You must be logged in to vote.');
+      setAlertMessage('You must be logged in to vote.');
+      setShowAlert(true);
       return;
     }
     // Update the downvote count for the question
@@ -107,8 +115,14 @@ function QuestionList() {
       setQuestions(updatedQuestions);
     } else {
       // Handle the error
-      console.log(response.data);
+      setAlertMessage(response.data);
+      setShowAlert(true);
     }
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+    setAlertMessage('');
   };
 
   return (
@@ -136,6 +150,16 @@ function QuestionList() {
           </ListItem>
         ))}
       </List>
+      <Snackbar
+        open={showAlert}
+        autoHideDuration={3000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert onClose={handleCloseAlert} severity="error">
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

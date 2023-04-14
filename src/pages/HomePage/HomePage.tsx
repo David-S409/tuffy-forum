@@ -54,14 +54,7 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-          {isAuth ? (
-            <NewCourseForm
-              courses={[]}
-              onSubmit={(courseName) => console.log(courseName)}
-            />
-          ) : (
-            <LoginPage />
-          )}
+          {isAuth ? <NewCourseForm /> : <LoginPage />}
         </Container>
       </Grid>
     </Grid>
