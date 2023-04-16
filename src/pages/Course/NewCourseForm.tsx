@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -8,19 +8,13 @@ import Container from '@mui/material/Container';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 function NewCourseForm() {
   const [courseName, setCourseName] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,7 +35,8 @@ function NewCourseForm() {
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
-          navigate('/courselist'); // redirect to course list instead of post
+          setCourseName('');
+          // navigate('/courselist'); // redirect to course list instead of post
         }, 3000);
       } else {
         setShowError(true);
@@ -49,8 +44,6 @@ function NewCourseForm() {
     } catch (error) {
       setShowError(true);
     }
-
-    setCourseName('');
   };
 
   const handleSnackbarOpen = (message: string) => {
@@ -88,18 +81,18 @@ function NewCourseForm() {
           autoHideDuration={3000}
           onClose={() => setShowSuccess(false)}
         >
-          <Alert onClose={() => setShowSuccess(false)} severity="success">
+          <MuiAlert onClose={() => setShowSuccess(false)} severity="success">
             Course created successfully!
-          </Alert>
+          </MuiAlert>
         </Snackbar>
         <Snackbar
           open={showError}
           autoHideDuration={3000}
           onClose={() => setShowError(false)}
         >
-          <Alert onClose={() => setShowError(false)} severity="error">
+          <MuiAlert onClose={() => setShowError(false)} severity="error">
             Error creating a new course. Please try again.
-          </Alert>
+          </MuiAlert>
         </Snackbar>
       </Box>
     </Container>
