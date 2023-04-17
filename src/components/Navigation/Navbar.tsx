@@ -24,6 +24,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
+import SearchBar from './SearchBar';
 
 import type { UserState } from '../../appSlice';
 import { setIsAuth, setUser } from '../../appSlice';
@@ -196,15 +197,7 @@ export default function Navbar() {
             sx={{ display: 'flex', justifyContent: 'center' }}
             className={classes.headerMiddle}
           >
-            <Box className={classes.headerSearchContainer}>
-              <SearchIcon className={classes.headerSearchIcon} />
-              <TextField
-                className={classes.headerSearchInput}
-                placeholder="Search..."
-                variant="standard"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Box>
+            <SearchBar />
           </Box>
           <Box
             sx={{ display: 'flex', justifyContent: 'center' }}
@@ -214,10 +207,6 @@ export default function Navbar() {
               sx={{ display: 'flex', justifyContent: 'center' }}
               className={classes.headerRightContainer}
             >
-              {window.innerWidth < 768 && (
-                <SearchIcon className={classes.headerSearchIcon} />
-              )}
-
               <InboxIcon className={classes.headerInboxIcon} />
               <HelpIcon className={classes.headerHelpIcon} />
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
