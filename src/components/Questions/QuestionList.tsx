@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
@@ -13,6 +14,7 @@ import {
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { RootState } from '../../store';
+import Tag from '../Tags/Tag';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -31,6 +33,12 @@ const useStyles = makeStyles()(() => {
       paddingRight: '16px',
       minWidth: '72px',
     },
+    tags: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '8px',
+      marginTop: '8px',
+    },
   };
 });
 
@@ -40,6 +48,7 @@ interface Question {
   body: string;
   upvotes: number;
   downvotes: number;
+  tags: string[];
 }
 
 function QuestionList() {
@@ -106,6 +115,7 @@ function QuestionList() {
     const response = await axios.put(`/api/questions/${question.id}/downvote`);
     if (response.status === 200) {
       // Update the questions state with the updated question
+
       const updatedQuestions = questions.map((q) => {
         if (q.id === question.id) {
           return updatedQuestion;
@@ -113,6 +123,17 @@ function QuestionList() {
         return q;
       });
       setQuestions(updatedQuestions);
+    } else {
+      // Handle the error
+      setAlertMessage(response.data);
+      setShowAlert(true);
+    }
+  };
+
+  const handleTagClick = async (tag: string) => {
+    const response = await axios.get(`/api/questions/tagged/${tag}`);
+    if (response.status === 200) {
+      setQuestions(response.data);
     } else {
       // Handle the error
       setAlertMessage(response.data);
@@ -147,6 +168,11 @@ function QuestionList() {
               </Button>
             </div>
             <ListItemText primary={question.title} secondary={question.body} />
+            <Box display="flex" flexDirection="row" alignItems="center">
+              {question.tags.map((tag) => (
+                <Tag key={tag} label={tag} handleClick={handleTagClick} />
+              ))}
+            </Box>
           </ListItem>
         ))}
       </List>
