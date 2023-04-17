@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
@@ -14,6 +16,7 @@ function NewQuestionForm() {
   const [question, setQuestion] = useState('');
   const [description, setDescription] = useState('');
   const [courses, setCourses] = useState([]);
+  const [isExpertsOnly, setIsExpertsOnly] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
@@ -53,6 +56,7 @@ function NewQuestionForm() {
         courseId: courseName,
         header: question,
         text: description,
+        isExpertsOnly,
       });
 
       if (response.status === 200) {
@@ -68,6 +72,7 @@ function NewQuestionForm() {
     setCourseName('');
     setQuestion('');
     setDescription('');
+    setIsExpertsOnly(false);
   };
 
   return (
@@ -128,6 +133,16 @@ function NewQuestionForm() {
               fullWidth
             />
           </Box>
+          <Box sx={{ width: '100%', marginBottom: '16px' }}>
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Experts Only"
+              name="expertsOnly"
+              onChange={(e) =>
+                setIsExpertsOnly((e.target as HTMLInputElement).checked)
+              }
+            />
+          </Box>
           <Button type="submit" variant="contained" color="primary">
             Submit
           </Button>
@@ -143,5 +158,4 @@ function NewQuestionForm() {
     </Container>
   );
 }
-
 export default NewQuestionForm;

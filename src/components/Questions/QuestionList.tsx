@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
@@ -10,17 +9,18 @@ import {
   Button,
   Snackbar,
   Alert,
+  Switch,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { RootState } from '../../store';
 import Tag from '../Tags/Tag';
 
-const useStyles = makeStyles()(() => {
+const useStyles = makeStyles()((theme) => {
   return {
     root: {
       width: 'auto',
-      backgroundColor: '#f5f5f5',
+      backgroundColor: theme.palette.background.paper,
       overflow: 'auto',
       maxHeight: 'auto',
       margin: '0 auto',
@@ -33,12 +33,6 @@ const useStyles = makeStyles()(() => {
       paddingRight: '16px',
       minWidth: '72px',
     },
-    tags: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '8px',
-      marginTop: '8px',
-    },
   };
 });
 
@@ -49,6 +43,7 @@ interface Question {
   upvotes: number;
   downvotes: number;
   tags: string[];
+  expertsOnly: boolean;
 }
 
 function QuestionList() {
@@ -57,10 +52,15 @@ function QuestionList() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const { isAuth } = useSelector((state: RootState) => state.app);
+  const [expertsOnly, setExpertsOnly] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const response = await axios.get('/api/questions');
+      const response = await axios.get('/api/questions', {
+        params: {
+          expertsOnly: expertsOnly ? 'true' : undefined,
+        },
+      });
       if (response.status === 200) {
         setQuestions(response.data);
       } else {
@@ -71,7 +71,7 @@ function QuestionList() {
     };
 
     fetchQuestions();
-  }, []);
+  }, [expertsOnly]);
 
   const handleUpvote = async (question: Question) => {
     if (!isAuth) {
@@ -115,7 +115,6 @@ function QuestionList() {
     const response = await axios.put(`/api/questions/${question.id}/downvote`);
     if (response.status === 200) {
       // Update the questions state with the updated question
-
       const updatedQuestions = questions.map((q) => {
         if (q.id === question.id) {
           return updatedQuestion;
@@ -124,21 +123,15 @@ function QuestionList() {
       });
       setQuestions(updatedQuestions);
     } else {
-      // Handle the error
       setAlertMessage(response.data);
       setShowAlert(true);
     }
   };
 
-  const handleTagClick = async (tag: string) => {
-    const response = await axios.get(`/api/questions/tagged/${tag}`);
-    if (response.status === 200) {
-      setQuestions(response.data);
-    } else {
-      // Handle the error
-      setAlertMessage(response.data);
-      setShowAlert(true);
-    }
+  const handleTagClick = (tag: string) => {
+    // Navigate to the tag page
+    // eslint-disable-next-line no-console
+    console.log(`Navigating to tag: ${tag}`);
   };
 
   const handleCloseAlert = () => {
@@ -146,8 +139,20 @@ function QuestionList() {
     setAlertMessage('');
   };
 
+  const handleExpertsOnlyChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setExpertsOnly(event.target.checked);
+  };
+
   return (
     <Box sx={{ bgcolor: 'background.paper' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+        <Typography variant="body1" sx={{ mr: 1 }}>
+          Experts Only
+        </Typography>
+        <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />
+      </Box>
       <List className={classes.root}>
         {questions.map((question) => (
           <ListItem key={question.id} button>
@@ -167,12 +172,20 @@ function QuestionList() {
                 Downvote ({question.downvotes})
               </Button>
             </div>
-            <ListItemText primary={question.title} secondary={question.body} />
-            <Box display="flex" flexDirection="row" alignItems="center">
+            <ListItemText
+              primary={question.title}
+              secondary={question.body}
+              secondaryTypographyProps={{ component: 'div' }}
+            />
+            <div>
               {question.tags.map((tag) => (
-                <Tag key={tag} label={tag} handleClick={handleTagClick} />
+                <Tag
+                  key={tag}
+                  label={tag}
+                  handleClick={async () => handleTagClick(tag)}
+                />
               ))}
-            </Box>
+            </div>
           </ListItem>
         ))}
       </List>
