@@ -21,7 +21,7 @@ model User {
   isExpert   Boolean    @default(false)
   isMod      Boolean    @default(false)
   profileImg String?
-  courses    Course[]
+  courses    UserCourses[]
   questions  Question[]
   answers    Answer[]
 }
@@ -30,20 +30,29 @@ model Course {
   courseId   Int        @id @default(autoincrement())
   courseCode String     @unique
   name       String
-  users      User[]
+  users      UserCourses[]
   questions  Question[]
 }
 
+model UserCourses {
+  user       User       @relation(fields: [userId], references: [userId])
+  userId     Int
+  course     Course     @relation(fields: [courseId], references: [courseId])
+  courseId   Int
+
+  @@id([userId, courseId])
+}
+
 model Question {
-  questionId Int      @id @default(autoincrement())
-  author     User     @relation(fields: [authorId], references: [userId])
+  questionId Int        @id @default(autoincrement())
+  author     User       @relation(fields: [authorId], references: [userId])
   authorId   Int
-  course     Course   @relation(fields: [courseId], references: [courseId])
+  course     Course     @relation(fields: [courseId], references: [courseId])
   courseId   Int
   header     String
   text       String
-  postDate   DateTime @default(now())
-  votes      Int      @default(0)
+  postDate   DateTime   @default(now())
+  votes      Int        @default(0)
   tags       Tag[]
   answers    Answer[]
 
@@ -51,18 +60,18 @@ model Question {
 }
 
 model Answer {
-  answerId   Int      @id @default(autoincrement())
-  question   Question @relation(fields: [questionId], references: [questionId])
+  answerId   Int        @id @default(autoincrement())
+  question   Question   @relation(fields: [questionId], references: [questionId])
   questionId Int
-  author     User     @relation(fields: [authorId], references: [userId])
+  author     User       @relation(fields: [authorId], references: [userId])
   authorId   Int
   text       String
-  postDate   DateTime @default(now())
-  voteCount  Int      @default(0)
+  postDate   DateTime   @default(now())
+  voteCount  Int        @default(0)
 }
 
 model Tag {
-  tagId     Int        @id
-  name      String     @unique
+  tagId     Int         @id
+  name      String      @unique
   questions Question[]
 }
