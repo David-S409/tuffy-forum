@@ -20,6 +20,7 @@ export function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile/u/" element={<ProfilePage />} />
       <Route path="/login/success" element={<LoginSuccess />} />
+
       <Route path="/postquestion" element={<NewQuestionForm />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
@@ -34,6 +35,7 @@ export function WrappedApp() {
         <div className="container">
           <Navbar />
           <App />
+
         </div>
         <Footer />
       </BrowserRouter>

@@ -1,7 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
 import passport from 'passport';
 import cookieSession from 'cookie-session';
@@ -11,6 +11,8 @@ import './auth/passportGoogleSSO';
 
 const app = express();
 const port = 8080; // default port to listen
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   cors({
@@ -18,16 +20,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// app.use(
-//   session({
-//     secret: 'tuffy',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { maxAge: 1000 * 60 * 60 * 12 },
-//   })
-// );
+
 app.use(
   cookieSession({
     name: 'session',
@@ -41,7 +34,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/v1', api);
-// define a route handler for the default home page
 app.get('/', (req, res) => {
   res.send('Hello world!');
 });
