@@ -33,7 +33,9 @@ export default function LoginPage() {
     if (response && response.data) {
       dispatch(setIsAuth(true));
       dispatch(setUser(response.data));
+      localStorage.setItem('auth', JSON.stringify(setIsAuth(true)));
       navigate('/');
+      location.reload();
     }
   };
   const googleSSO = async () => {
