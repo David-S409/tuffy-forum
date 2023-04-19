@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
@@ -12,6 +13,8 @@ import {
   Select,
   TextField,
   Typography,
+  Switch,
+  SelectChangeEvent,
 } from '@mui/material';
 import { RootState } from '../../store';
 import QuestionList from '../../components/Questions/QuestionList';
@@ -44,9 +47,10 @@ function Forum() {
   const { isAuth } = useSelector((state: RootState) => state.app);
   const [sortOption, setSortOption] = useState('newest');
   const [searchTerm, setSearchTerm] = useState('');
+  const [expertsOnly, setExpertsOnly] = useState(false);
 
-  const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSortOption(event.target.value as string);
+  const handleSortChange = (event: SelectChangeEvent<string>) => {
+    setSortOption(event.target.value);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +61,12 @@ function Forum() {
     event.preventDefault();
     // Do something with the search term
     console.log('Search term:', searchTerm);
+  };
+
+  const handleExpertsOnlyChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setExpertsOnly(event.target.checked);
   };
 
   return (
@@ -87,6 +97,12 @@ function Forum() {
               <MenuItem value="votes">Votes</MenuItem>
             </Select>
           </FormControl>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="body1" sx={{ mr: 1 }}>
+              Experts Only
+            </Typography>
+            <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />
+          </Box>
           <form onSubmit={handleSearchSubmit}>
             <TextField
               label="Search"

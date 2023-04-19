@@ -21,7 +21,11 @@ model User {
   isExpert   Boolean    @default(false)
   isMod      Boolean    @default(false)
   profileImg String?
+<<<<<<< HEAD
   courses    Course[]
+=======
+  courses    UserCourses[]
+>>>>>>> refs/remotes/origin/frontend-test
   questions  Question[]
   answers    Answer[]
 }
@@ -30,6 +34,7 @@ model Course {
   courseId   Int        @id @default(autoincrement())
   courseCode String     @unique
   name       String
+<<<<<<< HEAD
   users      User[]
   questions  Question[]
 }
@@ -44,6 +49,31 @@ model Question {
   text       String
   postDate   DateTime @default(now())
   votes      Int      @default(0)
+=======
+  users      UserCourses[]
+  questions  Question[]
+}
+
+model UserCourses {
+  user       User       @relation(fields: [userId], references: [userId])
+  userId     Int
+  course     Course     @relation(fields: [courseId], references: [courseId])
+  courseId   Int
+
+  @@id([userId, courseId])
+}
+
+model Question {
+  questionId Int        @id @default(autoincrement())
+  author     User       @relation(fields: [authorId], references: [userId])
+  authorId   Int
+  course     Course     @relation(fields: [courseId], references: [courseId])
+  courseId   Int
+  header     String
+  text       String
+  postDate   DateTime   @default(now())
+  votes      Int        @default(0)
+>>>>>>> refs/remotes/origin/frontend-test
   tags       Tag[]
   answers    Answer[]
 
@@ -51,6 +81,7 @@ model Question {
 }
 
 model Answer {
+<<<<<<< HEAD
   answerId   Int      @id @default(autoincrement())
   question   Question @relation(fields: [questionId], references: [questionId])
   questionId Int
@@ -64,5 +95,20 @@ model Answer {
 model Tag {
   tagId     Int        @id
   name      String     @unique
+=======
+  answerId   Int        @id @default(autoincrement())
+  question   Question   @relation(fields: [questionId], references: [questionId])
+  questionId Int
+  author     User       @relation(fields: [authorId], references: [userId])
+  authorId   Int
+  text       String
+  postDate   DateTime   @default(now())
+  voteCount  Int        @default(0)
+}
+
+model Tag {
+  tagId     Int         @id
+  name      String      @unique
+>>>>>>> refs/remotes/origin/frontend-test
   questions Question[]
 }
