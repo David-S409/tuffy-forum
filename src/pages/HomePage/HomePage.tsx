@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import LoginPage from '../login/LoginPage';
-import QuestionList from './QuestionList';
-import NewCourseForm from '../Course/CoursesPage';
+import QuestionList from '../../components/Questions/QuestionList';
+import NewCourseForm from '../Course/NewCourseForm';
 import { RootState } from '../../store';
 
 const useStyles = makeStyles()(() => {
@@ -33,7 +33,7 @@ const useStyles = makeStyles()(() => {
 function Home() {
   const { classes } = useStyles();
   const user = useSelector((state: any) => state.app.user);
-  const { isAuth } = useSelector((state: RootState) => state.app)
+  const { isAuth } = useSelector((state: RootState) => state.app);
 
   return (
     <Grid container spacing={3} direction="column">
@@ -54,12 +54,7 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-          {isAuth ? ( <a></a> ) : ( <LoginPage />) }
-        </Container>
-      </Grid>
-      <Grid item xs={12}>
-        <Container maxWidth="md" className={classes.content}>
-          <> {} </>
+          {isAuth ? <NewCourseForm /> : <LoginPage />}
         </Container>
       </Grid>
     </Grid>

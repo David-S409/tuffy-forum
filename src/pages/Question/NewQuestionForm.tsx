@@ -1,69 +1,161 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addQuestion } from "./questions";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import { TextField } from "@mui/material";
-import Container from "@mui/material";
+/* eslint-disable react/no-unescaped-entities */
+import React, { useState, useEffect } from 'react';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Container from '@mui/material/Container';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
 
-export function NewQuestionForm() {
+function NewQuestionForm() {
+  const [courseName, setCourseName] = useState('');
+  const [question, setQuestion] = useState('');
+  const [description, setDescription] = useState('');
+  const [courses, setCourses] = useState([]);
+  const [isExpertsOnly, setIsExpertsOnly] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    axios.get('http://localhost:8080/courses').then((response) => {
+      setCourses(response.data);
+    });
+  }, []);
 
-  const [title, setTitle] = useState("");
-  const [question, setQuestion] = useState("");
-  const [body, setBody] = useState("");
+  const handleSnackbarOpen = (message: string) => {
+    setSnackbarMessage(message);
+    setOpenSnackbar(true);
+  };
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    dispatch(addQuestion({ title, body }));
-    setTitle("");
-    setQuestion("");
-    setBody("");
-  }
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    // Check if user is authenticated
+    const isAuth = true; // Replace with your authentication logic
+    if (!isAuth) {
+      handleSnackbarOpen('Please log in to ask a question');
+      return;
+    }
+
+    if (!courseName) {
+      handleSnackbarOpen('Please select a course');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8080/question', {
+        courseId: courseName,
+        header: question,
+        text: description,
+        isExpertsOnly,
+      });
+
+      if (response.status === 200) {
+        handleSnackbarOpen('Question created successfully');
+        navigate('/forum');
+      } else {
+        handleSnackbarOpen('Error creating a new question');
+      }
+    } catch (error) {
+      handleSnackbarOpen('Error creating a new question');
+    }
+
+    setCourseName('');
+    setQuestion('');
+    setDescription('');
+    setIsExpertsOnly(false);
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Ask a new question</h3>
+    <Container maxWidth="md">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '125px',
+        }}
+      >
+        <h2>Ask a New Question</h2>
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ width: '100%', marginBottom: '16px' }}>
+            <TextField
+              label="Course Name"
+              variant="outlined"
+              value={courseName}
+              onChange={(e) => setCourseName(e.target.value)}
+              select
+              fullWidth
+            >
+              {courses.length === 0 ? (
+                <MenuItem value="">
+                  <em>No courses found! Add one below!</em>
+                </MenuItem>
+              ) : (
+                courses.map((course) => (
+                  <MenuItem key={course} value={course}>
+                    {course}
+                  </MenuItem>
+                ))
+              )}
+            </TextField>
             <p>
-        <Box component="form" noValidate autoComplete="on">
-          <TextField
-            id="filled-basic"
-            label="Course"
-            variant="filled"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-           />
+              Don't see your course?{' '}
+              <Link to="/addcourse">Add a new one here!</Link>
+            </p>
           </Box>
-      </p>
-      <p>
-      <Box component="form" noValidate autoComplete="on">
-          <TextField
-            id="filled-basic"
-            label="Question to ask..."
-            variant="filled"
-            value={question}
-            onChange={e => setQuestion(e.target.value)}
-           />
-          </Box>
-      </p>
-      <p>
-        <Box component="form" noValidate autoComplete="on">
-          <TextField
-            id="filled-basic"
-            label="Description..."
-            variant="filled"
-            value={body}
-            onChange={e => setBody(e.target.value)}
+          <Box sx={{ width: '100%', marginBottom: '16px' }}>
+            <TextField
+              label="Question"
+              variant="outlined"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              fullWidth
             />
           </Box>
-         </p>
-      <p>
-        <Button type="submit" size="large">
-          Submit
+          <Box sx={{ width: '100%', marginBottom: '16px' }}>
+            <TextField
+              label="Description"
+              variant="outlined"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              multiline
+              rows={4}
+              fullWidth
+            />
+          </Box>
+          <Box sx={{ width: '100%', marginBottom: '16px' }}>
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Experts Only"
+              name="expertsOnly"
+              onChange={(e) =>
+                setIsExpertsOnly((e.target as HTMLInputElement).checked)
+              }
+            />
+          </Box>
+          <Button type="submit" variant="contained" color="primary">
+            Submit
           </Button>
-      </p>
-    </form>
+        </form>
+      </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      />
+    </Container>
   );
-
 }
+export default NewQuestionForm;
