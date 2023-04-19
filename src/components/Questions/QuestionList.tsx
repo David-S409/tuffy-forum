@@ -5,11 +5,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography,
   Button,
   Snackbar,
   Alert,
-  Switch,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
@@ -44,6 +42,7 @@ interface Question {
   downvotes: number;
   tags: string[];
   expertsOnly: boolean;
+  searchTerm: string;
 }
 
 function QuestionList() {
@@ -52,7 +51,7 @@ function QuestionList() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const { isAuth } = useSelector((state: RootState) => state.app);
-  const [expertsOnly, setExpertsOnly] = useState(false);
+  const [expertsOnly] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -139,20 +138,8 @@ function QuestionList() {
     setAlertMessage('');
   };
 
-  const handleExpertsOnlyChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setExpertsOnly(event.target.checked);
-  };
-
   return (
     <Box sx={{ bgcolor: 'background.paper' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
-        <Typography variant="body1" sx={{ mr: 1 }}>
-          Experts Only
-        </Typography>
-        <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />
-      </Box>
       <List className={classes.root}>
         {questions.map((question) => (
           <ListItem key={question.id} button>
