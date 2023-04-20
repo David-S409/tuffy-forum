@@ -12,8 +12,6 @@ import { RootState } from '../../store';
 const useStyles = makeStyles()(() => {
   return {
     root: {
-      paddingTop: 'auto',
-      paddingBottom: 'auto',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -36,7 +34,7 @@ function Home() {
   const { isAuth } = useSelector((state: RootState) => state.app);
 
   return (
-    <Grid container spacing={3} direction="column">
+    <Grid container spacing={3} direction="column" sx={{ marginTop: '64px' }}>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.root}>
           <Typography variant="h4" component="h1" gutterBottom>
@@ -54,7 +52,6 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-
           {isAuth ? <NewCourseForm /> : <LoginPage />}
         </Container>
       </Grid>

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import Typography from '@mui/material/Typography';
@@ -13,12 +14,9 @@ import { RootState } from '../../store';
 const useStyles = makeStyles()((theme) => {
   return {
     footer: {
-      backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(2),
       position: 'relative',
-      left: -20,
-      width: '100.3%',
-      bottom: -20,
+      width: 'center',
     },
     link: {
       margin: theme.spacing(1.5, 1),
@@ -74,11 +72,12 @@ export default function Footer() {
         {new Date().getFullYear()}
         {' Tuffy Forum'}
       </Typography>
-      <BottomNavigation sx={{ paddingTop: 2 }}>
+      <BottomNavigation sx={{ bgcolor: 'transparent' }}>
         <ButtonGroup
           variant="contained"
-          color="primary"
+          color="success"
           aria-label="text primary button group"
+          size="large"
         >
           <Button href="/">Home</Button>
           {isAuth ? (
