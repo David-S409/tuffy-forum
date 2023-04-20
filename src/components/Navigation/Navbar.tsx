@@ -1,4 +1,6 @@
-
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable consistent-return */
+/* eslint-disable no-restricted-globals */
 import SearchIcon from '@mui/icons-material/Search';
 import InboxIcon from '@mui/icons-material/Inbox';
 import HelpIcon from '@mui/icons-material/Help';
@@ -40,6 +42,7 @@ const useStyles = makeStyles()(() => {
       display: 'flex',
       justifyContent: 'space-evenly',
       alignItems: 'center',
+      width: 'fit-content',
       flex: 1,
     },
     headerMiddle: {
@@ -220,7 +223,9 @@ export default function Navbar() {
                 height="100px"
               />
             </Link>
-            <Typography>TUFFY FORUM</Typography>
+            <Link href="/" underline="none" color="inherit">
+              <Typography sx={{ fontSize: 25 }}>TUFFY FORUM</Typography>
+            </Link>
             <Tabs value={value} onChange={handleChange} aria-label="icon-tabs">
               <Tab label="Home" href="/" icon={<HomeIcon />} />
               <Tab label="Post" href="/postquestion" icon={<PostAddIcon />} />

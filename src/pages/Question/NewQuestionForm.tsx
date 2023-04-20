@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -81,7 +82,9 @@ function NewQuestionForm() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginTop: '125px',
+          boxShadow: 10,
+          marginTop: '-92px',
+          padding: '16px',
         }}
       >
         <h2>Ask a New Question</h2>

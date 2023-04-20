@@ -58,7 +58,9 @@ function NewCourseForm() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginTop: '125px',
+          boxShadow: 10,
+          marginTop: '32px',
+          padding: '16px',
         }}
       >
         <h2>Add a New Course</h2>

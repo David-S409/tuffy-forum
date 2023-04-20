@@ -29,6 +29,7 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flexDirection: 'column',
       minHeight: 'auto',
+      marginTop: '-144px',
     },
     formControl: {
       minWidth: 200,
@@ -81,7 +82,9 @@ function Forum() {
           </Button>
         </Box>
       )}
-      <Paper sx={{ p: 2 }}>
+      <Paper
+        sx={{ p: 2, bgcolor: 'transparent', boxShadow: 10, padding: '16px' }}
+      >
         <Box className={classes.sortControls}>
           <FormControl className={classes.formControl}>
             <InputLabel id="sort-by-label">Sort By</InputLabel>
@@ -98,7 +101,7 @@ function Forum() {
             </Select>
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="body1" sx={{ mr: 1 }}>
+            <Typography variant="body1" sx={{ mr: 1, padding: 5 }}>
               Experts Only
             </Typography>
             <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />

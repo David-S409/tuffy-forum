@@ -8,12 +8,15 @@ const useStyles = makeStyles()(() => {
   return {
     root: {
       width: 'auto',
-      backgroundColor: '#F2F2F2',
-      borderRadius: 20,
-      padding: '0 20px',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: 'orange',
+
+          '&:hover': {
+            borderColor: 'white',
+          },
+        },
+      },
     },
   };
 });
@@ -33,7 +36,7 @@ function SearchBar() {
   return (
     <form onSubmit={handleSearch}>
       <TextField
-        placeholder="Search for tags, questions, answers, or courses..."
+        placeholder="Search..."
         value={searchTerm}
         onChange={(event) => setSearchTerm(event.target.value)}
         InputProps={{
@@ -41,7 +44,7 @@ function SearchBar() {
             <InputAdornment position="end">
               <Tooltip title="Search">
                 <IconButton type="submit" aria-label="search">
-                  <SearchIcon />
+                  <SearchIcon color="primary" />
                 </IconButton>
               </Tooltip>
             </InputAdornment>
