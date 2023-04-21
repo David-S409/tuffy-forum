@@ -112,7 +112,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { user, isAuth } = useSelector((state: RootState) => state.app);
-  const profileUrl = `/profile/u/#${user?.id}`;
+  const profileUrl = `/profile/u/#${user?.userId}`;
   const checkUser = localStorage.getItem('auth');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -170,43 +170,6 @@ export default function Navbar() {
     setValue(newValue);
   };
 
-<<<<<<< HEAD
-            <InboxIcon className={classes.headerInboxIcon} />
-            <HelpIcon className={classes.headerHelpIcon} />
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              {isAuth ? (
-                <><Avatar
-                  style={{ cursor: 'pointer'}}
-                  sx={{boxShadow: 5}}
-                  src={user?.profileImg}
-                  onClick={handleMenu}
-                  >
-                  </Avatar>
-                  <Menu
-                    sx={{mt: .5, ml: -.5}}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <Typography sx={{ml: 1, mr: 1, mb: 0.5, mt: -0.2, fontWeight: 'bold', fontFamily: 'monospace'}}
-                    color="neutral"
-                    variant="soft"
-                    > 
-                      {user?.firstName} 
-                    </Typography>
-                    <MenuItem component={Link} href={profileUrl}>Profile</MenuItem>
-                    <MenuItem onClick={logoutUser}>Logout</MenuItem>
-                  </Menu>
-=======
   return (
     <>
       <div className={classes.background}>
@@ -293,7 +256,6 @@ export default function Navbar() {
                       </MenuItem>
                       <MenuItem onClick={logoutUser}>Logout</MenuItem>
                     </Menu>
->>>>>>> feed5d3422b55f115e4940906dd01bf123a44a66
                   </>
                 ) : (
                   <Avatar style={{ cursor: 'auto' }} />

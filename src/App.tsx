@@ -8,14 +8,9 @@ import LoginSuccess from './pages/login/LoginSuccess';
 import Navbar from './components/Navigation/Navbar';
 import NewQuestionForm from './pages/Question/NewQuestionForm';
 import Footer from './components/Footer/footer';
-<<<<<<< HEAD
-import NewCourseForm from './pages/Course/CoursesPage';
-import ProfilePage from './pages/Profile/ProfilePage';
-=======
 import NewCourseForm from './pages/Course/NewCourseForm';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
->>>>>>> feed5d3422b55f115e4940906dd01bf123a44a66
 
 export function App() {
   return (

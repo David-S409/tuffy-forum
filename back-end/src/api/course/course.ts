@@ -31,8 +31,6 @@ router.get('/user/courses', isUserAuth, async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-=======
 router.get('/courses/search', async (req, res) => {
   const { query } = req;
 
@@ -60,7 +58,7 @@ router.get('/courses/:id', async (req, res) => {
 
   const course = await prisma.course.findUnique({
     where: {
-      courseCode: String(id),
+      courseId: Number(id),
     }
   });
 
@@ -111,5 +109,4 @@ router.post('/add/course/:id', isUserAuth, async (req, res) => {
   }
 });
 
->>>>>>> refs/remotes/origin/frontend-test
 export default router;
