@@ -30,8 +30,6 @@ const useStyles = makeStyles()(() => {
 
 function Home() {
   const { classes } = useStyles();
-  const user = useSelector((state: any) => state.app.user);
-  const { isAuth } = useSelector((state: RootState) => state.app);
 
   return (
     <Grid container spacing={3} direction="column" sx={{ marginTop: '64px' }}>
@@ -52,7 +50,7 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-          {isAuth ? <NewCourseForm /> : <LoginPage />}
+          <LoginPage />
         </Container>
       </Grid>
     </Grid>

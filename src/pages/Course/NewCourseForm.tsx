@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -10,11 +11,23 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 
+type Course = {
+  id: number;
+  name: string;
+};
+
 function NewCourseForm() {
   const [courseName, setCourseName] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get<Course[]>('/api/v1/courses').then((response) => {
+      setCourses(response.data);
+    });
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,7 +40,7 @@ function NewCourseForm() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/course', {
+      const response = await axios.post('api/v1/course', {
         name: courseName,
       });
 
@@ -78,6 +91,18 @@ function NewCourseForm() {
             Submit
           </Button>
         </form>
+        <Box sx={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}>
+          <h3>Existing Courses</h3>
+          {courses.length === 0 ? (
+            <p>No courses found</p>
+          ) : (
+            <ul>
+              {courses.map((course) => (
+                <li key={course.id}>{course.name}</li>
+              ))}
+            </ul>
+          )}
+        </Box>
         <Snackbar
           open={showSuccess}
           autoHideDuration={3000}

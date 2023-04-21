@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import {
   List,
@@ -6,8 +7,11 @@ import {
   ListItemText,
   Typography,
   Button,
+  Box,
+  CircularProgress,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
-import Box from '@mui/material/Box';
 import axios from 'axios';
 
 const useStyles = makeStyles()(() => {
@@ -40,55 +44,9 @@ interface Question {
 
 function QuestionList() {
   const { classes } = useStyles();
-  const [questions, setQuestions] = useState<Question[]>([
-    {
-      id: 1,
-      title: 'How do I make a new course?',
-      body: "I want to make a new course, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 2,
-      title: 'How do I make a new question?',
-      body: "I want to make a new question, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 3,
-      title: 'How do I make a new answer?',
-      body: "I want to make a new answer, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 4,
-      title: 'How do I make a new comment?',
-      body: "I want to make a new comment, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 5,
-      title: 'How do I make a new user?',
-      body: "I want to make a new user, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-
-    {
-      id: 6,
-      title: 'How do I make a new course?',
-      body: "I want to make a new course, but I don't know how to do it.",
-      upvotes: 0,
-      downvotes: 0,
-    },
-  ]);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const handleUpvote = async (question: Question) => {
     // Update the upvote count for the question
@@ -96,22 +54,23 @@ function QuestionList() {
       ...question,
       upvotes: question.upvotes + 1,
     };
-    const response = await axios.put(
-      `/api/questions/${question.id}`,
-      updatedQuestion
-    );
-    if (response.status === 200) {
-      // Update the questions state with the updated question
-      const updatedQuestions = questions.map((q) => {
-        if (q.id === question.id) {
-          return updatedQuestion;
-        }
-        return q;
-      });
-      setQuestions(updatedQuestions);
-    } else {
-      // Handle the error
-      console.log(response.data);
+    try {
+      const response = await axios.put(
+        `/api/questions/${question.id}`,
+        updatedQuestion
+      );
+      if (response.status === 200) {
+        // Update the questions state with the updated question
+        const updatedQuestions = questions.map((q) => {
+          if (q.id === question.id) {
+            return updatedQuestion;
+          }
+          return q;
+        });
+        setQuestions(updatedQuestions);
+      }
+    } catch (error) {
+      setError('Failed to upvote the question. Please try again later.');
     }
   };
 
@@ -121,50 +80,96 @@ function QuestionList() {
       ...question,
       downvotes: question.downvotes + 1,
     };
-    const response = await axios.put(
-      `/api/questions/${question.id}`,
-      updatedQuestion
-    );
-    if (response.status === 200) {
-      // Update the questions state with the updated question
-      const updatedQuestions = questions.map((q) => {
-        if (q.id === question.id) {
-          return updatedQuestion;
-        }
-        return q;
-      });
-      setQuestions(updatedQuestions);
-    } else {
-      // Handle the error
-      console.log(response.data);
+    try {
+      const response = await axios.put(
+        `/api/questions/${question.id}`,
+        updatedQuestion
+      );
+      if (response.status === 200) {
+        // Update the questions state with the updated question
+        const updatedQuestions = questions.map((q) => {
+          if (q.id === question.id) {
+            return updatedQuestion;
+          }
+          return q;
+        });
+        setQuestions(updatedQuestions);
+      }
+    } catch (error) {
+      setError('Failed to downvote the question. Please try again later.');
     }
   };
 
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await axios.get('/api/questions');
+        if (response.status === 200) {
+          setQuestions(response.data);
+        }
+      } catch (error) {
+        setError('Failed to fetch questions. Please try again later.');
+      }
+      setLoading(false);
+    };
+    fetchQuestions();
+  }, []);
+
   return (
     <Box sx={{ bgcolor: 'background.paper' }}>
-      <List className={classes.root}>
-        {questions.map((question) => (
-          <ListItem key={question.id} button>
-            <div className={classes.voteButtons}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleUpvote(question)}
-              >
-                Upvote ({question.upvotes})
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() => handleDownvote(question)}
-              >
-                Downvote ({question.downvotes})
-              </Button>
-            </div>
-            <ListItemText primary={question.title} secondary={question.body} />
-          </ListItem>
-        ))}
-      </List>
+      {error && (
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
+      )}
+      {loading && <CircularProgress />}
+      {!loading && questions.length === 0 && (
+        <Alert severity="info">
+          <AlertTitle>No questions found</AlertTitle>
+          There are no questions available at the moment.
+        </Alert>
+      )}
+      {!loading && questions.length > 0 && (
+        <List className={classes.root}>
+          {questions.map((question) => (
+            <ListItem key={question.id} alignItems="flex-start">
+              <Box className={classes.voteButtons}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleUpvote(question)}
+                >
+                  +
+                </Button>
+                <Typography variant="h6" component="h3">
+                  {question.upvotes - question.downvotes}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleDownvote(question)}
+                >
+                  -
+                </Button>
+              </Box>
+              <ListItemText
+                primary={question.title}
+                secondary={
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    {question.body}
+                  </Typography>
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Box>
   );
 }

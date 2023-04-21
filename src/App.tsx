@@ -35,7 +35,6 @@ export function WrappedApp() {
         <div className="container">
           <Navbar />
           <App />
-
         </div>
         <Footer />
       </BrowserRouter>
