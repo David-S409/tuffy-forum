@@ -11,12 +11,13 @@ import Footer from './components/Footer/footer';
 import NewCourseForm from './pages/Course/NewCourseForm';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
+import AddCourse from './pages/Course/AddCourse';
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/addcourse" element={<NewCourseForm />} />
+      <Route path="/addcourse" element={<AddCourse />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile/u/" element={<ProfilePage />} />
       <Route path="/login/success" element={<LoginSuccess />} />
@@ -35,7 +36,6 @@ export function WrappedApp() {
         <div className="container">
           <Navbar />
           <App />
-
         </div>
         <Footer />
       </BrowserRouter>

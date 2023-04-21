@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const courseScheme = z.object({
   courseCode: z
     .string({ required_error: 'Course Code is Required!' })
-    .regex(/\/[A-Za-z]+s[0-9]+\/i/),
+    .regex(/[A-Z]{4} \d{3}/),
   name: z.string({ required_error: 'Course Name is Required!' }),
 });
 
@@ -42,7 +42,7 @@ router.get('/courses/search', async (req, res) => {
           { courseCode: { contains: query.courseCode as string } },
           { name: { contains: query.name as string } },
         ],
-      }
+      },
     });
 
     if (results) {
@@ -71,13 +71,14 @@ router.get('/courses/:id', async (req, res) => {
 
 router.post('/course', isUserAuth, async (req, res) => {
   const { body } = req;
+  console.log(body);
 
   try {
     await courseScheme.parseAsync(body);
     const result = await prisma.course.create({
       data: {
         courseCode: body.courseCode,
-        name: body.name
+        name: body.name,
       },
     });
     res.status(200).json(result);
@@ -93,7 +94,11 @@ router.post('/add/course/:id', isUserAuth, async (req, res) => {
   try {
     const updatedCourse = await prisma.course.update({
       where: { courseId: Number(id) },
-      data: { users: { create: { user: { connect: { userId: currentUser.userId } } } } },
+      data: {
+        users: {
+          create: { user: { connect: { userId: currentUser.userId } } },
+        },
+      },
     });
   } catch (error) {
     res.status(500).json({ error: 'Error adding Course' });
@@ -102,7 +107,9 @@ router.post('/add/course/:id', isUserAuth, async (req, res) => {
   try {
     const updatedUser = await prisma.user.update({
       where: { userId: currentUser.userId },
-      data: { courses: { create: { course: { connect: { courseId: Number(id) } } } } },
+      data: {
+        courses: { create: { course: { connect: { courseId: Number(id) } } } },
+      },
     });
   } catch (error) {
     res.status(500).json({ error: 'Error adding Course' });

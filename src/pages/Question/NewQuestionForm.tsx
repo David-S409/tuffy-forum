@@ -1,29 +1,19 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Container from '@mui/material/Container';
-import MenuItem from '@mui/material/MenuItem';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Snackbar,
+  TextField,
+} from '@mui/material';
+import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import http from '../../http-common';
-import { useDispatch } from 'react-redux';
-import { setCourse } from '../../appSlice';
-
-interface Course {
-  courseId: number;
-  courseCode: string;
-  name: string;
-}
-
-interface course {
-  courseId: Course[];
-}
 
 function NewQuestionForm() {
   const [courseName, setCourseName] = useState('');
@@ -34,15 +24,11 @@ function NewQuestionForm() {
   const [isExpertsOnly, setIsExpertsOnly] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const { isAuth, course } = useSelector((state: RootState) => state.app);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
 
   useEffect(() => {
-    http.get('/user/courses')
-    .then((response) => {
-      setGetID(response.data);
+    axios.get('http://localhost:8080/courses').then((response) => {
+      setCourses(response.data);
     });
   }, []);
 
@@ -59,7 +45,7 @@ function NewQuestionForm() {
     }
   }, []);
 
-  const handleSnackbarOpen = (message: string) => {
+  const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
     setSnackbarMessage(message);
     setOpenSnackbar(true);
   };
@@ -71,7 +57,7 @@ function NewQuestionForm() {
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     // Check if user is authenticated
-    //const isAuth = true; // Replace with your authentication logic
+    const isAuth = true; // Replace with your authentication logic
     if (!isAuth) {
       handleSnackbarOpen('Please log in to ask a question');
       return;
@@ -83,7 +69,7 @@ function NewQuestionForm() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/question', {
+      const response = await axios.post('/api/questions', {
         courseId: courseName,
         header: question,
         text: description,
@@ -92,7 +78,7 @@ function NewQuestionForm() {
 
       if (response.status === 200) {
         handleSnackbarOpen('Question created successfully');
-        navigate('/forum');
+        history('/forum');
       } else {
         handleSnackbarOpen('Error creating a new question');
       }
@@ -113,7 +99,9 @@ function NewQuestionForm() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginTop: '125px',
+          boxShadow: 10,
+          marginTop: '-92px',
+          padding: '16px',
         }}
       >
         <h2>Ask a New Question</h2>
@@ -127,19 +115,16 @@ function NewQuestionForm() {
               select
               fullWidth
             >
-              {getID.length === 0 ? (
+              {courses.length === 0 ? (
                 <MenuItem value="">
                   <em>No courses found! Add one below!</em>
                 </MenuItem>
               ) : (
-                // courses.map(course => (
-                //   <MenuItem key={course}>
-                //     {course}
-                //   </MenuItem>
-                // ))
-                <MenuItem>
-                  {course?.courseCode}
-                </MenuItem>
+                courses.map((course) => (
+                  <MenuItem key={course} value={course}>
+                    {course}
+                  </MenuItem>
+                ))
               )}
             </TextField>
             <p>

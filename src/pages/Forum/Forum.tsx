@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import {
@@ -16,6 +17,7 @@ import {
   Switch,
   SelectChangeEvent,
 } from '@mui/material';
+import axios from 'axios';
 import { RootState } from '../../store';
 import QuestionList from '../../components/Questions/QuestionList';
 
@@ -49,6 +51,13 @@ function Forum() {
   const [sortOption, setSortOption] = useState('newest');
   const [searchTerm, setSearchTerm] = useState('');
   const [expertsOnly, setExpertsOnly] = useState(false);
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/courses').then((response) => {
+      setCourses(response.data);
+    });
+  }, []);
 
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSortOption(event.target.value);
@@ -58,10 +67,26 @@ function Forum() {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
-    // Do something with the search term
-    console.log('Search term:', searchTerm);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/question/search',
+        {
+          searchTerm,
+          expertsOnly,
+          sortBy: sortOption,
+        }
+      );
+
+      // Do something with the search results
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleExpertsOnlyChange = (

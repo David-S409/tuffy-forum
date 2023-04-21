@@ -103,10 +103,7 @@ const NewCourseForm: React.FC<NewCourseFormProps> = ({ courses, onSubmit }) => {
           id="course-input"
           options={courses}
           value={courseName}
-<<<<<<< HEAD
           sx={{ width: 300 }}
-=======
->>>>>>> refs/remotes/origin/frontend-test
           onChange={(event, newValue) => {
             setCourseName(newValue ?? '');
           }}
