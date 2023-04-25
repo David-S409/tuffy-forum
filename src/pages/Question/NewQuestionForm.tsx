@@ -25,17 +25,16 @@ function NewQuestionForm() {
   const [error, setError] = useState('');
   const history = useNavigate();
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get('/api/courses');
-        setCourses(response.data);
-      } catch (error) {
-        setError('Failed to fetch courses');
-      }
-    };
-    fetchCourses();
-  }, []);
+  const fetchCourses = async () => {
+    await axios
+      .get('http://localhost:8080/api/v1/course')
+      .then((res) => {
+        setCourses(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
     setSnackbarMessage(message);
@@ -50,7 +49,8 @@ function NewQuestionForm() {
     event.preventDefault();
 
     // Check if user is authenticated
-    const isAuth = true; // Replace with authentication logic
+    const isAuth = await axios.get('/api/v1/user/:id');
+
     if (!isAuth) {
       handleSnackbarOpen('Please log in to ask a question');
       return;
@@ -62,7 +62,7 @@ function NewQuestionForm() {
     }
 
     try {
-      const response = await axios.post('/api/questions', {
+      const response = await axios.post('/api/v1/question', {
         courseId: courseName,
         header: question,
         text: description,
@@ -126,6 +126,16 @@ function NewQuestionForm() {
             )}
           </TextField>
         </Box>
+
+        <Button
+          type="button"
+          variant="contained"
+          color="primary"
+          onClick={() => history('/addcourse')}
+        >
+          Add a New Course
+        </Button>
+
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <TextField
             label="Question"

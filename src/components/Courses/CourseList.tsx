@@ -31,8 +31,21 @@ function CourseList() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('/api/courses');
-        setCourses(response.data.reverse());
+        const response = await axios.get('http://localhost:8080/api/v1/course');
+        const sortedCourses = response.data.sort(
+          (a: { name: string }, b: { name: string }) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0;
+          }
+        );
+        setCourses(sortedCourses);
       } catch (err) {
         setError('Failed to fetch courses');
       }

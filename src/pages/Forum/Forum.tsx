@@ -42,6 +42,19 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       margin: '16px 0',
     },
+    searchForm: {
+      display: 'flex',
+      alignItems: 'flex-end',
+    },
+    searchField: {
+      marginRight: '16px',
+      marginBottom: '8px',
+      width: '100%',
+    },
+    searchButton: {
+      marginBottom: '8px',
+      minWidth: '100px',
+    },
   };
 });
 
@@ -54,9 +67,17 @@ function Forum() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/courses').then((response) => {
-      setCourses(response.data);
-    });
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8080/api/v1/questions'
+        );
+        setCourses(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCourses();
   }, []);
 
   const handleSortChange = (event: SelectChangeEvent<string>) => {
@@ -73,14 +94,11 @@ function Forum() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        'http://localhost:8080/question/search',
-        {
-          searchTerm,
-          expertsOnly,
-          sortBy: sortOption,
-        }
-      );
+      const response = await axios.post('http:localhost:8080/api/v1/question', {
+        searchTerm,
+        expertsOnly,
+        sortBy: sortOption,
+      });
 
       // Do something with the search results
       console.log(response.data);
@@ -95,6 +113,10 @@ function Forum() {
     setExpertsOnly(event.target.checked);
   };
 
+  const handleCourseChange = (event: SelectChangeEvent<string>) => {
+    setCourses(event.target.value);
+  };
+
   return (
     <Container maxWidth="md" className={classes.root}>
       <Typography variant="h4" component="h1" gutterBottom>
@@ -102,13 +124,14 @@ function Forum() {
       </Typography>
       {isAuth && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" href="/new-question">
             Ask a Question
           </Button>
         </Box>
       )}
       <Paper
-        sx={{ p: 2, bgcolor: 'transparent', boxShadow: 10, padding: '16px' }}
+        sx={{ p: 2, bgcolor: 'transparent', boxShadow: 'none', mb: 3 }}
+        elevation={0}
       >
         <Box className={classes.sortControls}>
           <FormControl className={classes.formControl}>
@@ -131,15 +154,37 @@ function Forum() {
             </Typography>
             <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />
           </Box>
-          <form onSubmit={handleSearchSubmit}>
+          <form onSubmit={handleSearchSubmit} className={classes.searchForm}>
             <TextField
               label="Search"
               variant="outlined"
               size="small"
               value={searchTerm}
               onChange={handleSearchChange}
+              className={classes.searchField}
             />
-            <Button type="submit" variant="contained" color="primary">
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="course-name-label">Course Name</InputLabel>
+              <Select
+                labelId="course-name-label"
+                id="course-name-select"
+                value={courses}
+                onChange={(e) => setCourses(e.target.value)}
+                autoWidth
+              >
+                {courses.map((course) => (
+                  <MenuItem key={course.id} value={course.name}>
+                    {course.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.searchButton}
+            >
               Search
             </Button>
           </form>
