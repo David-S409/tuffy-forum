@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,44 +8,31 @@ import {
   Checkbox,
   FormControlLabel,
   MenuItem,
+  MenuList,
   Snackbar,
   TextField,
+  ListItemText,
 } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import Snackbar from '@mui/material/Snackbar';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store';
+import { setCourse } from '../../appSlice';
+import { info } from 'console';
 
 function NewQuestionForm() {
   const [courseName, setCourseName] = useState('');
   const [question, setQuestion] = useState('');
   const [description, setDescription] = useState('');
-  const [getID, setGetID] = useState<course[]>([]);
-  //const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState([]);
   const [isExpertsOnly, setIsExpertsOnly] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    axios.get('http://localhost:8080/courses').then((response) => {
-      setCourses(response.data);
-    });
-  }, []);
-
-  var ID = getID.map(function(info) {
-    return info.courseId;
-  }) 
+  const [error, setError] = useState('');
+  const history = useNavigate();
+  const { isAuth, course } = useSelector((state: RootState) => state.app)
   
-  useEffect(() => {
-    for (let i = 0; i < ID.length; i++) {
-      http.get(`/courses/${ID.at(i)}`)
-      .then((response) => {
-        dispatch(setCourse(response.data));
-      })
-    }
-  }, []);
-
+  
   const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
     setSnackbarMessage(message);
     setOpenSnackbar(true);
@@ -57,7 +45,7 @@ function NewQuestionForm() {
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     // Check if user is authenticated
-    const isAuth = true; // Replace with your authentication logic
+    //const isAuth = true; // Replace with authentication logic
     if (!isAuth) {
       handleSnackbarOpen('Please log in to ask a question');
       return;
@@ -91,90 +79,93 @@ function NewQuestionForm() {
     setDescription('');
     setIsExpertsOnly(false);
   };
-
+  
   return (
-    <Container maxWidth="md">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          boxShadow: 10,
-          marginTop: '-92px',
-          padding: '16px',
-        }}
-      >
-        <h2>Ask a New Question</h2>
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ width: '100%', marginBottom: '16px' }}>
-            <TextField
-              label="Course Name"
-              variant="outlined"
-              value={courseName}
-              onChange={(e) => setCourseName(e.target.value)}
-              select
-              fullWidth
-            >
-              {courses.length === 0 ? (
-                <MenuItem value="">
-                  <em>No courses found! Add one below!</em>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        boxShadow: 10,
+        marginTop: '-92px',
+        padding: '16px',
+      }}
+    >
+      <h2>Ask a New Question</h2>
+      {error && <Alert severity="error">{error}</Alert>}
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <TextField
+            label="Course Name"
+            variant="outlined"
+            value={courseName}
+            onChange={(e) => setCourseName(e.target.value)}
+            select
+            fullWidth
+          >
+            {courses.length === 0 ? (
+              <MenuItem value="">
+                <em>No courses found! Add one below!</em>
+              </MenuItem>
+            ) : (
+              <MenuList>
+                <MenuItem value={course?.courseId}>
+                  <ListItemText>
+                    {course?.courseCode}
+                  </ListItemText>
                 </MenuItem>
-              ) : (
-                courses.map((course) => (
-                  <MenuItem key={course} value={course}>
-                    {course}
-                  </MenuItem>
-                ))
-              )}
-            </TextField>
-            <p>
-              Don't see your course?{' '}
-              <Link to="/addcourse">Add a new one here!</Link>
-            </p>
-          </Box>
-          <Box sx={{ width: '100%', marginBottom: '16px' }}>
-            <TextField
-              label="Question"
-              variant="outlined"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              fullWidth
-            />
-          </Box>
-          <Box sx={{ width: '100%', marginBottom: '16px' }}>
-            <TextField
-              label="Description"
-              variant="outlined"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              multiline
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box sx={{ width: '100%', marginBottom: '16px' }}>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Experts Only"
-              name="expertsOnly"
-              onChange={(e) =>
-                setIsExpertsOnly((e.target as HTMLInputElement).checked)
-              }
-            />
-          </Box>
-          <Button type="submit" variant="contained" color="primary">
-            Submit
-          </Button>
-        </form>
-      </Box>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      />
-    </Container>
+                <MenuItem>
+                  <ListItemText>
+                    {course?.courseCode}
+                  </ListItemText>
+                </MenuItem>
+              </MenuList>
+              
+            )}
+          </TextField>
+        </Box>
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <TextField
+            label="Question"
+            variant="outlined"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            fullWidth
+          />
+        </Box>
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <TextField
+            label="Description"
+            variant="outlined"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            multiline
+            rows={4}
+            fullWidth
+          />
+        </Box>
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Experts Only"
+            name="expertsOnly"
+            onChange={(e) =>
+              setIsExpertsOnly((e.target as HTMLInputElement).checked)
+            }
+          />
+        </Box>
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={5000}
+          onClose={handleSnackbarClose}
+          message={snackbarMessage}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        />
+      </form>
+    </Box>
   );
 }
 export default NewQuestionForm;

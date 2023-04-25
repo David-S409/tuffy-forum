@@ -1,7 +1,10 @@
 import { TextField, Button, Paper, Box, FormHelperText } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { redirect } from 'react-router-dom';
+import { RootState } from '../../store';
+import { setCourse } from '../../appSlice';
 
 interface FormValues {
   courseCode: string;
@@ -15,6 +18,9 @@ const initialFormValues: FormValues = {
 
 function AddCourse() {
   const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
+  const { user, course } = useSelector((state: RootState) => state.app);
+  const [success, setSuccess] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const postCourse = async () => {
     await axios
@@ -27,11 +33,36 @@ function AddCourse() {
       )
       .then((res) => {
         redirect('/courses');
+        dispatch(setCourse(res.data));
+        setSuccess(true);
       })
       .catch((err) => {
         console.error(err);
       });
   };
+  
+  const setCourseId = async () => {
+    await axios
+      .post(
+        `http://localhost:8080/api/v1/add/course/${course?.courseId}`,
+        { user: user, course: course },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        redirect('/user/courses');
+        setSuccess(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  useEffect(() => {
+    if (success) {
+      setCourseId();
+    }
+   }, [success]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

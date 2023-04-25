@@ -126,7 +126,7 @@ export default function Navbar() {
   };
 
   const getLoginInfo = async () => {
-    axios
+    await axios
       .get('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
       .then((response) => {
         dispatch(setIsAuth(true));
