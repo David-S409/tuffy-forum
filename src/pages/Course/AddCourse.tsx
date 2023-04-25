@@ -127,7 +127,7 @@ function NewCourseForm() {
   const [success, setSuccess] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const postCourse = async () => {
     await axios
       .post(
@@ -150,12 +150,12 @@ function NewCourseForm() {
         }
       });
   };
-  
+
   const setCourseId = async () => {
     await axios
       .post(
         `http://localhost:8080/api/v1/add/course/${course?.courseId}`,
-        { user: user, course: course },
+        { user, course },
         {
           withCredentials: true,
         }
@@ -168,12 +168,12 @@ function NewCourseForm() {
         console.error(err);
       });
   };
-  
+
   useEffect(() => {
     if (success) {
       setCourseId();
     }
-   }, [success]);
+  }, [success]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -193,7 +193,6 @@ function NewCourseForm() {
     setShowError(true);
     setTimeout(() => setShowError(false), 3000);
   };
-
 
   return (
     <Container maxWidth="md">

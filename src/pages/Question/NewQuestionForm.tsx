@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,31 +14,31 @@ import {
 } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store';
 
 function NewQuestionForm() {
   const [courseName, setCourseName] = useState('');
   const [question, setQuestion] = useState('');
   const [description, setDescription] = useState('');
+  const [tags, setTags] = useState('');
   const [courses, setCourses] = useState([]);
   const [isExpertsOnly, setIsExpertsOnly] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [error, setError] = useState('');
   const history = useNavigate();
-  const { isAuth, course } = useSelector((state: RootState) => state.app)
 
   const fetchCourses = async () => {
-    await axios
-      .get('http://localhost:8080/api/v1/course')
-      .then((res) => {
-        setCourses(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    try {
+      const response = await axios.get('http://localhost:8080/api/v1/course');
+      setCourses(response.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
   const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
     setSnackbarMessage(message);
@@ -52,13 +51,6 @@ function NewQuestionForm() {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    // Check if user is authenticated
-    //const isAuth = true; // Replace with authentication logic
-    if (!isAuth) {
-      handleSnackbarOpen('Please log in to ask a question');
-      return;
-    }
-
     if (!courseName) {
       handleSnackbarOpen('Please select a course');
       return;
@@ -87,7 +79,7 @@ function NewQuestionForm() {
     setDescription('');
     setIsExpertsOnly(false);
   };
-  
+
   return (
     <Box
       sx={{
@@ -117,18 +109,12 @@ function NewQuestionForm() {
               </MenuItem>
             ) : (
               <MenuList>
-                <MenuItem value={course?.courseId}>
-                  <ListItemText>
-                    {course?.courseCode}
-                  </ListItemText>
-                </MenuItem>
-                <MenuItem>
-                  <ListItemText>
-                    {course?.courseCode}
-                  </ListItemText>
-                </MenuItem>
+                {courses.map((course) => (
+                  <MenuItem key={course.courseId} value={course.courseId}>
+                    <ListItemText>{course.courseCode}</ListItemText>
+                  </MenuItem>
+                ))}
               </MenuList>
-              
             )}
           </TextField>
         </Box>
@@ -137,12 +123,11 @@ function NewQuestionForm() {
           type="button"
           variant="contained"
           color="primary"
-          onClick={() => history('/addcourse')}
+          href="/addcourse"
         >
           Add a New Course
         </Button>
-
-        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+        <Box sx={{ width: '100%', marginBottom: '16px', paddingTop: '16px' }}>
           <TextField
             label="Question"
             variant="outlined"
@@ -172,6 +157,16 @@ function NewQuestionForm() {
             }
           />
         </Box>
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <TextField
+            label="Tags"
+            variant="outlined"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            helperText="Enter tags separated by commas"
+            fullWidth
+          />
+        </Box>
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
@@ -186,6 +181,5 @@ function NewQuestionForm() {
     </Box>
   );
 }
+
 export default NewQuestionForm;
-
-

@@ -51,7 +51,7 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-          {isAuth ? (<p></p>) : (<LoginPage />)}
+          <LoginPage />
         </Container>
       </Grid>
     </Grid>

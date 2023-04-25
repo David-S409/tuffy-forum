@@ -21,9 +21,8 @@ export function App() {
       <Route path="/addcourse" element={<AddCourse />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile/u/" element={<ProfilePage />} />
-      <Route path="/login/success" element={<LoginSuccess />} />
-
       <Route path="/postquestion" element={<NewQuestionForm />} />
+      <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/courses" element={<CourseList />} />

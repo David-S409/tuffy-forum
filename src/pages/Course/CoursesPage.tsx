@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/function-component-definition */
 // import React from "react";
 // import Box from "@mui/material/Box";
 // import FormControl from "@mui/material/FormControl";
@@ -61,22 +63,22 @@ import Button from '@mui/material/Button';
 
 const useStyles = makeStyles()(() => {
   return {
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '125px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    alignItems: 'center',
-  },
-  input: {
-    width: '100%',
-    marginBottom: '1rem',
-  },
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '125px',
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      alignItems: 'center',
+    },
+    input: {
+      width: '100%',
+      marginBottom: '1rem',
+    },
   };
 });
 

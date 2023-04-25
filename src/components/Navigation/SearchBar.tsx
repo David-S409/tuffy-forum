@@ -22,6 +22,11 @@ const useStyles = makeStyles()(() => {
       display: 'flex',
       alignItems: 'center',
       width: 400,
+      outline: 'solid',
+      outlineColor: 'currentColor',
+      outlineWidth: 'thin',
+      outlineStyle: 'auto',
+      borderRadius: '8px',
     },
     input: {
       marginLeft: '16px',
@@ -111,9 +116,7 @@ function SearchBar() {
         className={classes.searchButton}
         onClick={handleSearch}
         ref={anchorRef}
-      >
-        <SearchIcon />
-      </IconButton>
+      />
       <InputBase
         placeholder="Search"
         className={classes.input}

@@ -37,23 +37,26 @@ const useStyles = makeStyles()(() => {
       position: 'relative',
       backgroundImage: 'linear-gradient(to right, #00b09b, #96c93d)',
       margin: '15px 0',
+      width: 'auto',
     },
     headerLeft: {
       display: 'flex',
       justifyContent: 'space-evenly',
       alignItems: 'center',
       width: 'fit-content',
-      flex: 1,
+      flexBasis: 'fit-content',
     },
     headerMiddle: {
       display: 'flex',
       alignItems: 'center',
       flex: 1,
+      width: 'fit-content',
     },
     headerRight: {
       display: 'flex',
       alignItems: 'center',
       flex: 1,
+      width: 'fit-content',
     },
     headerSearchContainer: {
       display: 'flex',
@@ -62,6 +65,7 @@ const useStyles = makeStyles()(() => {
       height: 40,
       borderRadius: 20,
       padding: '0 20px',
+      width: 'fit-content',
     },
     headerSearchIcon: {
       color: 'gray',
@@ -103,6 +107,7 @@ const useStyles = makeStyles()(() => {
     menuFont: {
       display: 'flex',
       alignItems: 'center',
+      width: 'auto',
     },
   };
 });
@@ -175,7 +180,11 @@ export default function Navbar() {
       <div className={classes.background}>
         <div className={classes.headerContainer}>
           <Box
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: 'fit-content',
+            }}
             className={classes.headerLeft}
           >
             <Link href="/" underline="none" color="inherit">
@@ -187,9 +196,23 @@ export default function Navbar() {
               />
             </Link>
             <Link href="/" underline="none" color="inherit">
-              <Typography sx={{ fontSize: 25 }}>TUFFY FORUM</Typography>
+              <Typography
+                sx={{
+                  fontSize: 30,
+                  padding: '16px',
+                  fontFamily: 'fantasy',
+                  fontKerning: 'auto',
+                }}
+              >
+                TUFFY FORUM
+              </Typography>
             </Link>
-            <Tabs value={value} onChange={handleChange} aria-label="icon-tabs">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="icon-tabs"
+              sx={{ width: 'fit-content' }}
+            >
               <Tab label="Home" href="/" icon={<HomeIcon />} />
               <Tab label="Post" href="/postquestion" icon={<PostAddIcon />} />
               <Tab label="Courses" href="/addcourse" icon={<ListAlt />} />
@@ -197,13 +220,21 @@ export default function Navbar() {
             </Tabs>
           </Box>
           <Box
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: 'fit-content',
+            }}
             className={classes.headerMiddle}
           >
             <SearchBar />
           </Box>
           <Box
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: 'fit-content',
+            }}
             className={classes.headerRight}
           >
             <Box
