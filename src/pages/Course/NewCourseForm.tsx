@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-props-no-spreading */
@@ -10,53 +11,73 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import { RootState } from '../../store';
 
-type Course = {
-  id: number;
-  name: string;
+interface FormValues {
+  courseCode: string;
+  courseName: string;
+}
+
+const initialFormValues: FormValues = {
+  courseCode: '',
+  courseName: '',
 };
 
 function NewCourseForm() {
-  const [courseName, setCourseName] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
   const navigate = useNavigate();
+  const { isAuth } = useSelector((state: RootState) => state.app);
 
-  useEffect(() => {
-    axios.get<Course[]>('/api/v1/courses').then((response) => {
-      setCourses(response.data);
-    });
-  }, []);
+  const postCourse = async () => {
+    await axios
+      .post(
+        'http://localhost:8080/api/v1/course',
+        { courseCode: formValues.courseCode, name: formValues.courseName },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        navigate('/courses');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const currentUser = localStorage.getItem('user');
-
-    if (!currentUser) {
+    // postCourse(); // Send form values to backend or do other logic here
+    if (!isAuth) {
       handleSnackbarOpen('Please log in to add a course');
       return;
     }
 
     try {
-      const response = await axios.post('api/v1/course', {
-        name: courseName,
-      });
-
-      if (response.status === 200) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-          setCourseName('');
-          // navigate('/courselist'); // redirect to course list instead of post
-        }, 3000);
-      } else {
-        setShowError(true);
-      }
+      postCourse();
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        setFormValues(initialFormValues);
+      }, 3000);
     } catch (error) {
       setShowError(true);
     }
+
+    // setFormValues(initialFormValues); // Reset form values after submitting
   };
 
   const handleSnackbarOpen = (message: string) => {
@@ -80,29 +101,34 @@ function NewCourseForm() {
         <form onSubmit={handleSubmit}>
           <Box sx={{ width: '100%', marginBottom: '16px' }}>
             <TextField
-              label="Course Name"
+              name="courseCode"
+              label="Course"
               variant="outlined"
-              value={courseName}
-              onChange={(e) => setCourseName(e.target.value)}
+              value={formValues.courseCode}
+              onChange={handleInputChange}
               fullWidth
+              required
+              error={
+                formValues.courseCode === '' ||
+                !formValues.courseCode.match('[a-zA-Z]{4} [0-9]{3}')
+              }
+              onError={() => {
+                handleSnackbarOpen('Please enter a valid course code');
+                if (showSuccess) setShowSuccess(false);
+              }}
             />
           </Box>
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={(sx) => {
+              showSuccess;
+            }}
+          >
             Submit
           </Button>
         </form>
-        <Box sx={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}>
-          <h3>Existing Courses</h3>
-          {courses.length === 0 ? (
-            <p>No courses found</p>
-          ) : (
-            <ul>
-              {courses.map((course) => (
-                <li key={course.id}>{course.name}</li>
-              ))}
-            </ul>
-          )}
-        </Box>
         <Snackbar
           open={showSuccess}
           autoHideDuration={3000}

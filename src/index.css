@@ -68,23 +68,6 @@ body {
   animation-timing-function: linear;
 }
 
-/* Buttons */
-button {
-    background-color: #ff7900;
-    color: #00244e;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #00244e;
-    color: #ff7900;
-}
-
 .spacer {
     padding: 75px;
 }

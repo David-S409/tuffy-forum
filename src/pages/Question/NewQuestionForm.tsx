@@ -17,8 +17,6 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
-import { setCourse } from '../../appSlice';
-import { info } from 'console';
 
 function NewQuestionForm() {
   const [courseName, setCourseName] = useState('');
@@ -31,8 +29,18 @@ function NewQuestionForm() {
   const [error, setError] = useState('');
   const history = useNavigate();
   const { isAuth, course } = useSelector((state: RootState) => state.app)
-  
-  
+
+  const fetchCourses = async () => {
+    await axios
+      .get('http://localhost:8080/api/v1/course')
+      .then((res) => {
+        setCourses(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
     setSnackbarMessage(message);
     setOpenSnackbar(true);
@@ -57,7 +65,7 @@ function NewQuestionForm() {
     }
 
     try {
-      const response = await axios.post('/api/questions', {
+      const response = await axios.post('/api/v1/question', {
         courseId: courseName,
         header: question,
         text: description,
@@ -124,6 +132,16 @@ function NewQuestionForm() {
             )}
           </TextField>
         </Box>
+
+        <Button
+          type="button"
+          variant="contained"
+          color="primary"
+          onClick={() => history('/addcourse')}
+        >
+          Add a New Course
+        </Button>
+
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <TextField
             label="Question"

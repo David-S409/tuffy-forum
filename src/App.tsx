@@ -12,6 +12,7 @@ import NewCourseForm from './pages/Course/NewCourseForm';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
 import AddCourse from './pages/Course/AddCourse';
+import CourseList from './components/Courses/CourseList';
 
 export function App() {
   return (
@@ -25,6 +26,7 @@ export function App() {
       <Route path="/postquestion" element={<NewQuestionForm />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/courses" element={<CourseList />} />
     </Routes>
   );
 }
