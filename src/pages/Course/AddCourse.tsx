@@ -218,14 +218,12 @@ function NewCourseForm() {
               fullWidth
               required
               helperText="Format Example: CPSC 362"
-              error={
-                formValues.courseCode === '' ||
-                !formValues.courseCode.match('[a-zA-Z]{4} [0-9]{3}') // error with being able to enter with more than 3 digits
-              }
-              onError={() => {
-                handleSnackbarOpen('Please enter a valid course code');
-              }}
-              color="success"
+              // error={
+              //   formValues.courseCode === '' ||
+              //   !formValues.courseCode.match('[a-zA-Z]{4} [0-9]{3}') // error with being able to enter with more than 3 digits
+              // }
+              sx={{}}
+              color="error"
             />
             <TextField
               name="courseName"
