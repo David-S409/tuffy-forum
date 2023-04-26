@@ -11,20 +11,20 @@ datasource db {
 }
 
 model User {
-  userId      Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  firstName   String
-  lastName    String
-  email       String     @unique
-  googleID    String     @unique
-  year        String?
-  isExpert    Boolean    @default(false)
-  isMod       Boolean    @default(false)
-  profileImg  String?
-  isOnboarded Boolean    @default(false)
-  courses     Course[]
-  questions   Question[]
-  answers     Answer[]
+  userId     Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  firstName  String
+  lastName   String
+  email      String     @unique
+  googleID   String     @unique
+  year       String?
+  isExpert   Boolean    @default(false)
+  isMod      Boolean    @default(false)
+  profileImg String?
+  isOnboard  Boolean    @default(false)
+  courses    Course[]
+  questions  Question[]
+  answers    Answer[]
 }
 
 model Course {
