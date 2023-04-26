@@ -59,7 +59,7 @@ model Answer {
   authorId   Int
   text       String
   postDate   DateTime   @default(now())
-  voteCount  Int        @default(0)
+  votes      Int        @default(0)
 }
 
 model Tag {
