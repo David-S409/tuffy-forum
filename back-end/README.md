@@ -4,6 +4,8 @@
 
 Below is a list of available endpoints in the API:
 
+# Question API
+
 ## Endpoint 1
 
 ### `GET /questions`
@@ -103,7 +105,6 @@ Description: Search questions using search terms
 
 Description: Post a Question **(Must be logged in)**.
 
-
 ```csharp
 #### Query Parameters
 
@@ -141,3 +142,32 @@ Description: Upvotes or downvotes a question given an id **(Must be logged in)**
 }
 ```
 
+# Course API
+
+## Endpoint 1
+
+### `GET /courses`
+
+Description: Get all courses
+
+#### Response Example
+
+```json
+[
+  {
+    "courseId": 1,
+    "courseCode": "CPSC 872",
+    "name": "Best Course"
+  },
+  {
+    "courseId": 2,
+    "courseCode": "CPSC 231",
+    "name": "Title"
+  },
+  {
+    "courseId": 8,
+    "courseCode": "CPSC 362",
+    "name": "Software"
+  }
+]
+```

@@ -13,6 +13,11 @@ const courseScheme = z.object({
   name: z.string({ required_error: 'Course Name is Required!' }),
 });
 
+router.get('/courses', isUserAuth, async (req, res) => {
+  await prisma.course.findMany().then((results) => {
+    res.status(200).json(results);
+  });
+});
 router.get('/user/courses', isUserAuth, async (req, res) => {
   const user = req.user as User;
   if (user && user.userId) {
@@ -59,7 +64,7 @@ router.get('/courses/:id', async (req, res) => {
   const course = await prisma.course.findUnique({
     where: {
       courseId: Number(id),
-    }
+    },
   });
 
   if (course) {
