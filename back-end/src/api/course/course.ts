@@ -70,7 +70,7 @@ router.get('/courses/:id', async (req, res) => {
   if (course) {
     res.status(200).json(course);
   } else {
-    res.status(404).json({ error: 'Question not found' });
+    res.status(404).json({ error: 'Course not found' });
   }
 });
 
@@ -97,27 +97,14 @@ router.post('/add/course/:id', isUserAuth, async (req, res) => {
   const currentUser = req.user as User;
 
   try {
-    const updatedCourse = await prisma.course.update({
-      where: { courseId: Number(id) },
-      data: {
-        users: {
-          create: { user: { connect: { userId: currentUser.userId } } },
-        },
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Error adding Course' });
-  }
-
-  try {
     const updatedUser = await prisma.user.update({
       where: { userId: currentUser.userId },
       data: {
-        courses: { create: { course: { connect: { courseId: Number(id) } } } },
+        courses: { connect: { courseId: Number(id) } },
       },
     });
   } catch (error) {
-    res.status(500).json({ error: 'Error adding Course' });
+    res.status(500).json({ error: 'Error connecting Course to User' });
   }
 });
 

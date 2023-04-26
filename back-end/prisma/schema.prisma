@@ -21,7 +21,8 @@ model User {
   isExpert   Boolean    @default(false)
   isMod      Boolean    @default(false)
   profileImg String?
-  courses    UserCourses[]
+  isOnboard  Boolean    @default(false)
+  courses    Course[]
   questions  Question[]
   answers    Answer[]
 }
@@ -30,17 +31,8 @@ model Course {
   courseId   Int        @id @default(autoincrement())
   courseCode String     @unique
   name       String
-  users      UserCourses[]
+  users      User[]
   questions  Question[]
-}
-
-model UserCourses {
-  user       User       @relation(fields: [userId], references: [userId])
-  userId     Int
-  course     Course     @relation(fields: [courseId], references: [courseId])
-  courseId   Int
-
-  @@id([userId, courseId])
 }
 
 model Question {
