@@ -234,3 +234,38 @@ Description: Add course to user **(Must be logged in)**.
   }
 ]
 ```
+
+## Endpoint 3
+
+### `POST /course`
+
+Description: Create and Add course to user **(Must be logged in)**.
+
+#### Response Example
+
+```json
+{
+  "courses": [
+    {
+      "courseId": 1,
+      "courseCode": "CPSC 872",
+      "name": "Best Course"
+    },
+    {
+      "courseId": 12,
+      "courseCode": "CPSC 212",
+      "name": "name"
+    },
+    {
+      "courseId": 13,
+      "courseCode": "CPSC 214",
+      "name": "name2"
+    },
+    {
+      "courseId": 14,
+      "courseCode": "CPSC 215",
+      "name": "name2"
+    }
+  ]
+}
+```
