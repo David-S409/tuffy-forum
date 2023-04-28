@@ -80,12 +80,6 @@ const useStyles = makeStyles()(() => {
       justifyContent: 'space-evenly',
       flex: 1,
     },
-    headerInboxIcon: {
-      color: 'gray',
-    },
-    headerHelpIcon: {
-      color: 'gray',
-    },
     headerMenuIcon: {
       color: 'gray',
     },
@@ -154,8 +148,10 @@ export default function Navbar() {
   };
 
   const { classes } = useStyles();
+
   const currentTab = () => {
     const path = window.location.pathname;
+
     if (path === '/') {
       return 0;
     }
@@ -169,7 +165,8 @@ export default function Navbar() {
       return 3;
     }
   };
-  const [value, setValue] = React.useState(currentTab());
+
+  const [value, setValue] = useState(currentTab());
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -189,10 +186,10 @@ export default function Navbar() {
           >
             <Link href="/" underline="none" color="inherit">
               <img
-                src="http://blog.fullerton.edu/wp-content/uploads/2020/03/Tuffy-e1585180435275-150x150.png"
+                src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/5616.png"
                 alt="Tuffy"
-                width="100px"
-                height="100px"
+                width="125px"
+                height="125px"
               />
             </Link>
             <Link href="/" underline="none" color="inherit">
@@ -200,8 +197,11 @@ export default function Navbar() {
                 sx={{
                   fontSize: 30,
                   padding: '16px',
-                  fontFamily: 'fantasy',
-                  fontKerning: 'auto',
+                  fontFamily: 'monospace',
+                  color: 'lightblue',
+                  fontStyle: 'oblique',
+                  fontWeight: 'bold',
+                  textShadow: '2px 2px 4px #000000',
                 }}
               >
                 TUFFY FORUM
@@ -241,8 +241,6 @@ export default function Navbar() {
               sx={{ display: 'flex', justifyContent: 'center' }}
               className={classes.headerRightContainer}
             >
-              <InboxIcon className={classes.headerInboxIcon} />
-              <HelpIcon className={classes.headerHelpIcon} />
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 {isAuth ? (
                   <>
