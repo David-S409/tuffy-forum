@@ -31,7 +31,6 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flexDirection: 'column',
       minHeight: 'auto',
-      marginTop: '-144px',
     },
     formControl: {
       minWidth: 200,

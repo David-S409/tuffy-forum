@@ -164,7 +164,7 @@ function NewQuestionForm() {
         flexDirection: 'column',
         alignItems: 'center',
         boxShadow: 10,
-        marginTop: '-92px',
+        marginTop: '-70px',
         padding: '16px',
       }}
     >

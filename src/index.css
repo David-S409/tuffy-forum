@@ -68,12 +68,12 @@ body {
   animation-timing-function: linear;
 }
 
- .spacer {
-    padding: 75px;
-} 
+ /* .spacer {
+    padding: 20px;
+}  */
 
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 79vh;
+    min-height: 65vh;
 }
