@@ -8,8 +8,10 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { autoBatchEnhancer } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
+import { Divider } from '@mui/material';
 import { setIsAuth, setUser } from '../../appSlice';
 import { RootState } from '../../store';
+import LoginPage from '../../pages/login/LoginPage';
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -72,12 +74,22 @@ export default function Footer() {
         {new Date().getFullYear()}
         {' Tuffy Forum'}
       </Typography>
-      <BottomNavigation sx={{ bgcolor: 'transparent' }}>
+      <BottomNavigation
+        sx={{
+          bgcolor: 'transparent',
+          padding: '16px',
+        }}
+      >
         <ButtonGroup
           variant="contained"
-          color="success"
           aria-label="text primary button group"
-          size="large"
+          size="medium"
+          sx={{
+            display: 'space-evenly',
+            justifyContent: 'center',
+            width: 'fit-content',
+            margin: 'auto',
+          }}
         >
           <Button href="/">Home</Button>
           {isAuth ? (
