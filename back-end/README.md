@@ -148,7 +148,7 @@ Description: Upvotes or downvotes a question given an id **(Must be logged in)**
 
 ### `GET /courses`
 
-Description: Get all courses
+Description: Get all courses **(Must be logged in)**.
 
 #### Response Example
 
@@ -168,6 +168,69 @@ Description: Get all courses
     "courseId": 8,
     "courseCode": "CPSC 362",
     "name": "Software"
+  }
+]
+```
+
+## Endpoint 2
+
+### `POST /add/course/:id`
+
+Description: Add course to user **(Must be logged in)**.
+
+```csharp
+#### Request Parameters
+
+| Parameter | Type       | Required |           Description              |
+| --------- | ---------- | -------- | ---------------------------------- |
+| id        | string/int | yes      | ID of the course being added       |
+
+
+```
+
+#### Response Example
+
+```json
+{
+  "courses": [
+    {
+      "courseId": 1,
+      "courseCode": "CPSC 872",
+      "name": "Best Course"
+    },
+    {
+      "courseId": 8,
+      "courseCode": "CPSC 362",
+      "name": "Software"
+    }
+  ]
+}
+```
+
+## Endpoint 3
+
+### `GET /course/remove/:id`
+
+Description: Add course to user **(Must be logged in)**.
+
+```csharp
+#### Request Parameters
+
+| Parameter | Type       | Required |           Description              |
+| --------- | ---------- | -------- | ---------------------------------- |
+| id        | string/int | yes      | ID of the course being removed     |
+
+
+```
+
+#### Response Example
+
+```json
+[
+  {
+    "courseId": 1,
+    "courseCode": "CPSC 872",
+    "name": "Best Course"
   }
 ]
 ```
