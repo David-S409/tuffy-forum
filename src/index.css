@@ -68,9 +68,9 @@ body {
   animation-timing-function: linear;
 }
 
- .spacer {
+.spacer {
     padding: 75px;
-} 
+}
 
 .container {
     display: flex;

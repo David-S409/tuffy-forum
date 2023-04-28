@@ -1,13 +1,14 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 import {
   Box,
   Button,
   Checkbox,
   FormControlLabel,
   MenuItem,
-  MenuList,
   Snackbar,
   TextField,
   ListItemText,
@@ -15,12 +16,13 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material';
-import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
 import { SelectChangeEvent } from '@mui/material/Select';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface CourseValues {
   courseId: string;
@@ -28,7 +30,15 @@ interface CourseValues {
   courseName: string;
 }
 
+const initialCourseValues: CourseValues = {
+  courseId: '',
+  courseCode: '',
+  courseName: '',
+};
+
 function NewQuestionForm() {
+  const [courseInitial, setCourseInitial] =
+    useState<CourseValues>(initialCourseValues);
   const [courseName, setCourseName] = useState('');
   const [question, setQuestion] = useState('');
   const [description, setDescription] = useState('');
@@ -37,8 +47,7 @@ function NewQuestionForm() {
   const [isExpertsOnly, setIsExpertsOnly] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [error, setError] = useState('');
-  const history = useNavigate();
+  const { isAuth } = useSelector((state: RootState) => state.app);
 
   const fetchCourses = async () => {
     try {
@@ -55,13 +64,8 @@ function NewQuestionForm() {
     fetchCourses();
   }, []);
 
-  const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
-    setSnackbarMessage(message);
-    setOpenSnackbar(true);
-  };
-
-  const onChange = (event: SelectChangeEvent) => {
-    setCourseName(event.target.value as string);
+  const onCourseChange = (event: SelectChangeEvent) => {
+    setCourseName(event.target.value.toString());
     console.log(event.target.value);
   };
 
@@ -110,66 +114,97 @@ function NewQuestionForm() {
     'Swift',
   ];
 
-  const onExpertsOnlyChange = (event: SelectChangeEvent) => {
+  const onQuestionChange = (event: SelectChangeEvent<typeof question>) => {
+    setQuestion(event.target.value as string);
+    console.log(event.target.value);
+  };
+
+  const onDescriptionChange = (
+    event: SelectChangeEvent<typeof description>
+  ) => {
+    setDescription(event.target.value as string);
+    console.log(event.target.value);
+  };
+
+  const onExpertsOnlyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsExpertsOnly(event.target.checked);
     console.log(event.target.checked);
+  };
+
+  const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
+    setSnackbarMessage(message);
+    setOpenSnackbar(true);
   };
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!isAuth) {
+      handleSnackbarOpen('Please login to ask a question');
+      return;
+    }
+
     if (!courseName) {
       handleSnackbarOpen('Please select a course');
       return;
     }
 
-    try {
-      const response = await axios.post(
+    if (!question) {
+      handleSnackbarOpen('Please enter a question');
+      return;
+    }
+
+    if (!description) {
+      handleSnackbarOpen('Please enter a description');
+      return;
+    }
+
+    await axios
+      .post(
         'http://localhost:8080/api/v1/question',
         {
           courseId: courseName,
           header: question,
           text: description,
           isExpertsOnly,
+          clickedTags: tags,
         },
         {
           withCredentials: true,
         }
-      );
-
-      if (response.status === 200) {
-        handleSnackbarOpen('Question created successfully');
-        history('/forum');
-      } else {
-        handleSnackbarOpen('Error creating a new question');
-      }
-    } catch (error) {
-      handleSnackbarOpen('Error creating a new question');
-    }
-
-    setCourseName('');
-    setQuestion('');
-    setDescription('');
-    setTags([]);
-    setIsExpertsOnly(false);
+      )
+      .then((response) => {
+        console.log(response);
+        handleSnackbarOpen('Question asked successfully!');
+        setCourseInitial(initialCourseValues);
+        redirect('/forum');
+      })
+      .catch((err) => {
+        handleSnackbarOpen('Error asking question, please try again!');
+        console.error(err);
+      });
   };
 
   return (
     <Box
       sx={{
-        display: 'flex',
+        display: 'auto',
         flexDirection: 'column',
-        alignItems: 'center',
-        boxShadow: 10,
-        marginTop: '-92px',
+        boxShadow: 20,
+        borderRadius: '16px',
+        backgroundColor: '#fff',
+        marginTop: '-160px',
         padding: '16px',
       }}
     >
-      <h2>Ask a New Question</h2>
-      {error && <Alert severity="error">{error}</Alert>}
+      <header>
+        <h1> Ask a Question </h1>
+      </header>
+
       <form onSubmit={handleSubmit}>
         <FormControl
           fullWidth
@@ -189,7 +224,7 @@ function NewQuestionForm() {
               value={courseName}
               labelId="course-select-label"
               id="course-select"
-              onChange={(e) => onChange(e)}
+              onChange={(e) => onCourseChange(e)}
             >
               {courses.map((course) => (
                 <MenuItem key={course.courseId} value={course.courseId}>
@@ -208,32 +243,34 @@ function NewQuestionForm() {
         >
           Add a New Course
         </Button>
-        <Box sx={{ width: '100%', marginBottom: '16px', paddingTop: '16px' }}>
+        <Box sx={{ width: 'auto', marginBottom: '16px', paddingTop: '16px' }}>
           <TextField
             label="Question"
             variant="outlined"
             value={question}
-            onChange={(e) => setQuestion(e.target.value)}
+            onChange={(e) => onQuestionChange(e as any)}
             fullWidth
           />
         </Box>
-        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+
+        <Box sx={{ width: 'auto', marginBottom: '16px' }}>
           <TextField
             label="Description"
             variant="outlined"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => onDescriptionChange(e as any)}
             multiline
             rows={4}
             fullWidth
           />
         </Box>
-        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+
+        <Box sx={{ width: 'auto', marginBottom: '16px' }}>
           <FormControlLabel
             control={<Checkbox />}
             label="Experts Only"
             name="expertsOnly"
-            onChange={(e) => onExpertsOnlyChange(e)}
+            onChange={(e) => onExpertsOnlyChange(e as any)}
           />
         </Box>
 
@@ -270,7 +307,7 @@ function NewQuestionForm() {
             onChange={(e) => onTagChange(e)}
             input={<OutlinedInput label="Tags" />}
             renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              <Box sx={{ display: 'auto', flexWrap: 'wrap', gap: 0.5 }}>
                 {selected.map((value) => (
                   <Chip key={value} label={value} />
                 ))}
