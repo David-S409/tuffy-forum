@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState, useEffect } from 'react';
-import { redirect } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -48,6 +48,7 @@ function NewQuestionForm() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const { isAuth } = useSelector((state: RootState) => state.app);
+  const navigate = useNavigate();
 
   const fetchCourses = async () => {
     try {
@@ -140,6 +141,11 @@ function NewQuestionForm() {
     setOpenSnackbar(false);
   };
 
+  const isValidCourseCode = (courseCode: string) => {
+    const courseCodePattern = /^[a-zA-Z]{4}[0-9]{4}$/;
+    return courseCodePattern.test(courseCode);
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -163,6 +169,11 @@ function NewQuestionForm() {
       return;
     }
 
+    if (!tags) {
+      handleSnackbarOpen('Please enter tags');
+      return;
+    }
+
     await axios
       .post(
         'http://localhost:8080/api/v1/question',
@@ -181,7 +192,7 @@ function NewQuestionForm() {
         console.log(response);
         handleSnackbarOpen('Question asked successfully!');
         setCourseInitial(initialCourseValues);
-        redirect('/forum');
+        navigate('/forum');
       })
       .catch((err) => {
         handleSnackbarOpen('Error asking question, please try again!');

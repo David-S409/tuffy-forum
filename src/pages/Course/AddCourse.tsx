@@ -1,97 +1,4 @@
-// import { TextField, Button, Paper, Box, FormHelperText } from '@mui/material';
-// import axios from 'axios';
-// import React, { useState } from 'react';
-// import { redirect } from 'react-router-dom';
-
-// interface FormValues {
-//   courseCode: string;
-//   courseName: string;
-// }
-
-// const initialFormValues: FormValues = {
-//   courseCode: '',
-//   courseName: '',
-// };
-
-// function AddCourse() {
-//   const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
-
-//   const postCourse = async () => {
-//     await axios
-//       .post(
-//         'http://localhost:8080/api/v1/course',
-//         { courseCode: formValues.courseCode, name: formValues.courseName },
-//         {
-//           withCredentials: true,
-//         }
-//       )
-//       .then((res) => {
-//         redirect('/courses');
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//       });
-//   };
-
-//   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = event.target;
-//     setFormValues((prevValues) => ({
-//       ...prevValues,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-//     postCourse(); // Send form values to backend or do other logic here
-//     setFormValues(initialFormValues); // Reset form values after submitting
-//   };
-
-//   return (
-//     <Box
-//       sx={{
-//         display: 'flex',
-//         '& > :not(style)': {
-//           p: 10,
-//         },
-//       }}
-//     >
-//       <Paper>
-//         <form onSubmit={handleSubmit}>
-//           <TextField
-//             name="courseCode"
-//             label="Course Code"
-//             value={formValues.courseCode}
-//             onChange={handleInputChange}
-//             inputProps={{
-//               pattern: '[a-zA-Z]{4} \\d{3}', // Add your regular expression pattern here
-//               title:
-//                 'Input must match the format of 4 letters and a space, followed by 3 digits',
-//             }}
-//             helperText="Format Example: CPSC 362"
-//             fullWidth
-//             required
-//           />
-//           <TextField
-//             name="courseName"
-//             label="Course Name"
-//             value={formValues.courseName}
-//             onChange={handleInputChange}
-//             fullWidth
-//             required
-//           />
-
-//           <Button type="submit" variant="contained" color="primary">
-//             Submit
-//           </Button>
-//         </form>
-//       </Paper>
-//     </Box>
-//   );
-// }
-
-// export default AddCourse;
-
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -127,6 +34,8 @@ function NewCourseForm() {
   const [success, setSuccess] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [courseList, setCourseList] = useState<any[]>([]);
+  const [showCourses, setShowCourses] = useState(false);
 
   const postCourse = async () => {
     await axios
@@ -138,31 +47,38 @@ function NewCourseForm() {
         }
       )
       .then((res) => {
-        redirect('/courses');
         dispatch(setCourse(res.data));
         setSuccess(true);
+        setShowSuccess(true);
       })
       .catch((err) => {
         if (err.response && err.response.status === 400) {
           setShowError(true);
         } else {
           console.error(err);
+          setShowError(true);
+          setSuccess(false);
         }
       });
   };
 
-  const setCourseId = async () => {
+  const fetchCourses = async () => {
     await axios
-      .post(
-        `http://localhost:8080/api/v1/add/course/${course?.courseId}`,
-        { user, course },
-        {
-          withCredentials: true,
-        }
-      )
+      .get('http://localhost:8080/api/v1/courses', {
+        withCredentials: true,
+      })
       .then((res) => {
-        redirect('/user/courses');
-        setSuccess(false);
+        const sortedCourses = res.data.sort((a: any, b: any) => {
+          // Sort by course code first
+          const codeCompare = a.courseCode.localeCompare(b.courseCode);
+          if (codeCompare !== 0) {
+            return codeCompare;
+          }
+
+          // If course codes are equal, sort by course name
+          return a.name.localeCompare(b.name);
+        });
+        setCourseList(sortedCourses);
       })
       .catch((err) => {
         console.error(err);
@@ -170,10 +86,32 @@ function NewCourseForm() {
   };
 
   useEffect(() => {
-    if (success) {
-      setCourseId();
-    }
-  }, [success]);
+    fetchCourses();
+  }, []);
+
+  // const setCourseId = async () => {
+  //   await axios
+  //     .post(
+  //       `http://localhost:8080/api/v1/add/course/${course?.courseId}`,
+  //       { user, course },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((res) => {
+  //       redirect('/user/courses');
+  //       setSuccess(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (success) {
+  //     setCourseId();
+  //   }
+  // }, [success]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -185,8 +123,11 @@ function NewCourseForm() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    postCourse(); // Send form values to backend or do other logic here
-    setFormValues(initialFormValues); // Reset form values after submitting
+    postCourse().then(() => {
+      setFormValues(initialFormValues); // Reset form values after submitting
+      fetchCourses(); // Update the course list after submitting
+      setShowCourses(true); // Show the course list after submitting
+    });
   };
 
   const handleSnackbarOpen = (message: string) => {
@@ -218,12 +159,12 @@ function NewCourseForm() {
               fullWidth
               required
               helperText="Format Example: CPSC 362"
-              // error={
-              //   formValues.courseCode === '' ||
-              //   !formValues.courseCode.match('[a-zA-Z]{4} [0-9]{3}') // error with being able to enter with more than 3 digits
-              // }
+              error={
+                formValues.courseCode === '' ||
+                !formValues.courseCode.match(/^[a-zA-Z]{4} [0-9]{3}$/) // error with being able to enter with more than 3 digits
+              }
               sx={{}}
-              color="error"
+              color="success"
             />
             <TextField
               name="courseName"
@@ -236,7 +177,7 @@ function NewCourseForm() {
               helperText="Format Example: Introduction to Software Engineering"
               error={
                 formValues.courseName === '' ||
-                !formValues.courseName.match('[a-zA-Z0-9 ]+')
+                !formValues.courseName.match(/^[a-zA-Z0-9 ]+$/)
               }
               onError={() => {
                 handleSnackbarOpen('Please enter a valid course name');
@@ -249,25 +190,82 @@ function NewCourseForm() {
           </Button>
         </form>
       </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '32px',
+          padding: '16px',
+        }}
+      >
+        <Button
+          onClick={() => setShowCourses(!showCourses)}
+          variant="contained"
+          color="secondary"
+          sx={{ marginTop: '16px' }}
+        >
+          {showCourses ? 'Hide Courses' : 'View Courses'}
+        </Button>
+        {showCourses && courseList.length > 0 && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: '32px',
+              width: '100%',
+            }}
+          >
+            <h3>Course List</h3>
+            <ul
+              style={{
+                textAlign: 'left',
+              }}
+            >
+              {courseList.map((course) => (
+                <li key={course.courseId}>
+                  {course.courseCode} - {course.name}
+                </li>
+              ))}
+            </ul>
+          </Box>
+        )}
+      </Box>
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccess(false)}
+      >
+        <MuiAlert
+          onClose={() => setShowSuccess(false)}
+          severity="success"
+          action={
+            <Button color="inherit" size="small" onClick={fetchCourses}>
+              View Courses
+            </Button>
+          }
+        >
+          Course added successfully!
+        </MuiAlert>
+      </Snackbar>
       <Snackbar
         open={showError}
-        // autoHideDuration={3000}
+        autoHideDuration={3000}
         onClose={() => setShowError(false)}
       >
         <MuiAlert
           onClose={() => setShowError(false)}
           severity="error"
           action={
-            <Button
-              color="inherit"
-              size="small"
-              onClick={() => navigate('/courses')}
-            >
+            <Button color="inherit" size="small" onClick={fetchCourses}>
               View Courses
             </Button>
           }
         >
-          Course is already on the list
+          {showError && !success
+            ? 'Course is already on the list'
+            : 'Error adding question! Make sure to follow the formatting constraints!'}
         </MuiAlert>
       </Snackbar>
     </Container>

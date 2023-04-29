@@ -211,7 +211,7 @@ export default function Navbar() {
               value={value}
               onChange={handleChange}
               aria-label="icon-tabs"
-              sx={{ width: 'fit-content' }}
+              sx={{ width: 'auto' }}
             >
               <Tab label="Home" href="/" icon={<HomeIcon />} />
               <Tab label="Post" href="/postquestion" icon={<PostAddIcon />} />
@@ -221,7 +221,7 @@ export default function Navbar() {
           </Box>
           <Box
             sx={{
-              display: 'flex',
+              display: 'auto',
               justifyContent: 'center',
               width: 'fit-content',
             }}
