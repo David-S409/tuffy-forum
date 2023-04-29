@@ -8,7 +8,6 @@ import LoginSuccess from './pages/login/LoginSuccess';
 import Navbar from './components/Navigation/Navbar';
 import NewQuestionForm from './pages/Question/NewQuestionForm';
 import Footer from './components/Footer/footer';
-import NewCourseForm from './pages/Course/NewCourseForm';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
 import AddCourse from './pages/Course/AddCourse';
