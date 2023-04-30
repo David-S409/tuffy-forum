@@ -75,5 +75,5 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 65vh;
+    min-height: 64vh;
 }

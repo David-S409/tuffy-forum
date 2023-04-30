@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from 'tss-react/mui';
 import {
   Box,
@@ -7,6 +7,8 @@ import {
   Container,
   TextField,
   Stack,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material';
 import { RootState } from "../../../store";
 import { useSelector } from "react-redux";
@@ -27,6 +29,7 @@ const useStyles = makeStyles()(() => {
 export default function ProfileTab () {
   const { classes } = useStyles();
   const { user } = useSelector((state: RootState) => state.app);
+
   return (
     <Container maxWidth="md" className={classes.root}>
       <Stack 
@@ -35,7 +38,7 @@ export default function ProfileTab () {
         justifyContent="flex-start"
         spacing={1}
       >
-        <Typography minWidth={100}>
+        <Typography minWidth={100} color={"InfoText"}>
           First Name:
         </Typography>
         <TextField 
@@ -43,7 +46,7 @@ export default function ProfileTab () {
           size="small"
           label={user?.firstName}
         />
-        <Typography minWidth={100}>
+        <Typography minWidth={100} color={"InfoText"}>
           Last Name:
         </Typography>
         <TextField 
@@ -59,14 +62,47 @@ export default function ProfileTab () {
         spacing={1}
         marginTop={5}
       >
-        <Typography minWidth={100}>
+        <Typography minWidth={100} color={"InfoText"}>
           CSUF Email:
         </Typography>
         <TextField 
           disabled 
           size="small"
-          fullWidth
           label={user?.email}
+          sx={{
+            width:{sm: 200, md: 300}
+          }}
+        />
+      </Stack>
+      <Stack 
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        spacing={1}
+        marginTop={5}
+      >
+        <Typography minWidth={100} color={"InfoText"}>
+          Year: 
+        </Typography>
+        <TextField 
+          disabled 
+          size="small"
+          label={user?.year}
+          sx={{
+            width:{sm: 100, md: 150}
+          }}
+        />
+        <FormControlLabel
+          label="Is an Expert?"
+          control={<Checkbox />}
+          checked={user?.isExpert}
+          disabled
+        />
+        <FormControlLabel
+          label="Is a Mod?"
+          control={<Checkbox />}
+          checked={user?.isMod}
+          disabled
         />
       </Stack>
     </Container>

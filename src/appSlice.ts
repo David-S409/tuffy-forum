@@ -16,6 +16,7 @@ export interface UserState {
   profileImg: string;
   isExpert: boolean;
   isMod: boolean;
+  year: string;
 }
 
 export interface CourseInfo {

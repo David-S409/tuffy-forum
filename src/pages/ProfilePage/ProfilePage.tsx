@@ -1,8 +1,10 @@
 import * as React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import {
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import ProfileTab from './Tabs/ProfileTab';
@@ -50,7 +52,7 @@ export default function ProfilePage() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  //console.log(window.location.pathname);
+  
   return (
     <Box
       sx={{
@@ -60,8 +62,8 @@ export default function ProfilePage() {
         bgcolor: 'background.paper',
         marginTop: '-30px',
         padding: '10px',
+        width: 'auto',
       }}
-      //sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224 }}
     >
       <Tabs
         orientation="vertical"

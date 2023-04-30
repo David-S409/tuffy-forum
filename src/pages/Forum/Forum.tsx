@@ -31,6 +31,9 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flexDirection: 'column',
       minHeight: 'auto',
+      borderRadius: '16px',
+      backgroundColor: '#fff',
+      padding: '16px',
     },
     formControl: {
       minWidth: 200,
@@ -45,12 +48,8 @@ const useStyles = makeStyles()(() => {
       display: 'flex',
       alignItems: 'flex-end',
     },
-    searchField: {
-      marginRight: '16px',
-      marginBottom: '8px',
-      width: '100%',
-    },
     searchButton: {
+      marginLeft: '8px',
       marginBottom: '8px',
       minWidth: '100px',
     },
@@ -117,17 +116,21 @@ function Forum() {
   };
 
   return (
-    <Container maxWidth="md" className={classes.root}>
+    <Box
+      className={classes.root}
+      sx={{
+        boxShadow: 20,
+      }}
+    >
       <Typography variant="h4" component="h1" gutterBottom>
         Forum
       </Typography>
-      {isAuth && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-          <Button variant="contained" color="primary" href="/new-question">
-            Ask a Question
-          </Button>
-        </Box>
-      )}
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <Button variant="contained" color="primary" href="/postquestion">
+          Ask a Question
+        </Button>
+      </Box>
+
       <Paper
         sx={{ p: 2, bgcolor: 'transparent', boxShadow: 'none', mb: 3 }}
         elevation={0}
@@ -154,14 +157,6 @@ function Forum() {
             <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />
           </Box>
           <form onSubmit={handleSearchSubmit} className={classes.searchForm}>
-            <TextField
-              label="Search"
-              variant="outlined"
-              size="small"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className={classes.searchField}
-            />
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="course-name-label">Course Name</InputLabel>
               <Select
@@ -190,7 +185,7 @@ function Forum() {
         </Box>
         <QuestionList />
       </Paper>
-    </Container>
+    </Box>
   );
 }
 

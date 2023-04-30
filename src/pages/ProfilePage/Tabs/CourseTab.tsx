@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 const useStyles = makeStyles()(() => {
   return {
     root: {
-
+      
     },
     card: {
       paddingTop: 'auto',
@@ -33,10 +33,15 @@ const useStyles = makeStyles()(() => {
     },
   }})
 
+  interface User {
+    userId: number;
+  }
+
   interface Course {
     courseId: number;
     courseCode: string;
     name: string;
+    users: User;
   }
 
   export default function CourseTab () {
@@ -63,13 +68,15 @@ const useStyles = makeStyles()(() => {
     };
 
     useEffect(() => {
-      axios.get('http://localhost:8080/api/v1/courses', { withCredentials: true })
+      axios.get('http://localhost:8080/api/v1/user/courses', { withCredentials: true })
       .then((response) => {
         setCourses(response.data);
       }).catch((err) =>{
         console.error(err);
       })
-    }, [])
+    }, [courses])
+
+
 
   return (
     <Container maxWidth='md'>
@@ -104,7 +111,7 @@ const useStyles = makeStyles()(() => {
                   size="sm"
                   color="warning"
                   onClick={(e) => {
-                    axios.delete(`http://localhost:8080/api/v1/courses/${elem.courseId}`, { withCredentials: true })
+                    axios.get(`http://localhost:8080/api/v1/course/remove/${elem.courseId}`, { withCredentials: true })
                     .then((response) => {
                       console.log("Course deleted")
                     }).catch((err) => {

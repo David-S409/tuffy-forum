@@ -70,7 +70,7 @@ router.get('/courses/:id', async (req, res) => {
   if (course) {
     res.status(200).json(course);
   } else {
-    res.status(404).json({ error: 'Course not found' });
+    res.status(404).json({ error: 'Question not found' });
   }
 });
 
@@ -92,19 +92,56 @@ router.post('/course', isUserAuth, async (req, res) => {
   }
 });
 
+router.get('/course/remove/:id', isUserAuth, async (req, res) => {
+  const currentUser = req.user as User;
+  const { id } = req.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { userId: currentUser.userId },
+      select: { courses: true, userId: true },
+    });
+    if (user) {
+      const { courses } = user;
+      const updatedCourses = courses.filter(
+        (course) => course.courseId !== Number(id)
+      );
+      await prisma.user
+        .update({
+          where: { userId: user.userId },
+          data: {
+            courses: {
+              disconnect: { courseId: Number(id) },
+            },
+          },
+        })
+        .then(() => {
+          res.status(200).json(updatedCourses);
+        });
+    }
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 router.post('/add/course/:id', isUserAuth, async (req, res) => {
   const { id } = req.params;
   const currentUser = req.user as User;
 
   try {
-    const updatedUser = await prisma.user.update({
-      where: { userId: currentUser.userId },
-      data: {
-        courses: { connect: { courseId: Number(id) } },
-      },
+    await prisma.user.update({
+      where: { userId: Number(currentUser.userId) },
+      data: { courses: { connect: { courseId: Number(id) } } },
     });
+    await prisma.user
+      .findUnique({
+        where: { userId: currentUser.userId },
+        select: { courses: true },
+      })
+      .then((updatedCourses) => {
+        res.status(200).json(updatedCourses);
+      });
   } catch (error) {
-    res.status(500).json({ error: 'Error connecting Course to User' });
+    res.status(500).json({ error: 'Error adding Course' });
   }
 });
 
