@@ -136,13 +136,12 @@ function NewCourseForm() {
   };
 
   return (
-    <Container maxWidth="md">
+    <Box sx={{ backgroundColor: '#fff', borderRadius: '16px', boxShadow: 20 }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          boxShadow: 10,
           marginTop: '32px',
           padding: '16px',
         }}
@@ -268,7 +267,7 @@ function NewCourseForm() {
             : 'Error adding question! Make sure to follow the formatting constraints!'}
         </MuiAlert>
       </Snackbar>
-    </Container>
+    </Box>
   );
 }
 

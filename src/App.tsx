@@ -24,7 +24,7 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="/question/:questionId" element={<QuestionPage />} />
+      <Route path="/question/:questionId" Component={QuestionPage} element={<QuestionPage />} />
     </Routes>
   );
 }
