@@ -23,6 +23,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import taggers from '../../components/Tags/Tags';
 
 interface CourseValues {
   courseId: string;
@@ -69,30 +70,6 @@ function NewQuestionForm() {
     setCourseName(event.target.value.toString());
     console.log(event.target.value);
   };
-
-  const taggers = [
-    'React',
-    'Angular',
-    'Vue',
-    'Next',
-    'Nest',
-    'Express',
-    'MongoDB',
-    'PostgreSQL',
-    'MySQL',
-    'TypeScript',
-    'JavaScript',
-    'HTML',
-    'CSS',
-    'Java',
-    'C',
-    'C++',
-    'C#',
-    'Python',
-    'PHP',
-    'Ruby',
-    'Swift',
-  ];
 
   const onQuestionChange = (event: SelectChangeEvent<typeof question>) => {
     setQuestion(event.target.value as string);
@@ -182,8 +159,8 @@ function NewQuestionForm() {
         boxShadow: 20,
         borderRadius: '16px',
         backgroundColor: '#fff',
-        marginTop: '-160px',
         padding: '16px',
+        marginTop: '16px',
       }}
     >
       <header>

@@ -14,7 +14,7 @@ import {
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { RootState } from '../../store';
-import Tag from '../Tags/Tag';
+import taggers from '../Tags/Tags';
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -223,15 +223,6 @@ function QuestionList() {
               </Button>
             </Box>
             <ListItemText primary={question.title} secondary={question.body} />
-            <Box>
-              {question.tags.map((tag) => (
-                <Tag
-                  key={tag}
-                  label={tag}
-                  handleClick={async () => handleTagClick(tag)}
-                />
-              ))}
-            </Box>
             {question.responses.map((response) => (
               <ListItemText
                 key={response.id}

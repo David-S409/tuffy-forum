@@ -13,12 +13,33 @@ import {
 } from '@mui/material';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
+import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
+import taggers from '../../components/Tags/Tags';
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  const hours24 = date.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = date.getMinutes();
+  const amPm = hours24 >= 12 ? 'PM' : 'AM';
+
+  const formattedDate = `${month}/${day}/${year} ${hours12}:${minutes
+    .toString()
+    .padStart(2, '0')} ${amPm}`;
+  return formattedDate;
+}
 
 interface Question {
   questionId: string;
   header: string;
   text: string;
   tags: string[];
+  authorId: string;
   createdAt: string;
   course: {
     courseId: string;
@@ -45,7 +66,10 @@ function QuestionPage() {
         withCredentials: true,
       })
       .then((response) => {
-        setQuestion(response.data);
+        setQuestion({
+          ...response.data,
+          createdAt: response.data.postDate,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -61,18 +85,24 @@ function QuestionPage() {
   }
 
   return (
-    <Box sx={{ padding: '16px' }}>
-      <Typography variant="h4">User's Questions</Typography>
+    <Box paddingTop={10}>
+      <Typography variant="h2">Question Posted Successfully!</Typography>
       <Paper elevation={3} sx={{ padding: '16px', marginTop: '16px' }}>
         <Grid container spacing={2}>
           <Grid item xs={1}>
-            <Button>&uarr;</Button>
-            <Typography>0</Typography>
-            <Button>&darr;</Button>
+            <Button color="success">
+              <ArrowCircleUpTwoToneIcon fontSize="large" />
+            </Button>
+            <Typography variant="h4" align="center">
+              0
+            </Typography>
+            <Button color="error">
+              <ArrowCircleDownTwoToneIcon fontSize="large" />
+            </Button>
           </Grid>
           <Grid item xs={11}>
             <Grid container justifyContent="space-between">
-              <Typography variant="h6">{question.header}</Typography>
+              <Typography variant="h4">{question.header}</Typography>
               <Link
                 to={`/course/${question.course?.courseId}`}
                 style={{ textDecoration: 'none' }}
@@ -80,8 +110,14 @@ function QuestionPage() {
                 <Chip label={question.course?.courseCode} />
               </Link>
             </Grid>
-            <Box>
-              <Typography>{question.text}</Typography>
+            <Box sx={{ paddingTop: '16px', paddingBottom: '32px' }}>
+              <Typography
+                component="pre"
+                sx={{ whiteSpace: 'pre-wrap' }}
+                align="left"
+              >
+                {question.text}
+              </Typography>
             </Box>
             <Grid container spacing={1}>
               {/* Add a conditional rendering for the tags section */}
@@ -94,14 +130,12 @@ function QuestionPage() {
                   </Grid>
                 ))}
             </Grid>
-            <Typography variant="caption">
-              Posted by{' '}
-              <Avatar
-                alt={question.user?.username}
-                src={question.user?.avatarUrl}
-                sx={{ width: 24, height: 24 }}
-              />{' '}
-              {question.user?.username} at {question.createdAt}
+            <Typography
+              variant="caption"
+              sx={{ fontSize: '14px', paddingLeft: '640px' }}
+            >
+              Posted by Author {question.authorId} on{' '}
+              {formatDate(question.createdAt)}
             </Typography>
           </Grid>
         </Grid>

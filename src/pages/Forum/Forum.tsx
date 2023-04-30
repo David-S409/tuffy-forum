@@ -31,7 +31,7 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flexDirection: 'column',
       minHeight: 'auto',
-      marginTop: '-144px',
+      marginTop: '16px',
       borderRadius: '16px',
       backgroundColor: '#fff',
       padding: '16px',
