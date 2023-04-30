@@ -1,6 +1,7 @@
 import { PrismaClient, User } from '@prisma/client';
 import express from 'express';
 import { z } from 'zod';
+import { connect } from 'http2';
 import isUserAuth from '../../middleware/auth';
 
 const router = express.Router();
@@ -75,8 +76,9 @@ router.get('/courses/:id', async (req, res) => {
 });
 
 router.post('/course', isUserAuth, async (req, res) => {
+  const currentUser = req.user as User;
+
   const { body } = req;
-  console.log(body);
 
   try {
     await courseScheme.parseAsync(body);
@@ -86,7 +88,16 @@ router.post('/course', isUserAuth, async (req, res) => {
         name: body.name,
       },
     });
-    res.status(200).json(result);
+
+    await prisma.user
+      .update({
+        where: { userId: currentUser.userId },
+        data: { courses: { connect: { courseId: result.courseId } } },
+        select: { courses: true },
+      })
+      .then((user) => {
+        res.status(200).json(user);
+      });
   } catch (error) {
     res.status(400).json(error);
   }

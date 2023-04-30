@@ -19,6 +19,7 @@ const useStyles = makeStyles()((theme) => {
       padding: theme.spacing(2),
       position: 'relative',
       width: 'center',
+      color: 'white',
     },
     link: {
       margin: theme.spacing(1.5, 1),
@@ -42,16 +43,11 @@ export default function Footer() {
       <Typography variant="h6" align="center" gutterBottom>
         About Us
       </Typography>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        color="textSecondary"
-        component="p"
-      >
+      <Typography variant="subtitle1" align="center" component="p">
         Tuffy Forum is a platform for students to post questions and get help
         from other students and instructors.
       </Typography>
-      <Typography variant="body2" color="textSecondary" align="center">
+      <Typography variant="body2" color="white" align="center">
         {'Made by '}
         <Link color="inherit" href="https://example.com/">
           John Doe
@@ -69,7 +65,7 @@ export default function Footer() {
           Jane Dane
         </Link>
       </Typography>
-      <Typography variant="body2" color="textSecondary" align="center">
+      <Typography variant="body2" color="white" align="center">
         {'© '}
         {new Date().getFullYear()}
         {' Tuffy Forum'}

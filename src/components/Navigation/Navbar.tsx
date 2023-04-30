@@ -158,6 +158,9 @@ export default function Navbar() {
     if (path === '/postquestion') {
       return 1;
     }
+    if (path === '/question/:questionId') {
+      return 1;
+    }
     if (path === '/addcourse') {
       return 2;
     }
@@ -221,7 +224,7 @@ export default function Navbar() {
           </Box>
           <Box
             sx={{
-              display: 'flex',
+              display: 'auto',
               justifyContent: 'center',
               width: 'fit-content',
             }}
