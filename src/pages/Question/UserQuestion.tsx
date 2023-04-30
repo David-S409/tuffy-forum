@@ -35,6 +35,11 @@ function formatDate(dateString: string) {
   return formattedDate;
 }
 
+interface Course {
+  courseId: number;
+  courseCode: string;
+  courseName: string;
+}
 interface Question {
   questionId: string;
   header: string;
@@ -42,10 +47,7 @@ interface Question {
   tags: string[];
   authorId: string;
   createdAt: string;
-  course: {
-    courseId: string;
-    courseCode: string;
-  };
+  course: Course;
   user: {
     userId: string;
     username: string;
@@ -81,10 +83,23 @@ function QuestionPage() {
       .get(`http://localhost:8080/api/v1/questions/${questionId}`, {
         withCredentials: true,
       })
-      .then((response) => {
+      .then(async (response) => {
+        // Fetch course data using courseId
+        const { courseId } = response.data;
+        const courseResponse = await axios.get(
+          `http://localhost:8080/api/v1/courses/${courseId}`,
+          {
+            withCredentials: true,
+          }
+        );
+
         setQuestion({
           ...response.data,
           createdAt: response.data.postDate,
+          course: {
+            courseId: courseResponse.data.courseId,
+            courseCode: courseResponse.data.courseCode,
+          },
         });
       })
       .catch((err) => {
@@ -143,8 +158,7 @@ function QuestionPage() {
                 style={{ textDecoration: 'none' }}
               >
                 <Chip
-                  // label={question.course?.courseCode}
-                  label="Course Placeholder"
+                  label={question.course?.courseCode || 'No Course'}
                   size="medium"
                   color="warning"
                   style={{ cursor: 'pointer' }}
