@@ -136,13 +136,19 @@ function NewCourseForm() {
   };
 
   return (
-    <Box sx={{ backgroundColor: '#fff', borderRadius: '16px', boxShadow: 20 }}>
+    <Box
+      sx={{
+        backgroundColor: '#fff',
+        borderRadius: '16px',
+        boxShadow: 20,
+        marginTop: '16px',
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginTop: '32px',
           padding: '16px',
         }}
       >

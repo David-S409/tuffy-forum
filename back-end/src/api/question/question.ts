@@ -50,23 +50,17 @@ router.get('/questions/search', async (req, res) => {
 
 router.get('/questions/:id', async (req, res) => {
   const { id } = req.params;
-  const questionId = parseInt(id, 10);
-
-  if (isNaN(questionId)) {
-    res.status(400).json({ error: 'Invalid question ID' });
-    return;
-  }
-
   const question = await prisma.question.findUnique({
     where: {
-      questionId,
+      questionId: Number(id),
     },
-    include: {
-      answers: true,
-    },
+    include: { answers: true },
   });
-
-  res.json(question);
+  if (question) {
+    res.status(200).json(question);
+  } else {
+    res.status(404).json({ error: 'Question not found' });
+  }
 });
 
 router.post('/question', isUserAuth, async (req, res) => {

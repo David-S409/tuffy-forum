@@ -1,17 +1,17 @@
 /* eslint-disable no-restricted-globals */
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import LoginIcon from '@mui/icons-material/Login';
 import { makeStyles } from 'tss-react/mui';
 import { Box } from '@mui/material';
 import { setIsAuth, setUser } from '../../appSlice';
+import { RootState } from '../../store';
 
 const useStyles = makeStyles()(() => {
   return {
     root: {
-      backgroundColor: '#3f51b5',
       padding: 'auto',
     },
   };
@@ -21,6 +21,14 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { classes } = useStyles();
+  const { isAuth } = useSelector((state: RootState) => state.app);
+  const logoutUser = async () => {
+    localStorage.removeItem('auth');
+    dispatch(setUser(null));
+    dispatch(setIsAuth(false));
+    location.reload();
+  };
+
   const fetchAuthUser = async () => {
     const response = await axios
       .get('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
@@ -58,17 +66,31 @@ export default function LoginPage() {
   };
   return (
     <Box marginTop={37}>
-      <Button
-        startIcon={<LoginIcon />}
-        variant="contained"
-        onClick={googleSSO}
-        size="large"
-        color="success"
-        focusRipple
-        className={classes.root}
-      >
-        Login
-      </Button>
+      {isAuth ? (
+        <Button
+          onClick={logoutUser}
+          href="/"
+          variant="contained"
+          size="large"
+          color="secondary"
+          focusRipple
+          className={classes.root}
+        >
+          Logout
+        </Button>
+      ) : (
+        <Button
+          startIcon={<LoginIcon />}
+          variant="contained"
+          onClick={googleSSO}
+          size="large"
+          color="success"
+          focusRipple
+          className={classes.root}
+        >
+          Login
+        </Button>
+      )}
     </Box>
   );
 }
