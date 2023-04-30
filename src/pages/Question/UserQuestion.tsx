@@ -59,6 +59,7 @@ interface Params extends Record<string, string | undefined> {
 function QuestionPage() {
   const [question, setQuestion] = useState<Question | null>(null);
   const { questionId } = useParams<Params>();
+  const [tags, setTags] = useState<string[]>([]);
 
   const fetchQuestion = async () => {
     await axios
@@ -88,7 +89,7 @@ function QuestionPage() {
     <Box paddingTop={10}>
       <Typography variant="h2">Question Posted Successfully!</Typography>
       <Paper elevation={3} sx={{ padding: '16px', marginTop: '16px' }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={1}>
             <Button color="success">
               <ArrowCircleUpTwoToneIcon fontSize="large" />
@@ -119,9 +120,18 @@ function QuestionPage() {
                 {question.text}
               </Typography>
             </Box>
+            {/* use taggers import to get the tags  */}
             <Grid container spacing={1}>
-              {/* Add a conditional rendering for the tags section */}
-              {question.tags &&
+              {taggers.map((tag, index) => (
+                <Grid item key={index}>
+                  <Link to={`/tag/${tag}`} style={{ textDecoration: 'none' }}>
+                    <Chip label={tag} />
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+
+            {/* {question.tags &&
                 question.tags.map((tag, index) => (
                   <Grid item key={index}>
                     <Link to={`/tag/${tag}`} style={{ textDecoration: 'none' }}>
@@ -129,7 +139,7 @@ function QuestionPage() {
                     </Link>
                   </Grid>
                 ))}
-            </Grid>
+            </Grid> */}
             <Typography
               variant="caption"
               sx={{ fontSize: '14px', paddingLeft: '640px' }}
@@ -139,6 +149,21 @@ function QuestionPage() {
             </Typography>
           </Grid>
         </Grid>
+        <Typography
+          variant="h4"
+          sx={{ paddingTop: '16px', paddingBottom: '8px' }}
+        >
+          Answers
+        </Typography>
+        <Paper
+          elevation={3}
+          sx={{ padding: '16px', marginTop: '8px', marginBottom: '16px' }}
+        >
+          <Typography variant="body1">
+            This is a placeholder for the answers section. Answers will be
+            displayed here like comments.
+          </Typography>
+        </Paper>
       </Paper>
     </Box>
   );
