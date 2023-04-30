@@ -71,8 +71,12 @@ interface Params extends Record<string, string | undefined> {
   questionId: string;
 }
 
-function QuestionPage() {
-  const [question, setQuestion] = useState<Question | null>(null);
+function QuestionPage({
+  question: initialQuestion,
+}: {
+  question: Question | null;
+}) {
+  const [question, setQuestion] = useState<Question | null>(initialQuestion);
   const { questionId } = useParams<Params>();
   const [tags, setTags] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Answer[] | null>(null);
