@@ -158,6 +158,9 @@ export default function Navbar() {
     if (path === '/postquestion') {
       return 1;
     }
+    if (path === '/questions/?') {
+      return 1;
+    }
     if (path === '/addcourse') {
       return 2;
     }

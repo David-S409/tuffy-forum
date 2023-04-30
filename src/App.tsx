@@ -11,6 +11,7 @@ import Footer from './components/Footer/footer';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
 import AddCourse from './pages/Course/AddCourse';
+import QuestionPage from './pages/Question/UserQuestion';
 
 export function App() {
   return (
@@ -23,6 +24,7 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/question/:questionId" element={<QuestionPage />} />
     </Routes>
   );
 }

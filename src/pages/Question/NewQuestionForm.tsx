@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState, useEffect } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -11,14 +14,11 @@ import {
   MenuItem,
   Snackbar,
   TextField,
-  ListItemText,
   Select,
-  InputLabel,
   FormControl,
 } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { SelectChangeEvent } from '@mui/material/Select';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -70,27 +70,6 @@ function NewQuestionForm() {
     console.log(event.target.value);
   };
 
-  const onTagChange = (event: SelectChangeEvent<typeof tags>) => {
-    const {
-      target: { value },
-    } = event;
-    setTags(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
-    console.log(event.target.value);
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
   const taggers = [
     'React',
     'Angular',
@@ -141,11 +120,6 @@ function NewQuestionForm() {
     setOpenSnackbar(false);
   };
 
-  const isValidCourseCode = (courseCode: string) => {
-    const courseCodePattern = /^[a-zA-Z]{4}[0-9]{4}$/;
-    return courseCodePattern.test(courseCode);
-  };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -192,7 +166,7 @@ function NewQuestionForm() {
         console.log(response);
         handleSnackbarOpen('Question asked successfully!');
         setCourseInitial(initialCourseValues);
-        navigate('/forum');
+        navigate(`/question/${response.data.questionId}`);
       })
       .catch((err) => {
         handleSnackbarOpen('Error asking question, please try again!');
@@ -223,20 +197,21 @@ function NewQuestionForm() {
             marginBottom: '16px',
           }}
         >
-          <InputLabel id="course-select-label">Course</InputLabel>
-
           {courses.length === 0 ? (
             <MenuItem value="">
               <em>No courses found! Add one below!</em>
             </MenuItem>
           ) : (
             <Select
-              label="Courses"
               value={courseName}
               labelId="course-select-label"
               id="course-select"
+              displayEmpty
               onChange={(e) => onCourseChange(e)}
             >
+              <MenuItem value="">
+                <em>Select a Course!</em>
+              </MenuItem>
               {courses.map((course) => (
                 <MenuItem key={course.courseId} value={course.courseId}>
                   {course.courseCode}
@@ -286,13 +261,16 @@ function NewQuestionForm() {
         </Box>
 
         <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-          <InputLabel id="tags-select-label">Tags</InputLabel>
           <Autocomplete
             multiple
             id="tags-select"
             options={taggers}
             defaultValue={[]}
             freeSolo
+            onChange={(event, value) => {
+              setTags(value);
+              console.log(value);
+            }}
             renderTags={(value: string[], getTagProps) =>
               value.map((option: string, index: number) => (
                 <Chip
@@ -311,7 +289,7 @@ function NewQuestionForm() {
               />
             )}
           />
-          <Select
+          {/* <Select
             label="Tags"
             multiple
             value={tags}
@@ -332,7 +310,7 @@ function NewQuestionForm() {
                 <ListItemText primary={tag} />
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
         </FormControl>
 
         <Button type="submit" variant="contained" color="primary">
