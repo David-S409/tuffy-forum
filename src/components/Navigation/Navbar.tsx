@@ -158,7 +158,7 @@ export default function Navbar() {
     if (path === '/postquestion') {
       return 1;
     }
-    if (path === '/question/?') {
+    if (path === '/question/:questionId') {
       return 1;
     }
     if (path === '/addcourse') {
@@ -214,7 +214,7 @@ export default function Navbar() {
               value={value}
               onChange={handleChange}
               aria-label="icon-tabs"
-              sx={{ width: 'auto' }}
+              sx={{ width: 'fit-content' }}
             >
               <Tab label="Home" href="/" icon={<HomeIcon />} />
               <Tab label="Post" href="/postquestion" icon={<PostAddIcon />} />

@@ -1,9 +1,11 @@
+/* eslint-disable no-restricted-globals */
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import LoginIcon from '@mui/icons-material/Login';
 import { makeStyles } from 'tss-react/mui';
+import { Box } from '@mui/material';
 import { setIsAuth, setUser } from '../../appSlice';
 
 const useStyles = makeStyles()(() => {
@@ -55,7 +57,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div>
+    <Box marginTop={37}>
       <Button
         startIcon={<LoginIcon />}
         variant="contained"
@@ -67,6 +69,6 @@ export default function LoginPage() {
       >
         Login
       </Button>
-    </div>
+    </Box>
   );
 }
