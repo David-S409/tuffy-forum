@@ -156,15 +156,9 @@ function NewQuestionForm() {
       sx={{
         display: 'auto',
         flexDirection: 'column',
-<<<<<<< HEAD
-        alignItems: 'center',
-        boxShadow: 10,
-        marginTop: '-70px',
-=======
         boxShadow: 20,
         borderRadius: '16px',
         backgroundColor: '#fff',
->>>>>>> fdaeb47330abedfa70a1cda95ef5659afcdb5094
         padding: '16px',
         marginTop: '16px',
       }}

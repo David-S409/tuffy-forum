@@ -1,44 +1,52 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Container,
+  IconButton,
+  Tooltip,
+  Link,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { makeStyles } from 'tss-react/mui';
-import { Container } from '@mui/material';
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-interface Column {
-  id: 'questionId' | 'header' | 'courseCode' | 'votes' | 'remove';
-  label: string;
-  minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => string;
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.divider,
+    color: theme.palette.common.black,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 1,
+  },
+}));
+
+interface Course {
+  courseId: number;
+  courseCode: string;
 }
 
-const columns: readonly Column[] = [
-  { id: 'questionId', label: 'ID', minWidth: 50},
-  { id: 'header', label: 'Title', minWidth: 250 },
-  { id: 'courseCode', label: 'Course', minWidth: 150 },
-  {
-    id: 'votes',
-    label: 'Vote',
-    minWidth: 170,
-  },
-  {
-    id: 'remove',
-    label: 'Remove',
-    minWidth: 170,
-  },
-];
-
 interface Data {
-  questId: number;
+  questionId: number;
   header: string;
+  courseId: number;
   votes: number;
+  remove: boolean;
 }
 
 
@@ -51,8 +59,7 @@ const useStyles = makeStyles()(() => {
       justifyContent: 'center',
       alignItems: 'flex-end',
       flexDirection: 'column',
-      height: '100%',
-      width: '100%',
+      width: 'auto',
     },
   }})
 
@@ -61,6 +68,7 @@ export default function QuestionTab () {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [questions, setQuestion] = React.useState<Data[]>([]);
+  const [courses, setCourses] = React.useState<Course[]>([]);
   
   React.useEffect(() => {
     axios.get('http://localhost:8080/api/v1/questions', { withCredentials: true})
@@ -69,9 +77,16 @@ export default function QuestionTab () {
     }).catch((err) => {
       console.error(err);
     })
+    axios.get('http://localhost:8080/api/v1/user/courses', { withCredentials: true})
+    .then((response) => {
+      setCourses(response.data);
+    }).catch((err) => {
+      console.error(err);
+    })
   }, [])
 
-
+  
+  
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -80,56 +95,67 @@ export default function QuestionTab () {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+ 
+
   return (
     <Container className={classes.root}>
-
-
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {questions
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((question) => {
+      <Table stickyHeader aria-label="sticky table">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell width={50}>ID</StyledTableCell>
+            <StyledTableCell width={250}>Title</StyledTableCell>
+            <StyledTableCell width={175}>Course</StyledTableCell>
+            <StyledTableCell width={125}>Vote #</StyledTableCell>
+            <StyledTableCell width={125}>Remove</StyledTableCell>  
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {questions
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((question) => (
+              <StyledTableRow key={question.questionId}>
+                    <StyledTableCell component="th" scope="row">
+                      {question.questionId}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        <Link href="#"
+                        underline='hover'
+                        >
+                          {question.header}
+                        </Link>
+                      </StyledTableCell>
+                {courses.map((course) => {
+                  if (question.courseId === course.courseId)
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={question.questId}>
-                      {columns.map((column) => {
-                        const value = question[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
+                    <StyledTableCell key={course.courseId} align="left">
+                      {course.courseCode}
+                      </StyledTableCell>
+                    )
+                  })}
+                  <StyledTableCell align="left">{question.votes}</StyledTableCell>
+                  <StyledTableCell align="left">
+                    <Tooltip title="Remove">
+                      <IconButton>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>  
+                  </StyledTableCell>  
+                    
+                  </StyledTableRow>
+            ))}
+        </TableBody>
+      </Table>
 
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={questions.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-
+    <TablePagination
+      rowsPerPageOptions={[10, 25, 100]}
+      component="div"
+      count={questions.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
     </Container>
   );
 }

@@ -31,10 +31,7 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flexDirection: 'column',
       minHeight: 'auto',
-<<<<<<< HEAD
-=======
       marginTop: '16px',
->>>>>>> fdaeb47330abedfa70a1cda95ef5659afcdb5094
       borderRadius: '16px',
       backgroundColor: '#fff',
       padding: '16px',
