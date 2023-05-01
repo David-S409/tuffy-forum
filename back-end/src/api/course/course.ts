@@ -1,7 +1,6 @@
 import { PrismaClient, User } from '@prisma/client';
 import express from 'express';
 import { z } from 'zod';
-import { connect } from 'http2';
 import isUserAuth from '../../middleware/auth';
 
 const router = express.Router();

@@ -142,6 +142,20 @@ Description: Upvotes or downvotes a question given an id **(Must be logged in)**
 }
 ```
 
+## Endpoint 6
+
+### `GET /question/remove/:id`
+
+Description: Remove Question **(Must be logged in)**.
+
+#### Response Example
+
+```json
+{
+  "msg": "Question Deleted"
+}
+```
+
 # Course API
 
 ## Endpoint 1

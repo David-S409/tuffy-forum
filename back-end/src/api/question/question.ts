@@ -107,4 +107,17 @@ router.post('/downvote/question/:id', isUserAuth, async (req, res) => {
     res.status(500).json({ error: 'Error down voting voting Post' });
   }
 });
+
+router.get('/question/remove/:id', isUserAuth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.question
+      .delete({ where: { questionId: Number(id) } })
+      .then(() => {
+        res.status(200).json({ msg: 'Question Deleted' });
+      });
+  } catch (error) {
+    console.log(error);
+  }
+});
 export default router;
