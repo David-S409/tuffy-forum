@@ -282,7 +282,7 @@ export default function Navbar() {
                         {user?.firstName}
                       </Typography>
                       <MenuItem component={Link} href={profileUrl}>
-                        Profile
+                        Dashboard
                       </MenuItem>
                       <MenuItem onClick={logoutUser}>Logout</MenuItem>
                     </Menu>
