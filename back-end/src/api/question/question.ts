@@ -34,8 +34,9 @@ router.get('/questions/search', async (req, res) => {
       take: 10,
       where: {
         OR: [
-          { header: { contains: query.header as string } },
-          { text: { contains: query.text as string } },
+          { header: { contains: query.search as string } },
+          { text: { contains: query.search as string } },
+          { tags: { has: query.search as string } },
         ],
       },
       include: { answers: true },
