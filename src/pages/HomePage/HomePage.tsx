@@ -5,8 +5,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import LoginPage from '../login/LoginPage';
-import QuestionList from '../../components/Questions/QuestionList';
-import NewCourseForm from '../Course/AddCourse';
+import QuestionPage from '../Question/UserQuestion';
 import { RootState } from '../../store';
 
 const useStyles = makeStyles()(() => {
@@ -50,19 +49,12 @@ function Home() {
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <h2>questions go here</h2>
-          <QuestionList />
+          <QuestionPage />
         </Container>
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>
-
-          {isAuth ? <p></p> : <LoginPage />}
+          {isAuth ? <p /> : <LoginPage />}
         </Container>
       </Grid>
     </Grid>
