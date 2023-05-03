@@ -28,7 +28,13 @@ export default function LoginPage() {
     dispatch(setIsAuth(false));
     location.reload();
   };
-
+  const redirectToOnboardingOrHome = (isOnboard: boolean) => {
+    if (isOnboard) {
+      navigate('/');
+    } else {
+      navigate('/onboarding');
+    }
+  };
   const fetchAuthUser = async () => {
     const response = await axios
       .get('http://localhost:8080/api/v1/auth/user', { withCredentials: true })
@@ -42,7 +48,7 @@ export default function LoginPage() {
       dispatch(setIsAuth(true));
       dispatch(setUser(response.data));
       localStorage.setItem('auth', JSON.stringify(setIsAuth(true)));
-      navigate('/');
+      redirectToOnboardingOrHome(response.data.isOnboard);
       location.reload();
     }
   };

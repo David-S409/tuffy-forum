@@ -2,8 +2,13 @@ import { useState } from 'react';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import image1 from '../../images/test-image.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const OnboardingPage = () => {
+
+  const navigate = useNavigate();
   const [slideIndex, setSlideIndex] = useState(0);
 
   const slides = [
@@ -31,6 +36,23 @@ const OnboardingPage = () => {
 
   const isPreviousDisabled = slideIndex === 0;
   const isNextDisabled = slideIndex === slides.length - 1;
+
+  const handleFinishedOnboarding = async () => {
+    // Replace this URL with the correct endpoint to update the user's isOnboard value
+    const updateOnboardUrl = 'http://localhost:8080/api/v1/users/update_onboard';
+
+    try {
+      const response = await axios.put(updateOnboardUrl, { isOnboard: true }, { withCredentials: true });
+
+      if (response.status === 200) {
+        // Redirect to the home page
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Error updating isOnboard value:', error);
+    }
+  };
+
 
   return (
     <Box sx={{ maxWidth: '100%' }}>
@@ -87,6 +109,15 @@ const OnboardingPage = () => {
                 >
                   Next
                 </Button>
+                <Button
+                  onClick={handleFinishedOnboarding}
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 4 }}
+                >
+                  Finished Onboarding!
+                </Button>
+
               </Box>
               <Box sx={{
                 position: 'absolute', bottom: '0', left: '50%',
