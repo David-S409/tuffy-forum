@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -17,8 +18,15 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { RootState } from '../../store';
-import QuestionPage from '../Question/UserQuestion';
+import QuestionPage, {
+  Answer,
+  Course,
+  Question,
+  Params,
+  formatDate,
+} from '../Question/UserQuestion';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -62,15 +70,37 @@ function Forum() {
   const [sortOption, setSortOption] = useState('newest');
   const [searchTerm, setSearchTerm] = useState('');
   const [expertsOnly, setExpertsOnly] = useState(false);
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   const fetchQuestions = async () => {
     await axios
-      .get(`http://localhost:8080/api/v1/questions`, {
+      .get('http://localhost:8080/api/v1/questions', {
+        params: {
+          sort: sortOption,
+          searchTerm,
+        },
         withCredentials: true,
       })
-      .then((response) => {
-        setQuestions(response.data);
+      .then(async (response) => {
+        const fetchedQuestions = await Promise.all(
+          response.data.map(async (question: Question) => {
+            const courseResponse = await axios.get(
+              `http://localhost:8080/api/v1/courses/${question.courseId}`,
+              {
+                withCredentials: true,
+              }
+            );
+
+            return {
+              ...question,
+              course: {
+                courseId: courseResponse.data.courseId,
+                courseCode: courseResponse.data.courseCode,
+              },
+            };
+          })
+        );
+        setQuestions(fetchedQuestions);
       })
       .catch((err) => {
         console.error(err);
@@ -79,7 +109,7 @@ function Forum() {
 
   useEffect(() => {
     fetchQuestions();
-  }, []);
+  }, [sortOption, searchTerm, expertsOnly]);
 
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSortOption(event.target.value);
@@ -138,7 +168,22 @@ function Forum() {
           </Box>
         </Box>
         {questions.map((question, index) => (
-          <QuestionPage key={index} question={question} />
+          <Link
+            key={index}
+            to={`/question/${question.questionId}`}
+            style={{
+              textDecoration: 'none',
+              color: 'inherit',
+              cursor: 'auto',
+            }}
+          >
+            <QuestionPage
+              question={{
+                ...question,
+                createdAt: formatDate(question.postDate),
+              }}
+            />
+          </Link>
         ))}
       </Paper>
     </Box>

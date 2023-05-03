@@ -46,6 +46,7 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       width: 'fit-content',
       flexBasis: 'fit-content',
+      paddingRight: '20px',
     },
     headerMiddle: {
       display: 'flex',
@@ -58,6 +59,7 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flex: 1,
       width: 'fit-content',
+      paddingLeft: '20px',
     },
     headerSearchContainer: {
       display: 'flex',
@@ -212,7 +214,7 @@ export default function Navbar() {
               value={value}
               onChange={handleChange}
               aria-label="icon-tabs"
-              sx={{ width: 'fit-content' }}
+              sx={{ width: '100%' }}
             >
               <Tab label="Home" href="/" icon={<HomeIcon />} />
               <Tab label="Post" href="/postquestion" icon={<PostAddIcon />} />
