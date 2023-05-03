@@ -45,10 +45,10 @@ model Question {
   text       String
   postDate   DateTime @default(now())
   votes      Int      @default(0)
-  tags       Tag[]
+  tags       String[] @default([])
   answers    Answer[]
 
-  @@index(fields: [header, text])
+  @@index(fields: [header, text, tags])
 }
 
 model Answer {
@@ -60,10 +60,4 @@ model Answer {
   text       String
   postDate   DateTime @default(now())
   voteCount  Int      @default(0)
-}
-
-model Tag {
-  tagId     Int        @id
-  name      String     @unique
-  questions Question[]
 }
