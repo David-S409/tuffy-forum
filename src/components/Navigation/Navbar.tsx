@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable consistent-return */
 /* eslint-disable no-restricted-globals */
@@ -155,7 +156,7 @@ export default function Navbar() {
     if (path === '/') {
       return 0;
     }
-    if (path === '/postquestion') {
+    if (path === '/postquestion' || path === '/question/?') {
       return 1;
     }
     if (path === '/addcourse') {
@@ -221,7 +222,7 @@ export default function Navbar() {
           </Box>
           <Box
             sx={{
-              display: 'flex',
+              display: 'auto',
               justifyContent: 'center',
               width: 'fit-content',
             }}

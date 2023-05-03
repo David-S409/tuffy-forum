@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
@@ -19,7 +18,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { RootState } from '../../store';
-import QuestionList from '../../components/Questions/QuestionList';
+import QuestionPage from '../Question/UserQuestion';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -31,7 +30,7 @@ const useStyles = makeStyles()(() => {
       alignItems: 'center',
       flexDirection: 'column',
       minHeight: 'auto',
-      marginTop: '-144px',
+      marginTop: '16px',
       borderRadius: '16px',
       backgroundColor: '#fff',
       padding: '16px',
@@ -63,20 +62,23 @@ function Forum() {
   const [sortOption, setSortOption] = useState('newest');
   const [searchTerm, setSearchTerm] = useState('');
   const [expertsOnly, setExpertsOnly] = useState(false);
-  const [courses, setCourses] = useState([]);
+  const [questions, setQuestions] = useState([]);
+
+  const fetchQuestions = async () => {
+    await axios
+      .get(`http://localhost:8080/api/v1/questions`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setQuestions(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get(
-          'http://localhost:8080/api/v1/questions'
-        );
-        setCourses(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchCourses();
+    fetchQuestions();
   }, []);
 
   const handleSortChange = (event: SelectChangeEvent<string>) => {
@@ -87,33 +89,10 @@ function Forum() {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-
-    try {
-      const response = await axios.post('http:localhost:8080/api/v1/question', {
-        searchTerm,
-        expertsOnly,
-        sortBy: sortOption,
-      });
-
-      // Do something with the search results
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleExpertsOnlyChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setExpertsOnly(event.target.checked);
-  };
-
-  const handleCourseChange = (event: SelectChangeEvent<string>) => {
-    setCourses(event.target.value);
   };
 
   return (
@@ -157,34 +136,10 @@ function Forum() {
             </Typography>
             <Switch checked={expertsOnly} onChange={handleExpertsOnlyChange} />
           </Box>
-          <form onSubmit={handleSearchSubmit} className={classes.searchForm}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="course-name-label">Course Name</InputLabel>
-              <Select
-                labelId="course-name-label"
-                id="course-name-select"
-                value={courses}
-                onChange={(e) => setCourses(e.target.value)}
-                autoWidth
-              >
-                {courses.map((course) => (
-                  <MenuItem key={course.id} value={course.name}>
-                    {course.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.searchButton}
-            >
-              Search
-            </Button>
-          </form>
         </Box>
-        <QuestionList />
+        {questions.map((question, index) => (
+          <QuestionPage key={index} question={question} />
+        ))}
       </Paper>
     </Box>
   );

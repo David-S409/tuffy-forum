@@ -10,6 +10,7 @@ const questionSchema = z.object({
   courseId: z.string(),
   header: z.string({ required_error: 'A Header is required!' }).min(1),
   text: z.string({ required_error: 'Question text is required!' }).min(1),
+  tags: z.string().array().optional(),
 });
 
 router.get('/questions', isUserAuth, async (req, res) => {
@@ -65,6 +66,7 @@ router.get('/questions/:id', async (req, res) => {
 
 router.post('/question', isUserAuth, async (req, res) => {
   const { body } = req;
+  const tags = body.tags ? body.tags : [];
   const user = req.user as User;
   try {
     await questionSchema.parseAsync(body);
@@ -74,6 +76,7 @@ router.post('/question', isUserAuth, async (req, res) => {
         courseId: Number(body.courseId),
         header: body.header,
         text: body.text,
+        tags,
       },
     });
     res.status(200).json(result);
@@ -105,6 +108,19 @@ router.post('/downvote/question/:id', isUserAuth, async (req, res) => {
     res.json({ votes: updatedPost.votes });
   } catch (error) {
     res.status(500).json({ error: 'Error down voting voting Post' });
+  }
+});
+
+router.get('/question/remove/:id', isUserAuth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.question
+      .delete({ where: { questionId: Number(id) } })
+      .then(() => {
+        res.status(200).json({ msg: 'Question Deleted' });
+      });
+  } catch (error) {
+    console.log(error);
   }
 });
 export default router;

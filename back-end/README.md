@@ -4,6 +4,22 @@
 
 Below is a list of available endpoints in the API:
 
+# User API
+
+## Endpoint 1
+
+### `GET /user/onboard`
+
+Description: Updates user to ONBOARDED **(Must be logged in)**.
+
+#### Response Example
+
+```json
+{
+  "success": "updated"
+}
+```
+
 # Question API
 
 ## Endpoint 1
@@ -139,6 +155,20 @@ Description: Upvotes or downvotes a question given an id **(Must be logged in)**
 ```json
 {
   "votes": 2
+}
+```
+
+## Endpoint 6
+
+### `GET /question/remove/:id`
+
+Description: Remove Question **(Must be logged in)**.
+
+#### Response Example
+
+```json
+{
+  "msg": "Question Deleted"
 }
 ```
 
