@@ -5,11 +5,10 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import ProfileTab from './Tabs/ProfileTab';
 import CourseTab from './Tabs/CourseTab';
 import QuestionTab from './Tabs/QuestionTab';
+import { pathToFileURL } from 'url';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,12 +40,14 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export default function ProfilePage() {
+export default function ProfilePage() { 
+  let path = location.pathname;
+  const urlId = path.substring(0,12);
+
   const currentTab = () => {
-    let path = location.pathname;
-    if (path === "/profile/u/1/UserProfile") return 0;
-    else if (path === "/profile/u/1/MyCourses") return 1;
-    else if (path === "/profile/u/1/MyQuestions") return 2;
+    if (path === `${urlId}/UserProfile`) return 0;
+    else if (path === `${urlId}/MyCourses`) return 1;
+    else if (path === `${urlId}/MyQuestions`) return 2;
     else return 0;
   }
   const tabNameToIndex: TabNameToIndex ={
@@ -61,7 +62,6 @@ export default function ProfilePage() {
     setTabId(tabNameToIndex[newValue]);
     setValue(newValue);
   };
-  console.log(location.pathname);
   return (
     <Box
       sx={{
