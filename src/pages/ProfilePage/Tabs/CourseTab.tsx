@@ -82,7 +82,7 @@ const useStyles = makeStyles()(() => {
 
   return (
     <Container maxWidth='md'>
-    {courses.length === 0 ? (
+    {courses.length == 0 ? (
       <Typography>No course found</Typography>
     ) : (
 

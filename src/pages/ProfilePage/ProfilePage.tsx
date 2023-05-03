@@ -17,6 +17,10 @@ interface TabPanelProps {
   value: number;
 }
 
+interface TabNameToIndex {
+  [key: number]: string;
+}
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -38,12 +42,26 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export default function ProfilePage() {
-  const [value, setValue] = React.useState(0);
+  const currentTab = () => {
+    let path = location.pathname;
+    if (path === "/profile/u/1/UserProfile") return 0;
+    else if (path === "/profile/u/1/MyCourses") return 1;
+    else if (path === "/profile/u/1/MyQuestions") return 2;
+    else return 0;
+  }
+  const tabNameToIndex: TabNameToIndex ={
+    0: "/UserProfile",
+    1: "/MyCourses",
+    2: "/MyQuestions"
+  }
+  const [value, setValue] = React.useState<number>(currentTab);
+  const [tabId, setTabId] = React.useState("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabId(tabNameToIndex[newValue]);
     setValue(newValue);
   };
-  console.log(value);
+  console.log(location.pathname);
   return (
     <Box
       sx={{
@@ -63,9 +81,9 @@ export default function ProfilePage() {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-        <Tab label="User" />
-        <Tab label="Course" />
-        <Tab label="Question" />
+        <Tab label="User" href='UserProfile' />
+        <Tab label="Course" href='MyCourses' />
+        <Tab label="Question" href='MyQuestions' />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ProfileTab />

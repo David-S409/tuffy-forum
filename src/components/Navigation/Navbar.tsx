@@ -114,7 +114,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { user, isAuth } = useSelector((state: RootState) => state.app);
-  const profileUrl = `/profile/u/#${user?.userId}`;
+  const profileUrl = `/profile/u/${user?.userId}/`;
   const checkUser = localStorage.getItem('auth');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

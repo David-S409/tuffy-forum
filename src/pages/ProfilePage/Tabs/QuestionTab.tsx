@@ -125,7 +125,7 @@ export default function QuestionTab () {
         <TableBody>
           {questions
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((question, index) => (
+            .map((question) => (
               <StyledTableRow key={questions.indexOf(question)}>
                     <StyledTableCell component="th" scope="row">
                       {question.questionId}
@@ -133,7 +133,7 @@ export default function QuestionTab () {
                       <StyledTableCell align="left"
                         sx={{maxWidth: 300}}
                       >
-                        <Link href="#"
+                        <Link href={`/question/${question.questionId}`}
                         underline='hover'
                         overflow='hidden'
                         width={250}
@@ -149,7 +149,7 @@ export default function QuestionTab () {
                       </StyledTableCell>
                     )
                   })}
-                  <StyledTableCell align="center">{question.votes}</StyledTableCell>
+                  <StyledTableCell align="left">{question.votes}</StyledTableCell>
                   <StyledTableCell align="left">
                       <IconButton 
                         title="Delete"
