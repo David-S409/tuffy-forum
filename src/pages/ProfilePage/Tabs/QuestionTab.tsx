@@ -10,11 +10,20 @@ import {
   Tooltip,
   Link,
 } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Modal,
+  ModalDialog,
+  Typography,
+} from '@mui/joy';
 import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { makeStyles } from 'tss-react/mui';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -69,6 +78,8 @@ export default function QuestionTab () {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [questions, setQuestion] = React.useState<Data[]>([]);
   const [courses, setCourses] = React.useState<Course[]>([]);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [ids, setIds] = React.useState(0);
   
   React.useEffect(() => {
     axios.get('http://localhost:8080/api/v1/questions', { withCredentials: true})
@@ -83,9 +94,7 @@ export default function QuestionTab () {
     }).catch((err) => {
       console.error(err);
     })
-  }, [])
-
-  
+  }, [questions])
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -96,7 +105,7 @@ export default function QuestionTab () {
     setPage(0);
   };
 
- 
+
 
   return (
     <Container className={classes.root}>
@@ -104,25 +113,29 @@ export default function QuestionTab () {
         <TableHead>
           <TableRow>
             <StyledTableCell width={50}>ID</StyledTableCell>
-            <StyledTableCell width={250}>Title</StyledTableCell>
+            <StyledTableCell width={300}>Title</StyledTableCell>
             <StyledTableCell width={175}>Course</StyledTableCell>
             <StyledTableCell width={125}>Vote #</StyledTableCell>
-            <StyledTableCell width={125}>Remove</StyledTableCell>  
+            <StyledTableCell width={125}>Delete</StyledTableCell>  
           </TableRow>
         </TableHead>
         <TableBody>
           {questions
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((question) => (
-              <StyledTableRow key={question.questionId}>
+            .map((question, index) => (
+              <StyledTableRow key={questions.indexOf(question)}>
                     <StyledTableCell component="th" scope="row">
                       {question.questionId}
                       </StyledTableCell>
-                      <StyledTableCell align="left">
+                      <StyledTableCell align="left"
+                        sx={{maxWidth: 300}}
+                      >
                         <Link href="#"
                         underline='hover'
+                        overflow='hidden'
+                        width={250}
                         >
-                          {question.header}
+                          {question.header.length <= 125 ? question.header: (question.header.substr(0,125) + "...")}
                         </Link>
                       </StyledTableCell>
                 {courses.map((course) => {
@@ -135,14 +148,53 @@ export default function QuestionTab () {
                   })}
                   <StyledTableCell align="left">{question.votes}</StyledTableCell>
                   <StyledTableCell align="left">
-                    <Tooltip title="Remove">
-                      <IconButton>
+                      <IconButton 
+                        title="Delete"
+                        onClick={() => {setIds(question.questionId), setOpen(true)}}
+                      >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>  
-                  </StyledTableCell>  
-                    
-                  </StyledTableRow>
+                      <Modal open={open} onClose={() => setOpen(false)}>
+                        <ModalDialog
+                          variant="outlined"
+                          role="alertdialog"
+                          aria-labelledby="alert-dialog-modal-title"
+                          aria-describedby="alert-dialog-modal-description"
+                        >
+                          <Typography
+                            id="alert-dialog-modal-title"
+                            component="h2"
+                            startDecorator={<WarningRoundedIcon />}
+                          >
+                            Confirmation
+                          </Typography>
+                          <Divider />
+                          <Typography id="alert-dialog-modal-description" textColor="text.tertiary">
+                            Are you sure you want to discard this question?
+                          </Typography>
+                          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', pt: 2 }}>
+                            <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>
+                              Cancel
+                            </Button>
+                            <Button 
+                            variant="solid" 
+                            color="danger" 
+                            onClick={() => {
+                              axios.get(`http://localhost:8080/api/v1/question/remove/${ids}`, { withCredentials: true })
+                              .then((response) => {
+                                console.log(`Question ${ids} deleted`);
+                                setOpen(false);
+                              }).catch((err) => {
+                                console.error(err);
+                              })}}
+                              >
+                              Confirm
+                            </Button>
+                          </Box>
+                        </ModalDialog>
+                      </Modal>
+                  </StyledTableCell>    
+                </StyledTableRow>
             ))}
         </TableBody>
       </Table>
@@ -159,3 +211,13 @@ export default function QuestionTab () {
     </Container>
   );
 }
+
+// onClick={(e) =>{
+//   axios.get(`http://localhost:8080/api/v1/question/remove/${question.questionId}`, { withCredentials: true })
+//   .then((response) => {
+//     console.log("Course deleted")
+//   }).catch((err) => {
+//     console.error(err);
+//   })
+// }}
+// >

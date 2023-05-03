@@ -90,28 +90,28 @@ const useStyles = makeStyles()(() => {
         rowSpacing={3} 
         columnSpacing={{ xs: 2, sm: 3, md: 4}}
         >
-        {courses.map((elem, index) => (
+        {courses.map((course, index) => (
             <Grid item xs>
-            <Card key={courses.indexOf(elem)} variant="outlined" sx={{ width: 320 }}>
+            <Card key={courses.indexOf(course)} variant="outlined" sx={{ width: 320 }}>
               
               <CardHeader 
-                title={elem.courseCode}
-                subheader={elem.name}
+                title={course.courseCode}
+                subheader={course.name}
               />
               <Checkbox
-                value={elem.courseId}
+                value={course.courseId}
                 onChange={handleCheck}
-                checked={ids.includes(elem.courseId) ? true : false}
+                checked={ids.includes(course.courseId) ? true : false}
                 sx={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}
               />
               <Box sx={{ display: 'flex' }}>
                 <Button
-                  disabled={ids.includes(elem.courseId) ? false : true}
+                  disabled={ids.includes(course.courseId) ? false : true}
                   variant="solid"
                   size="sm"
                   color="warning"
-                  onClick={(e) => {
-                    axios.get(`http://localhost:8080/api/v1/course/remove/${elem.courseId}`, { withCredentials: true })
+                  onClick={() => {
+                    axios.get(`http://localhost:8080/api/v1/course/remove/${course.courseId}`, { withCredentials: true })
                     .then((response) => {
                       console.log("Course deleted")
                     }).catch((err) => {
