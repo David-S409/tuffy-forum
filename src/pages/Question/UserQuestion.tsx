@@ -18,6 +18,8 @@ import axios from 'axios';
 import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import taggers from '../../components/Tags/Tags';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -85,6 +87,7 @@ function QuestionPage({
   const [answers, setAnswers] = useState<Answer[] | null>(null);
   const [answerText, setAnswerText] = useState<string>('');
   const [showAnswerBox, setShowAnswerBox] = useState<boolean>(false);
+  const { user } = useSelector((state: RootState) => state.app);
 
   const fetchQuestion = async () => {
     await axios
@@ -206,8 +209,12 @@ function QuestionPage({
             </Box>
             {/* use taggers import to get the tags  */}
             <Grid container spacing={1}>
-              {taggers.map((tag, index) => (
-                <Grid item key={index}>
+              {question.tags.length === 0 ? (
+                <Typography>No tags</Typography>
+              ) : (
+                <Grid item>
+                {question.tags.map((tag) => {
+                  return (
                   <Link to={`/tag/${tag}`} style={{ textDecoration: 'none' }}>
                     <Chip
                       label={tag}
@@ -216,14 +223,17 @@ function QuestionPage({
                       style={{ cursor: 'pointer' }}
                     />
                   </Link>
+                  )
+                })}
                 </Grid>
-              ))}
-            </Grid>
+              
+              ) }
+              </Grid>
             <Typography
               variant="caption"
-              sx={{ fontSize: '14px', paddingLeft: '608px' }}
+              sx={{ fontSize: '14px', paddingLeft: '608px', display: 'flex', justifyContent: 'flex-end', mt: 2}}
             >
-              Posted by Author {question.authorId} on{' '}
+              Posted by {user?.firstName} {user?.lastName} on{' '}
               {formatDate(question.createdAt)}
             </Typography>
           </Grid>
