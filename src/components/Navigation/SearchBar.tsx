@@ -37,7 +37,7 @@ const useStyles = makeStyles()(() => {
     },
     popper: {
       zIndex: 1,
-      marginTop: '8px',
+      offset: '0, 8px',
       minWidth: '250px',
     },
     menuItem: {
@@ -51,7 +51,7 @@ type SearchType = 'course' | 'question' | 'tag';
 function SearchBar() {
   const { classes } = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState<SearchType>('question');
+  const [searchType, setSearchType] = useState<SearchType>();
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -75,16 +75,24 @@ function SearchBar() {
       return;
     }
 
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/search?type=${searchType}&q=${searchTerm}`
-      );
-      setSearchResults(response.data);
-      setIsOpen(true);
-    } catch (error) {
-      console.log(error);
-      setSearchResults([]);
-    }
+    await axios
+      .get(
+        `http://localhost:8080/api/v1/questions/search?search=${searchTerm}`,
+        {
+          withCredentials: true,
+          params: {
+            search: searchTerm,
+            type: searchType,
+          },
+        }
+      )
+      .then((response) => {
+        setSearchResults(response.data);
+        setIsOpen(true);
+      })
+      .catch((error) => {
+        console.log('error:', error);
+      });
   };
 
   const handleItemClick = (result: any) => {
@@ -111,41 +119,38 @@ function SearchBar() {
 
   return (
     <div className={classes.root}>
-      <IconButton
-        color="inherit"
-        className={classes.searchButton}
-        onClick={handleSearch}
-        ref={anchorRef}
-      />
       <InputBase
-        placeholder="Search"
         className={classes.input}
+        placeholder="Search…"
         value={searchTerm}
         onChange={handleSearchTermChange}
-        onKeyDownCapture={handleKeyDown}
+        onKeyDown={handleKeyDown}
+        inputProps={{ 'aria-label': 'search' }}
       />
       <IconButton
-        color="inherit"
         className={classes.searchButton}
         onClick={handleSearch}
+        aria-label="search"
       >
         <SearchIcon />
       </IconButton>
       <Popper
+        className={classes.popper}
         open={isOpen}
         anchorEl={anchorRef.current}
-        className={classes.popper}
+        placement="bottom-start"
+        disablePortal
       >
         <Paper>
           <ClickAwayListener onClickAway={handleClickAway}>
             <MenuList autoFocusItem={isOpen}>
               {searchResults.map((result) => (
                 <MenuItem
-                  key={result.courseId || result.questionId}
+                  key={result.questionId || result.courseId}
                   className={classes.menuItem}
                   onClick={() => handleItemClick(result)}
                 >
-                  {result.courseName || result.questionTitle}
+                  {result.courseId ? result.courseName : result.questionTitle}
                 </MenuItem>
               ))}
             </MenuList>
