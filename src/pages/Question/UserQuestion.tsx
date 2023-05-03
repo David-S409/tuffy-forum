@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -18,7 +19,7 @@ import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import taggers from '../../components/Tags/Tags';
 
-function formatDate(dateString: string) {
+export function formatDate(dateString: string) {
   const date = new Date(dateString);
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -35,12 +36,14 @@ function formatDate(dateString: string) {
   return formattedDate;
 }
 
-interface Course {
+export interface Course {
   courseId: number;
   courseCode: string;
   courseName: string;
 }
-interface Question {
+export interface Question {
+  courseId: any;
+  postDate(postDate: any): string;
   questionId: string;
   header: string;
   text: string;
@@ -55,7 +58,7 @@ interface Question {
   };
 }
 
-interface Answer {
+export interface Answer {
   answerId: string;
   text: string;
   authorId: string;
@@ -67,7 +70,7 @@ interface Answer {
   };
 }
 
-interface Params extends Record<string, string | undefined> {
+export interface Params extends Record<string, string | undefined> {
   questionId: string;
 }
 
@@ -81,6 +84,7 @@ function QuestionPage({
   const [tags, setTags] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Answer[] | null>(null);
   const [answerText, setAnswerText] = useState<string>('');
+  const [showAnswerBox, setShowAnswerBox] = useState<boolean>(false);
 
   const fetchQuestion = async () => {
     await axios
@@ -99,7 +103,7 @@ function QuestionPage({
 
         setQuestion({
           ...response.data,
-          createdAt: response.data.postDate,
+          createdAt: formatDate(response.data.postDate),
           course: {
             courseId: courseResponse.data.courseId,
             courseCode: courseResponse.data.courseCode,
@@ -112,6 +116,37 @@ function QuestionPage({
   };
 
   const fetchAnswers = async () => {
+    await axios
+      .get(`http://localhost:8080/api/v1/questions/${questionId}/answers`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setAnswers(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchQuestion();
+  }, [questionId]);
+
+  useEffect(() => {
+    if (question) {
+      fetchAnswers();
+    }
+  }, [question]);
+
+  if (!question) {
+    return <div>Loading...</div>;
+  }
+
+  const handleQuestionClick = () => {
+    setShowAnswerBox((prevValue) => !prevValue);
+  };
+
+  const submitAnswer = async () => {
     await axios
       .post(
         `http://localhost:8080/api/v1/questions/${questionId}/answers`,
@@ -129,18 +164,9 @@ function QuestionPage({
       });
   };
 
-  useEffect(() => {
-    fetchQuestion();
-    fetchAnswers();
-  }, [questionId]);
-
-  if (!question) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Box paddingTop={0} color="white">
-      <Typography variant="h2">Question Posted Successfully!</Typography>
+      <Typography variant="h2">Question</Typography>
       <Paper elevation={3} sx={{ padding: '16px', marginTop: '16px' }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={1}>
@@ -193,25 +219,24 @@ function QuestionPage({
                 </Grid>
               ))}
             </Grid>
-
-            {/* {question.tags &&
-                question.tags.map((tag, index) => (
-                  <Grid item key={index}>
-                    <Link to={`/tag/${tag}`} style={{ textDecoration: 'none' }}>
-                      <Chip label={tag} />
-                    </Link>
-                  </Grid>
-                ))}
-            </Grid> */}
             <Typography
               variant="caption"
-              sx={{ fontSize: '14px', paddingLeft: '640px' }}
+              sx={{ fontSize: '14px', paddingLeft: '608px' }}
             >
               Posted by Author {question.authorId} on{' '}
               {formatDate(question.createdAt)}
             </Typography>
           </Grid>
         </Grid>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleQuestionClick}
+          sx={{ marginTop: '16px', marginBottom: '16px' }}
+        >
+          Add Response
+        </Button>
 
         {answers &&
           answers.map((answer, index) => (
@@ -281,6 +306,31 @@ function QuestionPage({
               </Grid>
             </Paper>
           ))}
+        {showAnswerBox && (
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12}>
+              <Typography variant="h4">Submit Your Answer</Typography>
+              <Box sx={{ marginTop: '16px', marginBottom: '16px' }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={answerText}
+                  onChange={(event) => setAnswerText(event.target.value)}
+                  label="Your answer"
+                  variant="outlined"
+                />
+              </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={submitAnswer}
+              >
+                Submit Answer
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Paper>
     </Box>
   );
