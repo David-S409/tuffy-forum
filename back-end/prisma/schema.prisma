@@ -11,11 +11,53 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
+  userId     Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
   firstName  String
   lastName   String
-  email      String   @unique
-  googleID   String   @unique
+  email      String     @unique
+  googleID   String     @unique
+  year       String?
+  isExpert   Boolean    @default(false)
+  isMod      Boolean    @default(false)
   profileImg String?
+  isOnboard  Boolean    @default(false)
+  courses    Course[]
+  questions  Question[]
+  answers    Answer[]
+}
+
+model Course {
+  courseId   Int        @id @default(autoincrement())
+  courseCode String     @unique
+  name       String
+  users      User[]
+  questions  Question[]
+}
+
+model Question {
+  questionId Int      @id @default(autoincrement())
+  author     User     @relation(fields: [authorId], references: [userId])
+  authorId   Int
+  course     Course   @relation(fields: [courseId], references: [courseId])
+  courseId   Int
+  header     String
+  text       String
+  postDate   DateTime @default(now())
+  votes      Int      @default(0)
+  tags       String[] @default([])
+  answers    Answer[]
+
+  @@index(fields: [header, text, tags])
+}
+
+model Answer {
+  answerId   Int      @id @default(autoincrement())
+  question   Question @relation(fields: [questionId], references: [questionId])
+  questionId Int
+  author     User     @relation(fields: [authorId], references: [userId])
+  authorId   Int
+  text       String
+  postDate   DateTime @default(now())
+  voteCount  Int      @default(0)
 }
