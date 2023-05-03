@@ -94,8 +94,7 @@ Description: Search questions using search terms
 
 | Parameter | Type   | Required |           Description                          |
 | --------- | ------ | -------- | ---------------------------------------------- |
-| header    | string | no       | Checks headers of all question for search term |
-| text      | string | no       | Checks text of all question for search term    |
+| search    | string | yes       | Checks everything of all question for search term |
 
 
 
