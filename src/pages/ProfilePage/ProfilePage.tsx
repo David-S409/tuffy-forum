@@ -37,22 +37,13 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
-
 export default function ProfilePage() {
-  const { user } = useSelector((state: RootState) => state.app);
-  const userUrl = `/profile/u/#${user?.userId}`;
-
   const [value, setValue] = React.useState(0);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  
+  console.log(value);
   return (
     <Box
       sx={{
@@ -67,19 +58,18 @@ export default function ProfilePage() {
     >
       <Tabs
         orientation="vertical"
-        variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-        <Tab label="User" {...a11yProps(0)} />
-        <Tab label="Course" {...a11yProps(1)} />
-        <Tab label="Question" {...a11yProps(2)} />
+        <Tab label="User" />
+        <Tab label="Course" />
+        <Tab label="Question" />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ProfileTab />
-      </TabPanel>
+      </TabPanel>      
       <TabPanel value={value} index={1}>
         <CourseTab />
       </TabPanel>

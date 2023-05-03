@@ -67,16 +67,18 @@ const useStyles = makeStyles()(() => {
       }
     };
 
-    useEffect(() => {
+    const fetchCourses = () => {
       axios.get('http://localhost:8080/api/v1/user/courses', { withCredentials: true })
       .then((response) => {
         setCourses(response.data);
       }).catch((err) =>{
         console.error(err);
       })
-    }, [courses])
+    };
 
-
+    useEffect(() => {
+      fetchCourses();
+    }, [courses]);
 
   return (
     <Container maxWidth='md'>
@@ -90,7 +92,7 @@ const useStyles = makeStyles()(() => {
         rowSpacing={3} 
         columnSpacing={{ xs: 2, sm: 3, md: 4}}
         >
-        {courses.map((course, index) => (
+        {courses.map((course) => (
             <Grid item xs>
             <Card key={courses.indexOf(course)} variant="outlined" sx={{ width: 320 }}>
               
