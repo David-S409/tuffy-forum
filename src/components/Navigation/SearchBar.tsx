@@ -76,16 +76,7 @@ function SearchBar() {
     }
 
     await axios
-      .get(
-        `http://localhost:8080/api/v1/questions/search?search=${searchTerm}`,
-        {
-          withCredentials: true,
-          params: {
-            search: searchTerm,
-            type: searchType,
-          },
-        }
-      )
+      .get(`http://localhost:8080/api/v1/questions/search?search=${searchTerm}`)
       .then((response) => {
         setSearchResults(response.data);
         setIsOpen(true);
@@ -124,7 +115,6 @@ function SearchBar() {
         placeholder="Search…"
         value={searchTerm}
         onChange={handleSearchTermChange}
-        onKeyDown={handleKeyDown}
         inputProps={{ 'aria-label': 'search' }}
       />
       <IconButton
