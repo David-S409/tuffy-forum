@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unescaped-entities */
@@ -87,6 +88,12 @@ function QuestionPage({
   const [showAnswerBox, setShowAnswerBox] = useState<boolean>(false);
 
   const fetchQuestion = async () => {
+    const validQuestionId = questionId ? parseInt(questionId, 10) : NaN; // Replace 0 with the default value of your choice
+
+    if (isNaN(validQuestionId)) {
+      console.error('Invalid question ID');
+      return;
+    }
     await axios
       .get(`http://localhost:8080/api/v1/questions/${questionId}`, {
         withCredentials: true,
@@ -116,8 +123,14 @@ function QuestionPage({
   };
 
   const fetchAnswers = async () => {
+    const validQuestionId = questionId ? parseInt(questionId, 10) : NaN; // Replace 0 with the default value of your choice
+
+    if (isNaN(validQuestionId)) {
+      console.error('Invalid question ID');
+      return;
+    }
     await axios
-      .get(`http://localhost:8080/api/v1/questions/${questionId}/answers`, {
+      .get(`http://localhost:8080/api/v1/answers/question/${questionId}`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -147,9 +160,15 @@ function QuestionPage({
   };
 
   const submitAnswer = async () => {
+    const validQuestionId = questionId ? parseInt(questionId, 10) : NaN; // Replace 0 with the default value of your choice
+
+    if (isNaN(validQuestionId)) {
+      console.error('Invalid question ID');
+      return;
+    }
     await axios
       .post(
-        `http://localhost:8080/api/v1/questions/${questionId}/answers`,
+        `http://localhost:8080/api/v1/answers/question/${questionId}`,
         { text: answerText },
         { withCredentials: true }
       )
