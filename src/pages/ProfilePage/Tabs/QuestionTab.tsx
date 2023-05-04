@@ -7,7 +7,6 @@ import {
   TablePagination,
   Container,
   IconButton,
-  Tooltip,
   Link,
 } from '@mui/material';
 import {
@@ -81,20 +80,24 @@ export default function QuestionTab () {
   const [open, setOpen] = React.useState<boolean>(false);
   const [ids, setIds] = React.useState(0);
   
-  React.useEffect(() => {
+  const fetchInfo = () => {
     axios.get('http://localhost:8080/api/v1/questions', { withCredentials: true})
     .then((response) => {
       setQuestion(response.data);
     }).catch((err) => {
       console.error(err);
     })
-    axios.get('http://localhost:8080/api/v1/user/courses', { withCredentials: true})
+    axios.get('http://localhost:8080/api/v1/courses', { withCredentials: true})
     .then((response) => {
       setCourses(response.data);
     }).catch((err) => {
       console.error(err);
     })
-  }, [questions])
+  }
+
+  React.useEffect(() => {
+    fetchInfo();
+  }, [questions]);
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -122,7 +125,7 @@ export default function QuestionTab () {
         <TableBody>
           {questions
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((question, index) => (
+            .map((question) => (
               <StyledTableRow key={questions.indexOf(question)}>
                     <StyledTableCell component="th" scope="row">
                       {question.questionId}
@@ -130,7 +133,7 @@ export default function QuestionTab () {
                       <StyledTableCell align="left"
                         sx={{maxWidth: 300}}
                       >
-                        <Link href="#"
+                        <Link href={`/question/${question.questionId}`}
                         underline='hover'
                         overflow='hidden'
                         width={250}
@@ -211,13 +214,3 @@ export default function QuestionTab () {
     </Container>
   );
 }
-
-// onClick={(e) =>{
-//   axios.get(`http://localhost:8080/api/v1/question/remove/${question.questionId}`, { withCredentials: true })
-//   .then((response) => {
-//     console.log("Course deleted")
-//   }).catch((err) => {
-//     console.error(err);
-//   })
-// }}
-// >

@@ -133,7 +133,7 @@ function NewQuestionForm() {
           header: question,
           text: description,
           isExpertsOnly,
-          clickedTags: tags,
+          tags: tags,
         },
         {
           withCredentials: true,
