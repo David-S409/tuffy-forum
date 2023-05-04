@@ -44,11 +44,12 @@ export interface Course {
   courseName: string;
 }
 export interface Question {
-  courseId: any;
+  courseId: number;
   postDate(postDate: any): string;
-  questionId: string;
+  questionId: number;
   header: string;
   text: string;
+  votes: number;
   tags: string[];
   authorId: string;
   createdAt: string;
@@ -117,10 +118,10 @@ function QuestionPage({
         console.error(err);
       });
   };
-
+  console.log(questionId);
   const fetchAnswers = async () => {
     await axios
-      .get(`http://localhost:8080/api/v1/questions/${questionId}/answers`, {
+      .get(`http://localhost:8080/api/v1/answers/${questionId}`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -173,13 +174,33 @@ function QuestionPage({
       <Paper elevation={3} sx={{ padding: '16px', marginTop: '16px' }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={1}>
-            <Button color="success">
+            <Button color="success" 
+              onClick={() => {
+                axios.post(`http://localhost:8080/api/v1/upvote/question/${question.questionId}`,
+                  { votes: question.votes }, { withCredentials: true }
+                ) .then((res) => {
+                  location.reload();
+                }).catch((err) => {
+                  console.error(err);
+                })
+              }}
+              >
               <ArrowCircleUpTwoToneIcon fontSize="large" />
             </Button>
             <Typography variant="h4" align="center">
-              0
+              {question.votes}
             </Typography>
-            <Button color="error">
+            <Button color="error"
+              onClick={() => {
+                axios.post(`http://localhost:8080/api/v1/downvote/question/${question.questionId}`,
+                  { votes: question.votes }, { withCredentials: true }
+                ) .then((res) => {
+                  location.reload();
+                }).catch((err) => {
+                  console.error(err);
+                })
+              }}
+              >
               <ArrowCircleDownTwoToneIcon fontSize="large" />
             </Button>
           </Grid>

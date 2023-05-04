@@ -58,6 +58,7 @@ model Answer {
   author     User     @relation(fields: [authorId], references: [userId])
   authorId   Int
   text       String
+  votes      Int      @default(0)
   postDate   DateTime @default(now())
   voteCount  Int      @default(0)
 }
