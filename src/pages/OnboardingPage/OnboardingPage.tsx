@@ -38,9 +38,9 @@ const OnboardingPage = () => {
   const isNextDisabled = slideIndex === slides.length - 1;
 
   const handleFinishedOnboarding = async () => {
-    const updateOnboardUrl = 'http://localhost:8080/api/v1/users/update_onboard';
+    const updateOnboardUrl = 'http://localhost:8080/api/v1/user/onboard';
     try {
-      const response = await axios.put(updateOnboardUrl, { isOnboard: true }, { withCredentials: true });
+      const response = await axios.get(updateOnboardUrl, { withCredentials: true });
 
       if (response.status === 200) {
         navigate('/');

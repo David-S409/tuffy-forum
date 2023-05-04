@@ -44,9 +44,9 @@ export interface Course {
   courseName: string;
 }
 export interface Question {
-  courseId: number;
+  courseId: any;
   postDate(postDate: any): string;
-  questionId: number;
+  questionId: string;
   header: string;
   text: string;
   votes: number;
@@ -118,10 +118,10 @@ function QuestionPage({
         console.error(err);
       });
   };
-  console.log(questionId);
+  
   const fetchAnswers = async () => {
     await axios
-      .get(`http://localhost:8080/api/v1/answers/${questionId}`, {
+      .get(`http://localhost:8080/api/v1/questions/${questionId}/answers`, {
         withCredentials: true,
       })
       .then((response) => {

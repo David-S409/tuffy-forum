@@ -42,8 +42,12 @@ export default function LoginPage() {
       dispatch(setIsAuth(true));
       dispatch(setUser(response.data));
       localStorage.setItem('auth', JSON.stringify(setIsAuth(true)));
-      navigate('/');
-      location.reload();
+      if (response.data.isOnboard) {
+        navigate('/');
+        location.reload();
+      } else {
+        navigate('/onboarding');
+      }
     }
   };
   const googleSSO = async () => {

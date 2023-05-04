@@ -16,6 +16,7 @@ export interface UserState {
   profileImg: string;
   isExpert: boolean;
   isMod: boolean;
+  isOnboard: boolean;
   year: string;
 }
 
