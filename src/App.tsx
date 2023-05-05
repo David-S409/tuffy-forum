@@ -1,6 +1,7 @@
-import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { store } from './store';
+/* eslint-disable react/jsx-no-useless-fragment */
+import { Provider, useSelector } from 'react-redux';
+import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom';
+import { RootState, store } from './store';
 import Home from './pages/HomePage/HomePage';
 import NotFound from './pages/NotFound/NotFoundPage';
 import LoginPage from './pages/login/LoginPage';
@@ -12,6 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
 import AddCourse from './pages/Course/AddCourse';
 import QuestionPage from './pages/Question/UserQuestion';
+import OnboardingPage from './pages/OnboardingPage/OnboardingPage';
 
 export function App() {
   return (
@@ -24,7 +26,16 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="/question/:questionId" Component={QuestionPage} element={<QuestionPage />} />
+      <Route
+        path="/question/:questionId"
+        element={<QuestionPage question={null} />}
+      />
+
+      {user?.isOnboard === false ? (
+        <Route path="/onboarding" element={<OnboardingPage />} />
+      ) : (
+        <></>
+      )}
     </Routes>
   );
 }
