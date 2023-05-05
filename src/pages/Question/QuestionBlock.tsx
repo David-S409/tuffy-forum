@@ -21,7 +21,9 @@ import {
 import { makeStyles } from 'tss-react/mui';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootState } from '../../store';
+import { Answer, Course, User, Question } from './types';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -53,17 +55,6 @@ export function formatDate(dateString: string) {
   return formattedDate;
 }
 
-interface Response {
-  answerId: number;
-  text: string;
-  user: {
-    username: string;
-  };
-  postDate: string;
-  upvotes: number;
-  downvotes: number;
-}
-
 const tags = [
   'React',
   'Angular',
@@ -87,29 +78,6 @@ const tags = [
   'Ruby',
   'Swift',
 ];
-
-interface Question {
-  questionId: number;
-  authorId: string;
-  courseId: number;
-  header: string;
-  text: string;
-  postDate: string;
-  answers: Response[];
-  tags: string[];
-  upvotes: number;
-  downvotes: number;
-  course: Course;
-  user: {
-    username: string;
-  };
-}
-
-interface Course {
-  courseId: number;
-  courseCode: string;
-  courseName: string;
-}
 
 interface QuestionBlockProps {
   question: Question;
@@ -439,8 +407,14 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                   width: '100%',
                 }}
               >
-                {question.header}
+                <Link
+                  to={`/question/${question.questionId}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {question.header}
+                </Link>
               </Typography>
+
               <Typography
                 variant="body1"
                 sx={{
@@ -451,7 +425,8 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 }}
               >
                 {' '}
-                - {user?.firstName} {user?.lastName}
+                - {user?.firstName} {user?.lastName} on{' '}
+                {formatDate(question.postDate)}
               </Typography>
             </Box>
             <Box

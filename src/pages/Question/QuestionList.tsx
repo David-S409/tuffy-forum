@@ -4,19 +4,7 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import Pagination from '@mui/material/Pagination';
 import QuestionBlock from './QuestionBlock';
-
-interface Question {
-  questionId: number;
-  authorId: number;
-  courseId: number;
-  header: string;
-  body: string;
-  upvotes: number;
-  downvotes: number;
-  tags: string[];
-  searchTerm: string;
-  responses: Response[];
-}
+import { Answer, Course, User, Question } from './types';
 
 function QuestionList() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -45,8 +33,10 @@ function QuestionList() {
   }, []);
 
   useEffect(() => {
-    const results = questions.filter(
-      (question) => question.header === searchTerm
+    const results = questions.filter((question) =>
+      searchTerm === ''
+        ? true
+        : question.header.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredQuestions(results);

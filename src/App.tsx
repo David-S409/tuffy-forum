@@ -14,6 +14,7 @@ import Forum from './pages/Forum/Forum';
 import AddCourse from './pages/Course/AddCourse';
 import QuestionBlock from './pages/Question/QuestionBlock';
 import QuestionList from './pages/Question/QuestionList';
+import SingleQuestion from './pages/Question/SingleQuestion';
 
 export function App() {
   return (
@@ -26,6 +27,8 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/question/:id" element={<QuestionBlock />} />
+      <Route path="/question/:questionId" element={<SingleQuestion />} />
     </Routes>
   );
 }
