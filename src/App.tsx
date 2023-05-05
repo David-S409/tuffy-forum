@@ -14,6 +14,7 @@ import AddCourse from './pages/Course/AddCourse';
 import QuestionPage from './pages/Question/UserQuestion';
 import OnboardingPage from './pages/OnboardingPage/OnboardingPage';
 import { useSelector } from 'react-redux';
+import BordedSuccess from './pages/OnboardingPage/BordedPage';
 
 
 export function App() {
@@ -30,9 +31,9 @@ export function App() {
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/question/:questionId" Component={QuestionPage} element={<QuestionPage />} />
-      {user?.isOnboard === false ? ( 
-        <Route path="/onboarding" element={<OnboardingPage />} />)
-        : ( <></> )
+      {user?.isOnboard ? ( 
+        <Route path="/onboarding" element={<BordedSuccess />} />)
+        :  (<Route path="/onboarding" element={<OnboardingPage />} />)
       }
     </Routes>
   );
