@@ -23,7 +23,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import taggers from '../../components/Tags/Tags';
 
 interface CourseValues {
   courseId: string;

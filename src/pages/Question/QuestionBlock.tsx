@@ -22,7 +22,6 @@ import { makeStyles } from 'tss-react/mui';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import taggers from '../../components/Tags/Tags';
 
 const useStyles = makeStyles()(() => {
   return {
@@ -452,7 +451,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 }}
               >
                 {' '}
-                - {question.user.username}
+                - {user?.firstName} {user?.lastName}
               </Typography>
             </Box>
             <Box
@@ -767,4 +766,4 @@ function QuestionBlock({ question }: QuestionBlockProps) {
   );
 }
 
-export default Question;
+export default QuestionBlock;
