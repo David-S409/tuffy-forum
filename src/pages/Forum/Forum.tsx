@@ -4,14 +4,16 @@ import QuestionList from '../Question/QuestionList';
 
 function Forum() {
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ marginTop: 4 }}>
+    <div>
+      <Box sx={{ mt: 1, mb: 2}}>
         <Typography variant="h4" align="center">
           Forum
         </Typography>
       </Box>
       <QuestionList />
-    </Container>
+
+    </div>
+
   );
 }
 

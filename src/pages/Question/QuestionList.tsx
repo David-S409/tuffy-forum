@@ -5,6 +5,7 @@ import axios from 'axios';
 import Pagination from '@mui/material/Pagination';
 import QuestionBlock from './QuestionBlock';
 import { Answer, Course, User, Question } from './types';
+import { ListDivider } from '@mui/joy';
 
 function QuestionList() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -73,7 +74,7 @@ function QuestionList() {
       />
       <List>
         {currentQuestions.map((question) => (
-          <QuestionBlock key={question.questionId} question={question} />
+          <><QuestionBlock key={question.questionId} question={question} /><ListDivider /></>
         ))}
       </List>
 

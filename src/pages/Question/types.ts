@@ -4,8 +4,7 @@ export interface Question {
   courseId: number;
   header: string;
   text: string;
-  upvotes: number;
-  downvotes: number;
+  votes: number;
   postDate: string;
   tags: string[];
   answers: Answer[];

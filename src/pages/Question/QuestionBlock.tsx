@@ -55,30 +55,6 @@ export function formatDate(dateString: string) {
   return formattedDate;
 }
 
-const tags = [
-  'React',
-  'Angular',
-  'Vue',
-  'Next',
-  'Nest',
-  'Express',
-  'MongoDB',
-  'PostgreSQL',
-  'MySQL',
-  'TypeScript',
-  'JavaScript',
-  'HTML',
-  'CSS',
-  'Java',
-  'C',
-  'C++',
-  'C#',
-  'Python',
-  'PHP',
-  'Ruby',
-  'Swift',
-];
-
 interface QuestionBlockProps {
   question: Question;
 }
@@ -226,7 +202,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
       .post(
         `http://localhost:8080/api/v1/upvote/question/${question.questionId}`,
         {
-          questionId: question.questionId,
+          votes: question.votes
         },
         {
           withCredentials: true,
@@ -235,7 +211,6 @@ function QuestionBlock({ question }: QuestionBlockProps) {
       .then((response) => {
         setVoteSuccess(true);
         setVoteSuccessMessage('Voted successfully!');
-        fetchQuestions();
         location.reload();
       })
       .catch((err) => {
@@ -251,7 +226,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
       .post(
         `http://localhost:8080/api/v1/downvote/question/${question.questionId}`,
         {
-          questionId: question.questionId,
+          votes: question.votes
         },
         {
           withCredentials: true,
@@ -260,7 +235,6 @@ function QuestionBlock({ question }: QuestionBlockProps) {
       .then((response) => {
         setVoteSuccess(true);
         setVoteSuccessMessage('Voted successfully!');
-        fetchQuestions();
         location.reload();
       })
       .catch((err) => {
@@ -365,7 +339,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
   };
 
   return (
-    <ListItem key={question.questionId} sx={{ width: '100%' }}>
+    <ListItem key={question.questionId} sx={{width: 'auto'}}>
       <Box
         sx={{
           display: 'flex',
@@ -395,7 +369,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                width: '100%',
+                width: '300%',
               }}
             >
               <Typography
@@ -422,10 +396,11 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                   flexDirection: 'row',
                   alignItems: 'center',
                   width: '100%',
+                  ml: 5,
                 }}
               >
                 {' '}
-                - {user?.firstName} {user?.lastName} on{' '}
+                 {user?.firstName} {user?.lastName} on{' '}
                 {formatDate(question.postDate)}
               </Typography>
             </Box>
@@ -444,6 +419,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                   flexDirection: 'row',
                   alignItems: 'center',
                   width: '100%',
+                  ml: 5,
                 }}
               >
                 {question.tags.map((tag) => (
@@ -473,12 +449,27 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
+                  justifyContent: 'flex-end',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                {question.upvotes} votes
+                {question.votes} votes
               </Typography>
+              <Button
+                variant="contained"
+                onClick={upvoteQuestion}
+                sx={{ marginLeft: '5px' }}
+              >
+                +
+              </Button>
+              <Button
+                variant="contained"
+                onClick={downvoteQuestion}
+                sx={{ marginLeft: '5px' }}
+              >
+                -
+              </Button>
             </Box>
             <Box
               sx={{
@@ -493,6 +484,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
+                  justifyContent: 'flex-end',
                   alignItems: 'center',
                   width: '100%',
                 }}
@@ -519,26 +511,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
               width: '100%',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                width: '100%',
-              }}
-            >
-              <Typography
-                variant="body1"
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                {question.text}
-              </Typography>
-            </Box>
+            
           </Box>
           <Box
             sx={{
@@ -551,6 +524,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
             <Box
               sx={{
                 display: 'flex',
+                justifyContent: 'flex-end',
                 flexDirection: 'row',
                 alignItems: 'center',
                 width: '100%',
@@ -562,13 +536,6 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 sx={{ marginRight: '5px' }}
               >
                 Answer
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleVoteButton}
-                sx={{ marginRight: '5px' }}
-              >
-                Vote
               </Button>
             </Box>
           </Box>

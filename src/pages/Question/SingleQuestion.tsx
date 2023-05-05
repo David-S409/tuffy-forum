@@ -9,14 +9,14 @@ interface RouteParams {
 }
 
 function SingleQuestion() {
-  const { id } = useParams<string>();
+  const { questionId } = useParams<string>();
   const [question, setQuestion] = useState<Question | null>(null);
 
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/v1/question/${id}`,
+          `http://localhost:8080/api/v1/questions/${questionId}`,
           { withCredentials: true }
         );
         setQuestion(response.data);
@@ -26,7 +26,7 @@ function SingleQuestion() {
     };
 
     fetchQuestion();
-  }, [id]);
+  }, [questionId]);
 
   if (!question) {
     return <div>Loading...</div>;

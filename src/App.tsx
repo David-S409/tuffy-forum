@@ -27,7 +27,7 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="/question/:id" element={<QuestionBlock />} />
+      {/* <Route path="/question/:questionId" element={<QuestionBlock />} /> */}
       <Route path="/question/:questionId" element={<SingleQuestion />} />
     </Routes>
   );
