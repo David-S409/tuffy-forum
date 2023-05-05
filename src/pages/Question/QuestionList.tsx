@@ -6,8 +6,10 @@ import Pagination from '@mui/material/Pagination';
 import QuestionBlock from './QuestionBlock';
 
 interface Question {
-  id: number;
-  title: string;
+  questionId: number;
+  authorId: number;
+  courseId: number;
+  header: string;
   body: string;
   upvotes: number;
   downvotes: number;
@@ -44,7 +46,7 @@ function QuestionList() {
 
   useEffect(() => {
     const results = questions.filter(
-      (question) => question.title === searchTerm
+      (question) => question.header === searchTerm
     );
 
     setFilteredQuestions(results);
@@ -81,9 +83,10 @@ function QuestionList() {
       />
       <List>
         {currentQuestions.map((question) => (
-          <QuestionBlock key={question.id} question={question} />
+          <QuestionBlock key={question.questionId} question={question} />
         ))}
       </List>
+
       <Pagination
         count={Math.ceil(filteredQuestions.length / questionsPerPage)}
         page={currentPage}
