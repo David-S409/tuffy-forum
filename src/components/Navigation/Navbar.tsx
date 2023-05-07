@@ -1,23 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable consistent-return */
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsAuth, setUser } from '../../appSlice';
-import { RootState } from '../../store';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import {
-  Tabs,
-  Tab,
-  Link,
-  Box,
-  Avatar,
-} from '@mui/material';
+import { Tabs, Tab, Link, Box, Avatar } from '@mui/material';
 import { Typography } from '@mui/joy';
 import HomeIcon from '@mui/icons-material/Home';
 import ForumIcon from '@mui/icons-material/Forum';
 import ListAlt from '@mui/icons-material/ListAlt';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import axios from 'axios';
+import { RootState } from '../../store';
+import { setIsAuth, setUser } from '../../appSlice';
 import SearchBar from './SearchBar';
 import Dashboard from './Dashboard';
 
@@ -48,7 +45,7 @@ const useStyles = makeStyles()(() => {
     headerRight: {
       display: 'flex',
       alignItems: 'flex-end',
-      flexDirection: "column",
+      flexDirection: 'column',
       flex: 1,
       width: 'fit-content',
       paddingLeft: '20px',
@@ -122,7 +119,7 @@ export default function Navbar() {
     if (checkUser) {
       getLoginInfo();
     }
-  }, []);
+  }, [checkUser, getLoginInfo]);
 
   const logoutUser = async () => {
     localStorage.removeItem('auth');
@@ -140,7 +137,7 @@ export default function Navbar() {
     if (path === '/') {
       return 0;
     }
-    if (path === '/postquestion' || path === '/question/?') {
+    if (path === '/postquestion') {
       return 1;
     }
     if (path === '/addcourse') {
@@ -199,8 +196,12 @@ export default function Navbar() {
               sx={{ width: '100%' }}
             >
               <Tab label="Home" href="/" icon={<HomeIcon />} />
-              <Tab label="Post" href="/postquestion" icon={<PostAddIcon />} />
-              <Tab label="Courses" href="/addcourse" icon={<ListAlt />} />
+              <Tab
+                label="Post Question"
+                href="/postquestion"
+                icon={<PostAddIcon />}
+              />
+              <Tab label="Add Course" href="/addcourse" icon={<ListAlt />} />
               <Tab label="Forum" href="/forum" icon={<ForumIcon />} />
             </Tabs>
           </Box>
@@ -223,19 +224,23 @@ export default function Navbar() {
             className={classes.headerRight}
           >
             <Box
-              sx={{ display: 'flex', justifyContent: 'center', alignContent:'flex-end' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignContent: 'flex-end',
+              }}
               className={classes.headerRightContainer}
             >
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 {isAuth ? (
                   <>
-                  <Dashboard />
+                    <Dashboard />
                     <Avatar
                       style={{ cursor: 'default' }}
                       sx={{ boxShadow: 5, ml: 2 }}
                       alt={user?.googleID}
                       src={user?.profileImg}
-                      />
+                    />
                   </>
                 ) : (
                   <Avatar style={{ cursor: 'default' }} />

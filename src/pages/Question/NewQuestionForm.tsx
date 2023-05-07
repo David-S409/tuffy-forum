@@ -45,7 +45,6 @@ function NewQuestionForm() {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [courses, setCourses] = useState<CourseValues[] | []>([]);
-  const [isExpertsOnly, setIsExpertsOnly] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const { isAuth } = useSelector((state: RootState) => state.app);
@@ -81,11 +80,6 @@ function NewQuestionForm() {
   ) => {
     setDescription(event.target.value as string);
     console.log(event.target.value);
-  };
-
-  const onExpertsOnlyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsExpertsOnly(event.target.checked);
-    console.log(event.target.checked);
   };
 
   const handleSnackbarOpen = (message: React.SetStateAction<string>) => {
@@ -132,8 +126,7 @@ function NewQuestionForm() {
           courseId: courseName,
           header: question,
           text: description,
-          isExpertsOnly,
-          tags: tags,
+          tags,
         },
         {
           withCredentials: true,
@@ -213,6 +206,11 @@ function NewQuestionForm() {
             value={question}
             onChange={(e) => onQuestionChange(e as any)}
             fullWidth
+            error={question === ''}
+            onError={() => {
+              handleSnackbarOpen('Please enter a question header');
+            }}
+            color="success"
           />
         </Box>
 
@@ -225,15 +223,11 @@ function NewQuestionForm() {
             multiline
             rows={4}
             fullWidth
-          />
-        </Box>
-
-        <Box sx={{ width: 'auto', marginBottom: '16px' }}>
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Experts Only"
-            name="expertsOnly"
-            onChange={(e) => onExpertsOnlyChange(e as any)}
+            error={description === ''}
+            onError={() => {
+              handleSnackbarOpen('Please enter a description');
+            }}
+            color="success"
           />
         </Box>
 
@@ -266,28 +260,6 @@ function NewQuestionForm() {
               />
             )}
           />
-          {/* <Select
-            label="Tags"
-            multiple
-            value={tags}
-            onChange={(e) => onTagChange(e)}
-            input={<OutlinedInput label="Tags" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'auto', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {taggers.map((tag) => (
-              <MenuItem key={tag} value={tag}>
-                <Checkbox checked={tags.indexOf(tag) > -1} />
-                <ListItemText primary={tag} />
-              </MenuItem>
-            ))}
-          </Select> */}
         </FormControl>
 
         <Button type="submit" variant="contained" color="primary">
