@@ -12,7 +12,7 @@ function QuestionList() {
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const questionsPerPage = 7;
+  const questionsPerPage = 10;
 
   const fetchQuestions = async () => {
     // Fetch questions from the backend

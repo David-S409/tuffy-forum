@@ -7,7 +7,7 @@ export interface Question {
   votes: number;
   postDate: string;
   tags: string[];
-  answers: Answer[];
+  answers: Answer;
   course: Course;
   user: User;
 }
@@ -17,8 +17,8 @@ export interface Answer {
   questionId: number;
   userId: number;
   text: string;
-  upvotes: number;
-  downvotes: number;
+  votes: number;
+  voteCount: number,
   postDate: string;
   user: User;
 }

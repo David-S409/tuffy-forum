@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-restricted-globals */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -59,11 +59,20 @@ interface QuestionBlockProps {
   question: Question;
 }
 
+// interface AnswerValues {
+//   text: string;
+// }
+
+// const initialAnswerValues:AnswerValues = {
+//   text: '',
+// }
+
 function QuestionBlock({ question }: QuestionBlockProps) {
   const { classes } = useStyles();
   const [questionR, setQuestionR] = useState<Question>(question);
   const [course, setCourse] = useState<Course>(question.course);
-  const [answer, setAnswer] = useState('');
+  const [answer, setAnswer] = useState<Answer[]>([]);
+  //const [answerText, setAnswerText] = useState<AnswerValues>(initialAnswerValues);
   const [answerError, setAnswerError] = useState(false);
   const [answerHelperText, setAnswerHelperText] = useState('');
   const [answerSuccess, setAnswerSuccess] = useState(false);
@@ -84,29 +93,30 @@ function QuestionBlock({ question }: QuestionBlockProps) {
 
   // Add functions to handle getting course, fetching answers, posting an answer, and voting here
 
-  const fetchQuestions = async () => {
-    // Fetch questions from the backend
-    await axios
-      .get(`http://localhost:8080/api/v1/questions/${question.questionId}`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        // fetch course
-        axios.get(
-          `http://localhost:8080/api/v1/courses/${response.data.courseId}`,
-          {
-            withCredentials: true,
-          }
-        );
-        setQuestionR(response.data);
-        setCourse(response.data.course);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  // const fetchQuestions = async () => {
+  //   // Fetch questions from the backend
+  //   await axios
+  //     .get(`http://localhost:8080/api/v1/questions/${question.questionId}`, {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       // fetch course
+  //       axios.get(
+  //         `http://localhost:8080/api/v1/courses/${response.data.courseId}`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       setQuestionR(response.data);
+  //       setCourse(response.data.course);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
-  const fetchAnswers = async () => {
+  useEffect(() => {
+    const fetchAnswers = async () => {
     // Fetch answers from the backend
     await axios
       .get(`http://localhost:8080/api/v1/answers/${question.questionId}`, {
@@ -118,161 +128,171 @@ function QuestionBlock({ question }: QuestionBlockProps) {
       .catch((err) => {
         console.error(err);
       });
-  };
+    };
+    fetchAnswers();
+  }, [answer]);
+  
 
-  const postAnswer = async () => {
-    // Post answer to the backend
-    await axios
-      .post(
-        `http://localhost:8080/api/v1/answer`,
-        {
-          questionId: question.questionId,
-          text: answer,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        setAnswerSuccess(true);
-        setAnswerSuccessMessage('Answer posted successfully!');
-        fetchAnswers();
-        location.reload();
-      })
-      .catch((err) => {
-        setAnswerFailure(true);
-        setAnswerFailureMessage('Failed to post answer.');
-        console.error(err);
-      });
-  };
+  // const postAnswer = async () => {
+  //   // Post answer to the backend
+  //   await axios
+  //     .post(
+  //       `http://localhost:8080/api/v1/answer`,
+  //       {
+  //         questionId: question.questionId.toString(),
+  //         text: answerText.text,
+  //       },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setAnswerSuccess(true);
+  //       setAnswerSuccessMessage('Answer posted successfully!');
+  //       fetchAnswers();
+  //       location.reload();
+  //     })
+  //     .catch((err) => {
+  //       setAnswerFailure(true);
+  //       setAnswerFailureMessage('Failed to post answer.');
+  //       console.error(err);
+  //     });
+  // };
 
-  const upvoteAnswer = async () => {
-    // Vote on an answer
-    await axios
-      .post(
-        `http://localhost:8080/api/v1/upvote/answer/${question.questionId}`,
-        {
-          answerId: question.answers[0].answerId,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        setVoteSuccess(true);
-        setVoteSuccessMessage('Voted successfully!');
-        fetchAnswers();
-        location.reload();
-      })
-      .catch((err) => {
-        setVoteFailure(true);
-        setVoteFailureMessage('Failed to vote.');
-        console.error(err);
-      });
-  };
+  // const upvoteAnswer = async () => {
+  //   // Vote on an answer
+  //   await axios
+  //     .post(
+  //       `http://localhost:8080/api/v1/upvote/answer/${question.questionId}`,
+  //       {
+  //         voteCount: question.answers.voteCount,
+  //       },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setVoteSuccess(true);
+  //       setVoteSuccessMessage('Voted successfully!');
+  //       fetchAnswers();
+  //       location.reload();
+  //     })
+  //     .catch((err) => {
+  //       setVoteFailure(true);
+  //       setVoteFailureMessage('Failed to vote.');
+  //       console.error(err);
+  //     });
+  // };
 
-  const downvoteAnswer = async () => {
-    // Vote on an answer
-    await axios
-      .post(
-        `http://localhost:8080/api/v1/downvote/answer/${question.questionId}`,
-        {
-          answerId: question.answers[0].answerId,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        setVoteSuccess(true);
-        setVoteSuccessMessage('Voted successfully!');
-        fetchAnswers();
-        location.reload();
-      })
-      .catch((err) => {
-        setVoteFailure(true);
-        setVoteFailureMessage('Failed to vote.');
-        console.error(err);
-      });
-  };
+  // const downvoteAnswer = async () => {
+  //   // Vote on an answer
+  //   await axios
+  //     .post(
+  //       `http://localhost:8080/api/v1/downvote/answer/${question.questionId}`,
+  //       {
+  //         voteCount: question.answers.voteCount,
+  //       },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setVoteSuccess(true);
+  //       setVoteSuccessMessage('Voted successfully!');
+  //       fetchAnswers();
+  //       location.reload();
+  //     })
+  //     .catch((err) => {
+  //       setVoteFailure(true);
+  //       setVoteFailureMessage('Failed to vote.');
+  //       console.error(err);
+  //     });
+  // };
 
-  const upvoteQuestion = async () => {
-    // Vote on a question
-    await axios
-      .post(
-        `http://localhost:8080/api/v1/upvote/question/${question.questionId}`,
-        {
-          votes: question.votes
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        setVoteSuccess(true);
-        setVoteSuccessMessage('Voted successfully!');
-        location.reload();
-      })
-      .catch((err) => {
-        setVoteFailure(true);
-        setVoteFailureMessage('Failed to vote.');
-        console.error(err);
-      });
-  };
+  // const upvoteQuestion = async () => {
+  //   // Vote on a question
+  //   await axios
+  //     .post(
+  //       `http://localhost:8080/api/v1/upvote/question/${question.questionId}`,
+  //       {
+  //         votes: question.votes
+  //       },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setVoteSuccess(true);
+  //       setVoteSuccessMessage('Voted successfully!');
+  //       location.reload();
+  //     })
+  //     .catch((err) => {
+  //       setVoteFailure(true);
+  //       setVoteFailureMessage('Failed to vote.');
+  //       console.error(err);
+  //     });
+  // };
 
-  const downvoteQuestion = async () => {
-    // Vote on a question
-    await axios
-      .post(
-        `http://localhost:8080/api/v1/downvote/question/${question.questionId}`,
-        {
-          votes: question.votes
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        setVoteSuccess(true);
-        setVoteSuccessMessage('Voted successfully!');
-        location.reload();
-      })
-      .catch((err) => {
-        setVoteFailure(true);
-        setVoteFailureMessage('Failed to vote.');
-        console.error(err);
-      });
-  };
+  // const downvoteQuestion = async () => {
+  //   // Vote on a question
+  //   await axios
+  //     .post(
+  //       `http://localhost:8080/api/v1/downvote/question/${question.questionId}`,
+  //       {
+  //         votes: question.votes
+  //       },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setVoteSuccess(true);
+  //       setVoteSuccessMessage('Voted successfully!');
+  //       location.reload();
+  //     })
+  //     .catch((err) => {
+  //       setVoteFailure(true);
+  //       setVoteFailureMessage('Failed to vote.');
+  //       console.error(err);
+  //     });
+  // };
 
-  const handleAnswerChange = (event: SelectChangeEvent) => {
-    setAnswer(event.target.value);
-  };
+  // const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = event.target;
+  //   setAnswerText((prevValues) => ({
+  //     ...prevValues,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleVoteChange = (event: SelectChangeEvent) => {
-    setVote(event.target.value);
-  };
+  // const handleVoteChange = (event: SelectChangeEvent) => {
+  //   setVote(event.target.value);
+  // };
 
-  const handleAnswerSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (answer === '') {
-      setAnswerError(true);
-      setAnswerHelperText('Answer cannot be empty.');
-    } else {
-      postAnswer();
-    }
-  };
+  // const handleAnswerSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   if (answer.text === '') {
+  //     setAnswerError(true);
+  //     setAnswerHelperText('Answer cannot be empty.');
+  //   } else {
+  //     postAnswer().then(() => {
+  //     setAnswerText(initialAnswerValues);
+  //     fetchAnswers();
+  //   })
+  //   }
+  // };
 
-  const handleVoteSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (vote === '') {
-      setVoteError(true);
-      setVoteHelperText('Vote cannot be empty.');
-    } else if (vote === 'upvote') {
-      upvoteQuestion();
-    } else {
-      downvoteQuestion();
-    }
-  };
+  // const handleVoteSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   if (vote === '') {
+  //     setVoteError(true);
+  //     setVoteHelperText('Vote cannot be empty.');
+  //   } else if (vote === 'upvote') {
+  //     upvoteQuestion();
+  //   } else {
+  //     downvoteQuestion();
+  //   }
+  // };
 
   const handleAnswerButton = () => {
     setShowAnswerBox(true);
@@ -456,20 +476,6 @@ function QuestionBlock({ question }: QuestionBlockProps) {
               >
                 {question.votes} votes
               </Typography>
-              <Button
-                variant="contained"
-                onClick={upvoteQuestion}
-                sx={{ marginLeft: '5px' }}
-              >
-                +
-              </Button>
-              <Button
-                variant="contained"
-                onClick={downvoteQuestion}
-                sx={{ marginLeft: '5px' }}
-              >
-                -
-              </Button>
             </Box>
             <Box
               sx={{
@@ -489,7 +495,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                   width: '100%',
                 }}
               >
-                {question.answers.length} answers
+                {answer.length} answers
               </Typography>
             </Box>
           </Box>
@@ -530,13 +536,6 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 width: '100%',
               }}
             >
-              <Button
-                variant="contained"
-                onClick={handleAnswerButton}
-                sx={{ marginRight: '5px' }}
-              >
-                Answer
-              </Button>
             </Box>
           </Box>
         </Box>
@@ -557,7 +556,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 width: '100%',
               }}
             >
-              <form onSubmit={handleAnswerSubmit}>
+              {/* <form onSubmit={handleAnswerSubmit}>
                 <FormControl
                   sx={{ width: '100%' }}
                   error={answerError}
@@ -565,9 +564,10 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 >
                   <InputLabel htmlFor="answer">Answer</InputLabel>
                   <Input
-                    id="answer"
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
+                    name="text"
+                    id="answerId"
+                    value={answerText.text}
+                    onChange={handleAnswerChange}
                     aria-describedby="answer-helper-text"
                   />
                   <FormHelperText id="answer-helper-text">
@@ -588,7 +588,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                     Cancel
                   </Button>
                 </FormControl>
-              </form>
+              </form> */}
             </Box>
           </Box>
         )}
@@ -609,7 +609,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 width: '100%',
               }}
             >
-              <form onSubmit={handleVoteSubmit}>
+              {/* <form onSubmit={handleVoteSubmit}>
                 <FormControl
                   sx={{ width: '100%' }}
                   error={voteError}
@@ -643,7 +643,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                     Cancel
                   </Button>
                 </FormControl>
-              </form>
+              </form> */}
             </Box>
           </Box>
         )}
