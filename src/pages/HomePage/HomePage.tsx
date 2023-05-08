@@ -5,7 +5,6 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import LoginPage from '../login/LoginPage';
-import QuestionPage from '../Question/UserQuestion';
 import { RootState } from '../../store';
 
 const useStyles = makeStyles()(() => {
@@ -48,9 +47,7 @@ function Home() {
         </Container>
       </Grid>
       <Grid item xs={12}>
-        <Container maxWidth="md" className={classes.content}>
-          <QuestionPage />
-        </Container>
+        <Container maxWidth="md" className={classes.content} />
       </Grid>
       <Grid item xs={12}>
         <Container maxWidth="md" className={classes.content}>

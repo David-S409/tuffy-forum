@@ -1,4 +1,5 @@
-import { Provider } from 'react-redux';
+/* eslint-disable react/jsx-no-useless-fragment */
+import { Provider, useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom';
 import { RootState, store } from './store';
 import Home from './pages/HomePage/HomePage';
@@ -11,11 +12,9 @@ import Footer from './components/Footer/footer';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Forum from './pages/Forum/Forum';
 import AddCourse from './pages/Course/AddCourse';
-import QuestionPage from './pages/Question/UserQuestion';
-import OnboardingPage from './pages/OnboardingPage/OnboardingPage';
-import { useSelector } from 'react-redux';
-import BordedSuccess from './pages/OnboardingPage/BordedPage';
-
+import QuestionBlock from './pages/Question/QuestionBlock';
+import QuestionList from './pages/Question/QuestionList';
+import SingleQuestion from './pages/Question/SingleQuestion';
 
 export function App() {
   const { user } = useSelector((state: RootState) => state.app);
@@ -30,11 +29,8 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="/question/:questionId" Component={QuestionPage} element={<QuestionPage />} />
-      {user?.isOnboard ? ( 
-        <Route path="/onboarding" element={<BordedSuccess />} />)
-        :  (<Route path="/onboarding" element={<OnboardingPage />} />)
-      }
+      {/* <Route path="/question/:questionId" element={<QuestionBlock />} /> */}
+      <Route path="/question/:questionId" element={<SingleQuestion />} />
     </Routes>
   );
 }
