@@ -205,12 +205,19 @@ function QuestionBlock({
               <Link
                 href={`/question/${questionNew.questionId}`}
                 color="inherit"
+                sx={{ paddingBottom: '16px' }}
               >
-                <Typography variant="h5">{questionNew.header}</Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ textAlign: 'left', margin: 'auto' }}
+                >
+                  {questionNew.header}
+                </Typography>
               </Link>
               <Link
                 href={`/forum?course=${questionNew.courseId}`}
                 style={{ textDecoration: 'none' }}
+                sx={{ paddingBottom: '16px' }}
               >
                 <Chip
                   label={course?.courseCode || 'No course name'}
@@ -223,7 +230,7 @@ function QuestionBlock({
             <Box sx={{ marginTop: '8px' }}>
               <Typography
                 component="pre"
-                sx={{ whiteSpace: 'pre-wrap' }}
+                sx={{ whiteSpace: 'pre-wrap', paddingBottom: '32px' }}
                 align="left"
               >
                 {questionNew.text}
@@ -231,7 +238,9 @@ function QuestionBlock({
             </Box>
             <Grid container spacing={1}>
               {questionNew.tags.length === 0 ? (
-                <Typography variant="body1">No tags</Typography>
+                <Typography variant="body1" sx={{ paddingBottom: '16px' }}>
+                  No tags
+                </Typography>
               ) : (
                 <Grid item>
                   {questionNew.tags.map((tag) => {
@@ -240,6 +249,7 @@ function QuestionBlock({
                         href={`/forum?tag=${tag}`}
                         style={{ textDecoration: 'none' }}
                         key={tag}
+                        sx={{ paddingBottom: '32px' }}
                       >
                         <Chip
                           label={tag}
@@ -261,6 +271,7 @@ function QuestionBlock({
                 display: 'flex',
                 justifyContent: 'flex-end',
                 mt: 2,
+                color: 'red',
               }}
             >
               Posted by {users?.firstName} {users?.lastName} on{' '}
@@ -348,7 +359,9 @@ function QuestionBlock({
                       </Button>
                     </Grid>
                     <Grid item xs={11}>
-                      <Typography variant="h5">{answer.text}</Typography>
+                      <Typography variant="body1" sx={{ padding: '32px' }}>
+                        {answer.text}
+                      </Typography>
                       <Typography
                         variant="caption"
                         sx={{
@@ -357,6 +370,7 @@ function QuestionBlock({
                           display: 'flex',
                           justifyContent: 'flex-end',
                           mt: 2,
+                          color: 'red',
                         }}
                       >
                         Posted by {users?.firstName} {users?.lastName} on{' '}

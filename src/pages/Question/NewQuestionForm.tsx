@@ -154,7 +154,9 @@ function NewQuestionForm() {
         backgroundColor: '#fff',
         padding: '16px',
         marginTop: '16px',
+        marginBottom: '16px',
       }}
+      margin="auto"
     >
       <header>
         <h1> Ask a Question </h1>

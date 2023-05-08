@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import QuestionBlock from './QuestionBlock';
 import { Question } from './types';
@@ -40,12 +40,14 @@ function SingleQuestion() {
   }
 
   return (
-    <Typography variant="h4" component="h1" gutterBottom>
-      {user?.firstName} Is Asking:
-      <div>
-        <QuestionBlock question={question} />
-      </div>
-    </Typography>
+    <Box margin="auto" maxWidth="1250px">
+      <Typography variant="h4" component="h1" gutterBottom>
+        {user?.firstName} Is Asking:
+        <div>
+          <QuestionBlock question={question} />
+        </div>
+      </Typography>
+    </Box>
   );
 }
 

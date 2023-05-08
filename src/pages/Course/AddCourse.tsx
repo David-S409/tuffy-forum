@@ -89,30 +89,6 @@ function NewCourseForm() {
     fetchCourses();
   }, []);
 
-  // const setCourseId = async () => {
-  //   await axios
-  //     .post(
-  //       `http://localhost:8080/api/v1/add/course/${course?.courseId}`,
-  //       { user, course },
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     )
-  //     .then((res) => {
-  //       redirect('/user/courses');
-  //       setSuccess(false);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (success) {
-  //     setCourseId();
-  //   }
-  // }, [success]);
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormValues((prevValues) => ({
@@ -143,6 +119,7 @@ function NewCourseForm() {
         boxShadow: 20,
         marginTop: '16px',
       }}
+      margin="auto"
     >
       <Box
         sx={{
@@ -152,7 +129,7 @@ function NewCourseForm() {
           padding: '16px',
         }}
       >
-        <h2>Add a New Course</h2>
+        <h1>Add a New Course</h1>
         <form onSubmit={handleSubmit}>
           <Box sx={{ width: '100%', marginBottom: '16px' }}>
             <TextField
@@ -220,12 +197,17 @@ function NewCourseForm() {
               alignItems: 'center',
               marginTop: '32px',
               width: '100%',
+              boxShadow: 20,
+              borderRadius: '16px',
+              backgroundColor: '#F1F1F1 ',
             }}
           >
-            <h3>Course List</h3>
+            <h1>Course List</h1>
             <ul
               style={{
                 textAlign: 'left',
+                paddingBottom: '16px',
+                textShadow: '0px 0px 2px #fff',
               }}
             >
               {courseList.map((course) => (
