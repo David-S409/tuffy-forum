@@ -248,25 +248,34 @@ function SingleQuestion() {
             <ArrowDropDownIcon fontSize='large' />
           </IconButton>
         </Grid>
-      <Grid 
+        <Grid 
       display='flex'
       flexDirection='column'
       sx={{mt: 1}}
+      width='100%'
       >
         <Typography 
-          variant='h4'
+          variant='h5'
           color='CaptionText'
-          fontFamily='monospace'
+          display="flex"
           >
           {question.text}
         </Typography>
-        <Grid
+        <Grid>
+          <Grid
           display='flex'
+          flexDirection='row'
           justifyContent='flex-end'
-        >
-          <Typography>
+          >
+          <Typography
+            display='flex'
+            justifyContent='flex-end'
+            fontSize={15}
+          >
             Posted by: {user?.firstName} {user?.lastName} on {formatDate(question.postDate)}
           </Typography>
+          </Grid>
+          
         </Grid>
       </Grid>
       </Grid>
@@ -324,8 +333,9 @@ function SingleQuestion() {
           <Typography
             display='flex'
             justifyContent='flex-end'
+            fontSize={15}
           >
-            Posted by: {user?.firstName} {user?.lastName} on {formatDate(answer.postDate)}
+            Answered by: {user?.firstName} {user?.lastName} on {formatDate(answer.postDate)}
           </Typography>
           </Grid>
           
