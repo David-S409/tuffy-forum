@@ -28,7 +28,7 @@ export function App() {
       <Route path="/login/success" element={<LoginSuccess />} />
       <Route path="/forum" element={<Forum />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="/questions/:questionId" element={<SingleQuestion />} />
+      <Route path="/question/:questionId" element={<SingleQuestion />} />
 
       {user?.isOnboard ? (
         <Route path="/onboarding" element={<BordedSuccess />} />

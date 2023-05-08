@@ -74,7 +74,11 @@ function QuestionList() {
       />
       <List>
         {currentQuestions.map((question) => (
-          <QuestionBlock key={question.questionId} question={question} />
+          <QuestionBlock
+            key={question.questionId}
+            question={question}
+            displayAnswerCountOnly
+          />
         ))}
       </List>
       <Box display="flex" justifyContent="center">
