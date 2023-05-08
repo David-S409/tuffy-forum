@@ -18,8 +18,8 @@ import {
 import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import { useSelector } from 'react-redux';
-import { Question, Answer, Course, User } from './types';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Question, Answer, Course, User } from './types';
 import taggers from '../../components/Tags/Tags';
 import { RootState } from '../../store';
 
@@ -61,15 +61,15 @@ function QuestionBlock({
 
   const fetchUser = async () => {
     await axios
-    .get(`http://localhost:8080/api/v1/auth/user`, {
-      withCredentials: true,
-    })
-    .then(async (res) => {
-      setUsers(res.data);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
+      .get(`http://localhost:8080/api/v1/auth/user`, {
+        withCredentials: true,
+      })
+      .then(async (res) => {
+        setUsers(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const fetchQuestion = async () => {
@@ -113,13 +113,15 @@ function QuestionBlock({
 
   const postAnswer = async () => {
     await axios
-      .post(`http://localhost:8080/api/v1/answer`, {
-        questionId: question.questionId.toString(),
-        text: answerToPost,
-      },
-      {
-        withCredentials: true,
-      }
+      .post(
+        `http://localhost:8080/api/v1/answer`,
+        {
+          questionId: question.questionId.toString(),
+          text: answerToPost,
+        },
+        {
+          withCredentials: true,
+        }
       )
       .then((res) => {
         setAnswerToPost('');
@@ -201,7 +203,7 @@ function QuestionBlock({
           <Grid item xs={11}>
             <Grid container justifyContent="space-between">
               <Link
-                href={`/questions/${questionNew.questionId}`}
+                href={`/question/${questionNew.questionId}`}
                 color="inherit"
               >
                 <Typography variant="h5">{questionNew.header}</Typography>
