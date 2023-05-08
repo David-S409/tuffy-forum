@@ -6,7 +6,7 @@ function Forum() {
   return (
     <div>
       <Box sx={{ mt: 1, mb: 2}}>
-        <Typography variant="h4" align="center">
+        <Typography variant="h4" color='CaptionText' align="center">
           Forum
         </Typography>
       </Box>

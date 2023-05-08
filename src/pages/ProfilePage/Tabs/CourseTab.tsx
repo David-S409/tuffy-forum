@@ -78,7 +78,7 @@ const useStyles = makeStyles()(() => {
 
     useEffect(() => {
       fetchCourses();
-    }, [courses]);
+    }, []);
 
   return (
     <Container maxWidth='md'>
@@ -116,6 +116,7 @@ const useStyles = makeStyles()(() => {
                     axios.get(`http://localhost:8080/api/v1/course/remove/${course.courseId}`, { withCredentials: true })
                     .then((response) => {
                       console.log("Course deleted")
+                      location.reload()
                     }).catch((err) => {
                       console.error(err);
                     })

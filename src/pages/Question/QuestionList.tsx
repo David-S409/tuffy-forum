@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, TextField } from '@mui/material';
+import { List, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import Pagination from '@mui/material/Pagination';
@@ -72,6 +72,101 @@ function QuestionList() {
         fullWidth
         margin="normal"
       />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          mt: 3,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '300%',
+              }}
+            >
+              <Typography
+                variant="h5"
+                color='CaptionText'
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                }}
+              >
+                Title
+              </Typography>
+
+              <Typography
+                variant="h5"
+                color='CaptionText'
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                  ml: 5,
+                }}
+              >
+                User
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              <Typography
+                variant="h5"
+                color='CaptionText'
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                  ml: 5,
+                }}
+              >
+                Tags
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >           
+          </Box>
+        </Box>
+        </Box>
+        <ListDivider/>
       <List>
         {currentQuestions.map((question) => (
           <><QuestionBlock key={question.questionId} question={question} /><ListDivider /></>

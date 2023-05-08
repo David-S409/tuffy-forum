@@ -61,7 +61,7 @@ function SingleQuestion() {
     };
     fetchQuestion();
     fetchAnswers();
-  }, [questionId]);
+  }, []);
 
   if (!question) {
     return <div>Loading...</div>;

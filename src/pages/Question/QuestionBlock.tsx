@@ -130,7 +130,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
       });
     };
     fetchAnswers();
-  }, [answer]);
+  }, []);
   
 
   // const postAnswer = async () => {

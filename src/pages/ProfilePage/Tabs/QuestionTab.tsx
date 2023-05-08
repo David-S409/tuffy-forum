@@ -97,7 +97,7 @@ export default function QuestionTab () {
 
   React.useEffect(() => {
     fetchInfo();
-  }, [questions]);
+  }, []);
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -186,7 +186,7 @@ export default function QuestionTab () {
                               axios.get(`http://localhost:8080/api/v1/question/remove/${ids}`, { withCredentials: true })
                               .then((response) => {
                                 console.log(`Question ${ids} deleted`);
-                                setOpen(false);
+                                location.reload();
                               }).catch((err) => {
                                 console.error(err);
                               })}}
