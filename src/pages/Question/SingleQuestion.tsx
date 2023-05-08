@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Question, Answer } from './types';
 import QuestionBlock, { formatDate } from './QuestionBlock';
-import { Alert, Box, Button, Container, Divider, FormControl, FormHelperText, Grid, IconButton, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Chip, Container, Divider, FormControl, FormHelperText, Grid, IconButton, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useSelector } from 'react-redux';
@@ -220,7 +220,14 @@ function SingleQuestion() {
           >
           {question.header}
         </Typography>
-        <Divider />
+        <Grid
+          display="flex"
+        >
+          {question.tags.map((tag) => (
+            <Chip key={tag} label={tag} sx={{ marginRight: '5px' }} />
+          ))}
+        </Grid>
+        <Divider sx={{mt: 2}}/>
       </Grid>
       <Grid sx={{mt: 3}} display="flex" flexDirection='row'>
         <Grid 
