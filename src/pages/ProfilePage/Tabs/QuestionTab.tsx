@@ -97,7 +97,7 @@ export default function QuestionTab () {
 
   React.useEffect(() => {
     fetchInfo();
-  }, [questions]);
+  }, []);
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

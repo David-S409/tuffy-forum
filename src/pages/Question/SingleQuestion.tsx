@@ -33,7 +33,7 @@ function SingleQuestion() {
         });
     };
     fetchQuestion();
-  }, [questionId]);
+  }, []);
 
   if (!question) {
     return <div>Loading...</div>;

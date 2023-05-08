@@ -78,7 +78,7 @@ const useStyles = makeStyles()(() => {
 
     useEffect(() => {
       fetchCourses();
-    }, [courses]);
+    }, []);
 
   return (
     <Container maxWidth='md'>

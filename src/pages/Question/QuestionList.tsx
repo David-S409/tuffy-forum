@@ -40,7 +40,7 @@ function QuestionList() {
         : question.header.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredQuestions(results);
-  }, [searchTerm, questions]);
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

@@ -25,6 +25,12 @@ export interface Answer {
   postDate: string;
 }
 
+export interface User {
+  userId: number;
+  firstName: string;
+  lastName: string;
+}
+
 export interface Params extends Record<string, string | undefined> {
   questionId: string;
 }

@@ -17,7 +17,7 @@ import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Question, Answer, Course } from './types';
+import { Question, Answer, Course, User } from './types';
 import taggers from '../../components/Tags/Tags';
 import { RootState } from '../../store';
 
@@ -48,8 +48,22 @@ function QuestionBlock({ question }: QuestionBlockProps) {
   const [answerToPost, setAnswerToPost] = useState('');
   const [course, setCourse] = useState<Course | null>(null);
   const [showAnswerBox, setShowAnswerBox] = useState<boolean>(false);
+  const [users, setUsers] = useState<User | null>(null);
   const { user } = useSelector((state: RootState) => state.app);
   const { questionId } = useParams();
+
+  const fetchUser = async () => {
+    await axios
+    .get(`http://localhost:8080/api/v1/auth/user`, {
+      withCredentials: true,
+    })
+    .then(async (res) => {
+      setUsers(res.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+  };
 
   const fetchQuestion = async () => {
     await axios
@@ -93,10 +107,13 @@ function QuestionBlock({ question }: QuestionBlockProps) {
   const postAnswer = async () => {
     await axios
       .post(`http://localhost:8080/api/v1/answer`, {
-        questionId: question.questionId,
-        answer: answerToPost,
+        questionId: question.questionId.toString(),
+        text: answerToPost,
+      },
+      {
         withCredentials: true,
-      })
+      }
+      )
       .then((res) => {
         setAnswerToPost('');
         fetchAnswers();
@@ -109,13 +126,14 @@ function QuestionBlock({ question }: QuestionBlockProps) {
     fetchQuestion();
     fetchAnswers();
     fetchCourse();
-  }, [fetchAnswers, fetchCourse, fetchQuestion]);
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     if (questionNew) {
       fetchAnswers();
     }
-  }, [fetchAnswers, questionNew]);
+  }, []);
 
   if (!questionNew) {
     return <div>Loading...</div>;
@@ -236,7 +254,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                 mt: 2,
               }}
             >
-              Posted by {user?.firstName} {user?.lastName} on{' '}
+              Posted by {users?.firstName} {users?.lastName} on{' '}
               {formatDate(questionNew.postDate)}
             </Typography>
           </Grid>
@@ -319,7 +337,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
                           mt: 2,
                         }}
                       >
-                        Posted by {user?.firstName} {user?.lastName} on{' '}
+                        Posted by {users?.firstName} {users?.lastName} on{' '}
                         {formatDate(answer.postDate)}
                       </Typography>
                     </Grid>

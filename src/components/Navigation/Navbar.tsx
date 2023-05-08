@@ -119,7 +119,7 @@ export default function Navbar() {
     if (checkUser) {
       getLoginInfo();
     }
-  }, [checkUser, getLoginInfo]);
+  }, []);
 
   const logoutUser = async () => {
     localStorage.removeItem('auth');
