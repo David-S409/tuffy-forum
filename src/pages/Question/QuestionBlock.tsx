@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react-hooks/exhaustive-deps */
 // QuestionBlock.tsx
@@ -16,7 +18,7 @@ import {
 import ArrowCircleUpTwoToneIcon from '@mui/icons-material/ArrowCircleUpTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Question, Answer, Course } from './types';
 import taggers from '../../components/Tags/Tags';
 import { RootState } from '../../store';
@@ -40,9 +42,13 @@ function formatDate(date: string) {
 
 interface QuestionBlockProps {
   question: Question;
+  displayAnswerCountOnly?: boolean;
 }
 
-function QuestionBlock({ question }: QuestionBlockProps) {
+function QuestionBlock({
+  question,
+  displayAnswerCountOnly = false,
+}: QuestionBlockProps) {
   const [questionNew, setQuestionNew] = useState<Question>(question);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [answerToPost, setAnswerToPost] = useState('');
@@ -50,6 +56,7 @@ function QuestionBlock({ question }: QuestionBlockProps) {
   const [showAnswerBox, setShowAnswerBox] = useState<boolean>(false);
   const { user } = useSelector((state: RootState) => state.app);
   const { questionId } = useParams();
+  const navigate = useNavigate();
 
   const fetchQuestion = async () => {
     await axios
@@ -109,20 +116,20 @@ function QuestionBlock({ question }: QuestionBlockProps) {
     fetchQuestion();
     fetchAnswers();
     fetchCourse();
-  }, [fetchAnswers, fetchCourse, fetchQuestion]);
+  }, []);
 
   useEffect(() => {
     if (questionNew) {
       fetchAnswers();
     }
-  }, [fetchAnswers, questionNew]);
+  }, []);
 
   if (!questionNew) {
     return <div>Loading...</div>;
   }
 
   const handleQuestionClick = () => {
-    setShowAnswerBox((prevValue) => !prevValue);
+    navigate(`/question/${questionNew.questionId}`);
   };
 
   return (
@@ -242,17 +249,30 @@ function QuestionBlock({ question }: QuestionBlockProps) {
           </Grid>
         </Grid>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleQuestionClick}
-          sx={{ marginTop: '16px' }}
-        >
-          Add Response
-        </Button>
+        {!questionId ? (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleQuestionClick}
+            sx={{ marginTop: '16px' }}
+          >
+            Add Response
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setShowAnswerBox(!showAnswerBox)}
+            sx={{ marginTop: '16px' }}
+          >
+            Add an Answer
+          </Button>
+        )}
 
         <Box sx={{ marginTop: '16px' }}>
-          {answers.length === 0 ? (
+          {displayAnswerCountOnly ? (
+            <Typography variant="body1">{answers.length} answer(s)</Typography>
+          ) : answers.length === 0 ? (
             <Typography variant="body1">No answers</Typography>
           ) : (
             answers.map((answer) => {
